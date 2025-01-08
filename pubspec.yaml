@@ -55,6 +55,7 @@ dependencies:
   flutter_inappwebview: ^6.0.0
   dio_cache_interceptor: ^3.5.1
   photo_view: ^0.15.0
+  http_interceptor: ^2.0.0-beta.8
   image: ^4.5.2
   easy_refresh: ^3.4.0
   flutter_hooks: ^0.20.5
@@ -72,13 +73,6 @@ dependencies:
   # Desktop Support
   flutter_acrylic: ^1.1.4
   window_manager: ^0.4.2
-  rhttp:
-    git:
-      url: https://github.com/Tienisto/rhttp.git
-      path: rhttp
-      ref: main
-  dio_compatibility_layer: ^0.1.0
-  flutter_cache_manager_dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -155,9 +149,7 @@ dependency_overrides:
     git:
       url: https://gitee.com/openharmony-sig/flutter_widget_from_html
       path: packages/enhanced
-  #chewie:
-    #version: <1.8.6
-
+  chewie: < 1.8.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

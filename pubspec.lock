@@ -114,14 +114,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.1"
-  build_cli_annotations:
-    dependency: transitive
-    description:
-      name: build_cli_annotations
-      sha256: b59d2769769efd6c9ff6d4c4cede0be115a566afc591705c2040b707534b1172
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.0"
   build_config:
     dependency: transitive
     description:
@@ -219,7 +211,7 @@ packages:
     source: hosted
     version: "2.0.3"
   chewie:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: chewie
       sha256: "335df378c025588aef400c704bd71f0daea479d4cd57c471c88c056c1144e7cd"
@@ -404,14 +396,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.5.1"
-  dio_compatibility_layer:
-    dependency: "direct main"
-    description:
-      name: dio_compatibility_layer
-      sha256: bb7ea1dd6fe98b8f5e3d90da408802fc3abf14d4485416e882cf1b2c8fb4b209
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.0"
   dio_web_adapter:
     dependency: transitive
     description:
@@ -572,14 +556,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.4.1"
-  flutter_cache_manager_dio:
-    dependency: "direct main"
-    description:
-      name: flutter_cache_manager_dio
-      sha256: dec00b21ddd5206fe79201274ec53ab848f337a2716f11a5ead8e68a79e11ec0
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "4.0.0"
   flutter_displaymode:
     dependency: "direct main"
     description:
@@ -697,14 +673,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.6.1"
-  flutter_rust_bridge:
-    dependency: transitive
-    description:
-      name: flutter_rust_bridge
-      sha256: "35c257fc7f98e34c1314d6c145e5ed54e7c94e8a9f469947e31c9298177d546f"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.7.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -876,6 +844,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.2"
+  http_interceptor:
+    dependency: "direct main"
+    description:
+      name: http_interceptor
+      sha256: "288c6ded4a2c66de2730a16b30cbd29d05d042a5e61304d9b4be0e16378f4082"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -892,14 +868,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
-  http_profile:
-    dependency: transitive
-    description:
-      name: http_profile
-      sha256: "7e679e355b09aaee2ab5010915c932cce3f2d1c11c3b2dc177891687014ffa78"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.0"
   image:
     dependency: "direct main"
     description:
@@ -970,10 +938,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_platform_interface
-      sha256: "9ec26d410ff46f483c5519c29c02ef0e02e13a543f882b152d4bfd2f06802f80"
+      sha256: "886d57f0be73c4b140004e78b9f28a8914a09e50c2d816bdd0520051a71236a0"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.10.0"
+    version: "2.10.1"
   image_picker_windows:
     dependency: transitive
     description:
@@ -1460,15 +1428,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.1"
-  rhttp:
-    dependency: "direct main"
-    description:
-      path: rhttp
-      ref: main
-      resolved-ref: bee3f5998b4a01647168392513cac15f22bb1395
-      url: "https://github.com/Tienisto/rhttp.git"
-    source: git
-    version: "0.9.8"
   riverpod:
     dependency: transitive
     description:
@@ -1908,10 +1867,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_codec
-      sha256: "2430b973a4ca3c4dbc9999b62b8c719a160100dcbae5c819bae0cacce32c9cdb"
+      sha256: "99fd9fbd34d9f9a32efd7b6a6aae14125d8237b10403b422a6a6dfeac2806146"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.12"
+    version: "1.1.13"
   vector_graphics_compiler:
     dependency: transitive
     description:

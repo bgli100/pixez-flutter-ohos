@@ -92,4 +92,5 @@ end
 target 'TinkerExtension' do
   use_frameworks!
   use_modular_headers!
+  pod 'FMDB', '2.7.12'
 end

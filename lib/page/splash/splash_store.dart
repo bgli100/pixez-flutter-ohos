@@ -27,6 +27,7 @@ part 'splash_store.g.dart';
 class SplashStore = _SplashStoreBase with _$SplashStore;
 
 abstract class _SplashStoreBase with Store {
+  final OnezeroClient onezeroClient;
   final String OK_TEXT = '♪^∀^●)ノ';
   @observable
   String helloWord = "= w =";
@@ -34,7 +35,7 @@ abstract class _SplashStoreBase with Store {
   @observable
   OnezeroResponse? onezeroResponse;
 
-  _SplashStoreBase();
+  _SplashStoreBase(this.onezeroClient);
 
   @action
   hello() async {
@@ -44,7 +45,7 @@ abstract class _SplashStoreBase with Store {
     });
   }
 
-  maybeFetch() async {
+  maybeFetch() {
     if (userSetting.disableBypassSni || helloWord == OK_TEXT) return;
     fetch();
   }
@@ -55,10 +56,19 @@ abstract class _SplashStoreBase with Store {
         host != ImageHost ||
         userSetting.pictureSource != ImageHost) return;
     try {
-      await Hoster.dnsQueryAll();
-    } catch (e) {}
-    this.host = Hoster.iPximgNet();
-    helloWord = OK_TEXT;
+      final value = await onezeroClient.queryDns(ImageHost);
+      value.answer.sort((l, r) => r.ttl.compareTo(l.ttl));
+      final host = value.answer.first.data;
+      LPrinter.d(host);
+      if (host.startsWith(Hoster.sPximgNet().split(".").first) &&
+          int.tryParse(host[0]) != null)
+        this.host = host;
+      else
+        throw 1;
+    } catch (e) {
+      this.host = Hoster.iPximgNet();
+      helloWord = OK_TEXT;
+    } finally {}
   }
 
   setHost(String value) {
