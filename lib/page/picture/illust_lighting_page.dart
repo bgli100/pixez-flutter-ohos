@@ -1198,6 +1198,7 @@ class TextSelectionFix {
     switch (Theme.of(context).platform) {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
+      case TargetPlatform.ohos:
         controls ??= materialTextSelectionControls;
         break;
       case TargetPlatform.iOS:
