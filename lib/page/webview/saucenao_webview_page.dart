@@ -94,7 +94,7 @@ class _SauncenaoWebviewState extends State<SauncenaoWebview> {
                                 dio.options.baseUrl = "https://$host";
                               } else {
                                 dio.httpClientAdapter =
-                                    await ApiClient.createCompatibleClient();
+                                    ApiClient.createCompatibleClient();
                               }
                               if (compressedPath == null) {
                                 final tmpPath =

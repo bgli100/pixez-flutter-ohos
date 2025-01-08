@@ -138,7 +138,7 @@ class Sauce extends _$Sauce {
       if (userSetting.disableBypassSni) {
         dio.options.baseUrl = "https://$host";
       } else {
-        dio.httpClientAdapter = await ApiClient.createCompatibleClient();
+        dio.httpClientAdapter = ApiClient.createCompatibleClient();
       }
       Response response = await dio.post('/search.php', data: formData);
       BotToast.showText(text: I18n.ofContext().parsing);

@@ -771,7 +771,7 @@ class _UsersPageState extends State<UsersPage> with TickerProviderStateMixin {
 
   _saveUserBg(String url) async {
     try {
-      final result = await pixivCacheManager!.downloadFile(url, authHeaders: {
+      final result = await pixivCacheManager.downloadFile(url, authHeaders: {
         'referer': 'https://app-api.pixiv.net/',
       });
       final bytes = await result.file.readAsBytes();
@@ -800,7 +800,7 @@ class _UsersPageState extends State<UsersPage> with TickerProviderStateMixin {
       String tempFile = (await getTemporaryDirectory()).path + "/$fileName";
       final dio = Dio(BaseOptions(headers: Hoster.header(url: url)));
       if (!userSetting.disableBypassSni) {
-        dio.httpClientAdapter = await ApiClient.createCompatibleClient();
+        dio.httpClientAdapter = ApiClient.createCompatibleClient();
       }
       await dio.download(url, tempFile, deleteOnError: true);
       File file = File(tempFile);

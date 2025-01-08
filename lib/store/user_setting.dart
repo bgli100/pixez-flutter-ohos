@@ -27,7 +27,6 @@ import 'package:pixez/er/prefer.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/network/api_client.dart';
-import 'package:pixez/network/oauth_client.dart';
 import 'package:pixez/page/about/languages.dart';
 import 'package:pixez/secure_plugin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -386,11 +385,7 @@ abstract class _UserSetting with Store {
     isAMOLED = prefs.getBool(IS_AMOLED_KEY) ?? false;
     isTopMode = prefs.getBool(IS_TOPMODE_KEY) ?? false;
     languageNum = prefs.getInt(LANGUAGE_NUM_KEY) ?? 0;
-    disableBypassSni = prefs.getBool('disable_bypass_sni') ?? false;
     ApiClient.Accept_Language = languageList[languageNum];
-    await PixivImage.generatePixivCache();
-    await oAuthClient.createDioClient();
-    await apiClient.createDioClient();
     apiClient.httpClient.options.headers[HttpHeaders.acceptLanguageHeader] =
         ApiClient.Accept_Language;
     locale = iSupportedLocales[languageNum];
@@ -403,12 +398,12 @@ abstract class _UserSetting with Store {
     crossCount = prefs.getInt(CROSS_COUNT_KEY) ?? 2;
     hCrossCount = prefs.getInt(H_CROSS_COUNT_KEY) ?? 4;
     welcomePageNum = prefs.getInt('welcome_page_num') ?? 0;
+    disableBypassSni = prefs.getBool('disable_bypass_sni') ?? false;
     feedAIBadge = prefs.getBool(FEED_AI_BADGE_KEY) ?? true;
     padMode = prefs.getInt(PAD_MODE_KEY) ?? 0;
     pictureSource = disableBypassSni
         ? ImageHost
         : (prefs.getString(PICTURE_SOURCE_KEY) ?? ImageHost);
-    await Hoster.initMap();
     themeInitState = 1;
     fetcher.start(pictureSource!);
   }
