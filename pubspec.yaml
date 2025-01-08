@@ -61,7 +61,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   hooks_riverpod: ^2.5.1
   # sqflite >=2.3.3+2 requires dart >= 3.5.0
-  sqflite: ^2.3.3
+  sqflite: ^2.2.8+3
   dynamic_color:
     git:
       url: https://github.com/hasali19/material-foundation-flutter-packages.git
@@ -81,7 +81,7 @@ dev_dependencies:
   mobx_codegen: ^2.6.1
   json_serializable: ^6.8.0
   analyzer: ^6.4.1
-  sqflite_common_ffi: ^2.3.3
+  sqflite_common_ffi: ^2.2.5
   msix: ^3.16.7
   riverpod_generator: ^2.4.0
   custom_lint: ^0.6.4
@@ -149,6 +149,14 @@ dependency_overrides:
     git:
       url: https://gitee.com/openharmony-sig/flutter_widget_from_html
       path: packages/enhanced
+  sqflite:
+    git:
+      url: https://gitee.com/openharmony-sig/flutter_sqflite
+      path: sqflite
+  sqflite_common_ffi:
+    git:
+      url: https://gitee.com/openharmony-sig/flutter_sqflite
+      path: sqflite_common_ffi
   chewie: < 1.8.6
 
 # For information on the generic Dart part of this file, see the

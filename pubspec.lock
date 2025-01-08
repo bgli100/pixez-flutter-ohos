@@ -1656,27 +1656,30 @@ packages:
   sqflite:
     dependency: "direct main"
     description:
-      name: sqflite
-      sha256: a43e5a27235518c03ca238e7b4732cf35eabe863a369ceba6cbefa537a66f16d
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.3.3+1"
+      path: sqflite
+      ref: HEAD
+      resolved-ref: "64d1855cc1f8b4b362e08004b5faab1b9bfa88e0"
+      url: "https://gitee.com/openharmony-sig/flutter_sqflite"
+    source: git
+    version: "2.2.8+3"
   sqflite_common:
     dependency: transitive
     description:
-      name: sqflite_common
-      sha256: "3da423ce7baf868be70e2c0976c28a1bb2f73644268b7ffa7d2e08eab71f16a4"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.5.4"
+      path: sqflite_common
+      ref: HEAD
+      resolved-ref: "64d1855cc1f8b4b362e08004b5faab1b9bfa88e0"
+      url: "https://gitee.com/openharmony-sig/flutter_sqflite.git"
+    source: git
+    version: "2.4.5+1"
   sqflite_common_ffi:
     dependency: "direct dev"
     description:
-      name: sqflite_common_ffi
-      sha256: "4d6137c29e930d6e4a8ff373989dd9de7bac12e3bc87bce950f6e844e8ad3bb5"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.3.3"
+      path: sqflite_common_ffi
+      ref: HEAD
+      resolved-ref: "64d1855cc1f8b4b362e08004b5faab1b9bfa88e0"
+      url: "https://gitee.com/openharmony-sig/flutter_sqflite"
+    source: git
+    version: "2.2.5"
   sqlite3:
     dependency: transitive
     description:

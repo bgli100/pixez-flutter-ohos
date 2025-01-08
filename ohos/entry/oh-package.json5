@@ -16,6 +16,7 @@
     "connectivity_plus": "file:../har/connectivity_plus.har",
     "device_info_plus": "file:../har/device_info_plus.har",
     "package_info_plus": "file:../har/package_info_plus.har",
-    "share_plus": "file:../har/share_plus.har"
+    "share_plus": "file:../har/share_plus.har",
+    "sqflite": "file:../har/sqflite.har"
   }
 }
