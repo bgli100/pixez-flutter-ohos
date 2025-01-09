@@ -17,6 +17,7 @@
     "device_info_plus": "file:../har/device_info_plus.har",
     "package_info_plus": "file:../har/package_info_plus.har",
     "share_plus": "file:../har/share_plus.har",
-    "sqflite": "file:../har/sqflite.har"
+    "sqflite": "file:../har/sqflite.har",
+    "image_gallery_saver": "file:../har/image_gallery_saver.har"
   }
 }

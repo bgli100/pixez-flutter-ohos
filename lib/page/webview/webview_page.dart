@@ -31,7 +31,8 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   void dispose() {
     super.dispose();
-    WeissPlugin.stop();
+    if (!Platform.isOhos)
+      WeissPlugin.stop();
   }
 
   @override

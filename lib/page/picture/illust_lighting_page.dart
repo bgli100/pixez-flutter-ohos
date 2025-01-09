@@ -336,7 +336,7 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
   bool supportTranslate = false;
 
   Future<void> supportTranslateCheck() async {
-    if (!Platform.isAndroid && !Platform.isOhos) return;
+    if (!Platform.isAndroid) return;
     bool results = await SupportorPlugin.processText();
     if (mounted) {
       setState(() {

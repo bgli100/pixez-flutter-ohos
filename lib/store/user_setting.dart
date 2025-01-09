@@ -437,7 +437,7 @@ abstract class _UserSetting with Store {
     useSaunceNaoWebview = prefs.getBool(USE_SAUNCE_NAO_WEBVIEW) ?? false;
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;
-    if (Platform.isAndroid || Platform.isOhos) {
+    if (Platform.isAndroid) {
       try {
         await SecurePlugin.configSecureWindow(nsfwMask);
         var modeList = await FlutterDisplayMode.supported;
