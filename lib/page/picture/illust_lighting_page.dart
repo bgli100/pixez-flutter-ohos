@@ -336,7 +336,7 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
   bool supportTranslate = false;
 
   Future<void> supportTranslateCheck() async {
-    if (!Platform.isAndroid) return;
+    if (!Platform.isAndroid && !Platform.isOhos) return;
     bool results = await SupportorPlugin.processText();
     if (mounted) {
       setState(() {
@@ -1127,7 +1127,7 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
                         title: Text(I18n.of(context).report),
                         leading: Icon(Icons.report),
                         onTap: () async {
-                          if (Platform.isAndroid) {
+                          if (Platform.isAndroid || Platform.isOhos) {
                             Navigator.of(context).pop();
                             await Reporter.show(
                                 context,

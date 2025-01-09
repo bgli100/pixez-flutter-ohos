@@ -75,7 +75,7 @@ class _SettingQualityPageState extends State<SettingQualityPage>
       body: Observer(builder: (context) {
         return Container(
           child: ListView(children: [
-            if (Platform.isAndroid)
+            if (Platform.isAndroid || Platform.isOhos)
               ListTile(
                 leading: Icon(Icons.android),
                 trailing: const Icon(Icons.arrow_right),
@@ -164,7 +164,7 @@ class _SettingQualityPageState extends State<SettingQualityPage>
               title: Text(I18n.of(context).welcome_page),
               trailing: SettingSelectMenu(
                 index: userSetting.welcomePageNum,
-                items: Platform.isAndroid
+                items: (Platform.isAndroid || Platform.isOhos)
                     ? [
                         I18n.of(context).home,
                         I18n.of(context).rank,
@@ -318,7 +318,7 @@ class _SettingQualityPageState extends State<SettingQualityPage>
                 onChanged: (value) async {
                   userSetting.setSwipeChangeArtwork(value);
                 }),
-            if (Platform.isAndroid || Platform.isIOS)
+            if (Platform.isAndroid || Platform.isIOS || Platform.isOhos)
               SwitchListTile(
                   value: userSetting.nsfwMask,
                   title: Text(Platform.isIOS
@@ -430,7 +430,7 @@ class _SettingQualityPageState extends State<SettingQualityPage>
           InkWell(
             onTap: () {
               try {
-                if (Platform.isAndroid && !Constants.isGooglePlay)
+                if ((Platform.isOhos || Platform.isAndroid) && !Constants.isGooglePlay)
                   launchUrl(Uri.dataFromString(langsponsor.uri));
               } catch (e) {}
             },

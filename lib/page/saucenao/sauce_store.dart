@@ -61,7 +61,7 @@ abstract class SauceStoreBase with Store {
 
   Future findImage(
       {BuildContext? context, String? path, bool retry = false}) async {
-    if (Platform.isAndroid && context != null) {
+    if ((Platform.isAndroid || Platform.isOhos) && context != null) {
       final pre = await SharedPreferences.getInstance();
       final skipAlert = pre.getBool("photo_picker_type_selected") ?? false;
       if (!skipAlert) {

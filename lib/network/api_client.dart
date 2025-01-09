@@ -379,7 +379,7 @@ class ApiClient {
     final bookmark_num_max = bookmark_num?.elementAtOrNull(1);
     return httpClient.get("/v1/search/illust",
         queryParameters: notNullMap({
-          "filter": Platform.isAndroid ? "for_android" : "for_ios",
+          "filter": (Platform.isAndroid || Platform.isOhos) ? "for_android" : "for_ios",
           "merge_plain_keyword_results": true,
           "sort": sort,
           "search_ai_type": search_ai_type,

@@ -400,7 +400,7 @@ class _SearchPageState extends State<SearchPage>
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: rowCount)),
             ),
-          if (Platform.isAndroid)
+          if (Platform.isAndroid || Platform.isOhos)
             SliverToBoxAdapter(
               child: Container(
                 height: (MediaQuery.of(context).size.width / 3) - 16,

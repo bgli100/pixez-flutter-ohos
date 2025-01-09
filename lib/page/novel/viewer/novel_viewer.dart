@@ -67,7 +67,7 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
   NovelSpansGenerator novelSpansGenerator = NovelSpansGenerator();
 
   Future<void> initMethod() async {
-    if (!Platform.isAndroid) return;
+    if (!Platform.isAndroid && !Platform.isOhos) return;
     bool results = await SupportorPlugin.processText();
     if (mounted) {
       setState(() {
@@ -576,7 +576,7 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
                 ),
                 buildListTile(
                     _novelStore.novelTextResponse!.seriesNavigation?.nextNovel),
-                if (Platform.isAndroid)
+                if (Platform.isAndroid || Platform.isOhos)
                   ListTile(
                     title: Text(I18n.of(context).export),
                     leading: Icon(Icons.folder_zip),
@@ -631,7 +631,7 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
 
   void _export() async {
     if (_novelStore.novelTextResponse == null) return;
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid || Platform.isOhos) {
       // final path = await getExternalStorageDirectory();
       // if (path == null) return;
       // final dirPath = Path.join(path.path, "novel_export");

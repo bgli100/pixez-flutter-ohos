@@ -62,7 +62,7 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      if (accountStore.now != null && (Platform.isIOS || Platform.isAndroid)) {
+      if (accountStore.now != null && (Platform.isIOS || Platform.isAndroid || Platform.isOhos)) {
         return _buildScaffold(context);
       }
       if (accountStore.now == null && accountStore.feching) {
