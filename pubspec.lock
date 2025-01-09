@@ -888,7 +888,14 @@ packages:
       sha256: "4e973fcf4caae1a4be2fa0a13157aa38a8f9cb049db6529aa00b4d71abc4d928"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.5.4"
+    version: "4.5.2"
+  image_gallery_saver:
+    dependency: "direct main"
+    description:
+      path: "D:\\dev\\flutter_image_gallery_saver"
+      relative: false
+    source: path
+    version: "2.0.3"
   image_picker:
     dependency: "direct main"
     description:

@@ -447,7 +447,7 @@ abstract class _UserSetting with Store {
     dragStartX = prefs.getDouble(DRAG_START_X_KEY) ?? 0;
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;
-    if (Platform.isAndroid || Platform.isOhos) {
+    if (Platform.isAndroid) {
       try {
         await SecurePlugin.configSecureWindow(nsfwMask);
         var modeList = await FlutterDisplayMode.supported;

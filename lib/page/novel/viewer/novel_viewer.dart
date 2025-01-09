@@ -67,7 +67,7 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
   NovelSpansGenerator novelSpansGenerator = NovelSpansGenerator();
 
   Future<void> initMethod() async {
-    if (!Platform.isAndroid && !Platform.isOhos) return;
+    if (!Platform.isAndroid) return;
     bool results = await SupportorPlugin.processText();
     if (mounted) {
       setState(() {

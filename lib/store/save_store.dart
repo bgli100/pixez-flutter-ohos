@@ -33,6 +33,7 @@ import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/models/task_persist.dart';
 import 'package:pixez/page/task/job_page.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 part 'save_store.g.dart';
 
@@ -217,7 +218,7 @@ abstract class _SaveStoreBase with Store {
 
   _saveInternal(String url, Illusts illusts, String fileName, int index,
       {bool redo = false}) async {
-    if (Platform.isAndroid || Platform.isOhos) {
+    if (Platform.isAndroid) {
       try {
         String targetFileName = fileName;
         if (userSetting.singleFolder) {
@@ -245,7 +246,7 @@ abstract class _SaveStoreBase with Store {
 
   Future<void> saveToGalleryWithUser(Uint8List uint8list, String userName,
       int userId, int sanityLevel, String fileName) async {
-    if (Platform.isAndroid || Platform.isIOS || Platform.isOhos) {
+    if (Platform.isAndroid || Platform.isIOS) {
       try {
         String overFileName = fileName;
         if (userSetting.singleFolder) {
@@ -266,6 +267,8 @@ abstract class _SaveStoreBase with Store {
         print(e);
       }
       return;
+    } else if (Platform.isOhos) {
+      await ImageGallerySaver.saveImage(uint8list, quality: 100, name: fileName);
     } else {
       DocumentPlugin.save(uint8list, fileName);
     }

@@ -624,7 +624,7 @@ class _IllustDetailContentState extends State<IllustDetailContent> {
   }
 
   Future<void> supportTranslateCheck() async {
-    if (!Platform.isAndroid && !Platform.isOhos) return;
+    if (!Platform.isAndroid) return;
     bool results = await SupportorPlugin.processText();
     if (mounted) {
       setState(() {

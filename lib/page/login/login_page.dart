@@ -186,9 +186,11 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     if (!userSetting.disableBypassSni) {
-      // await WeissServer.listener();
-      await WeissPlugin.start();
-      await WeissPlugin.proxy();
+      if (!Platform.isOhos) {
+         // await WeissServer.listener();
+        await WeissPlugin.start();
+        await WeissPlugin.proxy();
+      }
       Leader.push(
           context,
           WebViewPage(

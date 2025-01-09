@@ -14,18 +14,19 @@
   },
   "overrides": {
     "@ohos/flutter_ohos": "file:./har/flutter.har",
-    "flutter_inappwebview_ohos": "../../pub_cache/git/flutter_inappwebview-5841b55e376aff25c8c0bb09241bb9440d8dfcba/flutter_inappwebview_ohos/ohos",
-    "file_selector_ohos": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/file_selector/file_selector_ohos/ohos",
-    "image_picker_ohos": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/image_picker/image_picker_ohos/ohos",
-    "path_provider_ohos": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/path_provider/path_provider_ohos/ohos",
-    "shared_preferences_ohos": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/shared_preferences/shared_preferences_ohos/ohos",
-    "url_launcher_ohos": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/url_launcher/url_launcher_ohos/ohos",
-    "permission_handler_ohos": "../../pub_cache/git/flutter_permission_handler-1e7c80f0720aff742d9f1e08017e1753bcad76ef/permission_handler_ohos/ohos",
-    "connectivity_plus": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/connectivity_plus/connectivity_plus/ohos",
-    "device_info_plus": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/device_info_plus/device_info_plus/ohos",
-    "package_info_plus": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/package_info_plus/package_info_plus/ohos",
-    "share_plus": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/share_plus/share_plus/ohos",
-    "sqflite": "../../pub_cache/git/flutter_sqflite-6321c1647149cbfb28b11b2b83e1d0bc9f3c6f73/sqflite/ohos",
-    "@ohos/flutter_module": "file:./entry"
+    "flutter_inappwebview_ohos": "file:./har/flutter_inappwebview_ohos.har",
+    "file_selector_ohos": "file:./har/file_selector_ohos.har",
+    "image_picker_ohos": "file:./har/image_picker_ohos.har",
+    "path_provider_ohos": "file:./har/path_provider_ohos.har",
+    "shared_preferences_ohos": "file:./har/shared_preferences_ohos.har",
+    "url_launcher_ohos": "file:./har/url_launcher_ohos.har",
+    "permission_handler_ohos": "file:./har/permission_handler_ohos.har",
+    "connectivity_plus": "file:./har/connectivity_plus.har",
+    "device_info_plus": "file:./har/device_info_plus.har",
+    "package_info_plus": "file:./har/package_info_plus.har",
+    "share_plus": "file:./har/share_plus.har",
+    "@ohos/flutter_module": "file:./entry",
+    "sqflite": "file:./har/sqflite.har",
+    "image_gallery_saver": "file:./har/image_gallery_saver.har"
   }
 }
