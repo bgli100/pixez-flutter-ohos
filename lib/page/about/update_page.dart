@@ -40,7 +40,7 @@ class _UpdatePageState extends State<UpdatePage> {
   initData() async {
     try {
       Response response = await _dio.get(
-          'https://api.github.com/repos/Notsfsssf/pixez-flutter/releases/latest');
+          'https://api.github.com/repos/bgli100/pixez-flutter-ohos/releases/latest');
       final result = LastRelease.fromJson(response.data);
       setState(() {
         lastRelease = result;

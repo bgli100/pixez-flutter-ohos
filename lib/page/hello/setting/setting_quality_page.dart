@@ -74,7 +74,7 @@ class _SettingQualityPageState extends State<SettingQualityPage>
       body: Observer(builder: (context) {
         return Container(
           child: ListView(children: [
-            if (Platform.isAndroid || Platform.isOhos)
+            if (Platform.isAndroid)
               ListTile(
                 leading: Icon(Icons.android),
                 trailing: const Icon(Icons.arrow_right),
