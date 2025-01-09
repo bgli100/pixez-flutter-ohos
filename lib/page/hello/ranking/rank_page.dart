@@ -124,7 +124,7 @@ class _RankPageState extends State<RankPage>
                     ],
                   ),
                   actions: <Widget>[
-                    if (Platform.isAndroid)
+                    if (Platform.isAndroid || Platform.isOhos)
                       IconButton(
                         icon: Icon(Icons.fullscreen),
                         onPressed: () {

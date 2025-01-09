@@ -34,7 +34,7 @@ class BoardInfo {
     if (kDebugMode) {
       return "android.json";
     }
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid || Platform.isOhos) {
       if (Constants.isGooglePlay) {
         return "android_play.json";
       }

@@ -56,7 +56,7 @@ abstract class _UgoiraStoreBase with Store {
       File fullPathFile = File(fullPath);
       if (fullPathFile.existsSync()) {
         final data = fullPathFile.readAsBytesSync();
-        if (Platform.isAndroid) {
+        if (Platform.isAndroid || Platform.isOhos) {
           try {
             String? uriString =
                 await SAFPlugin.createFile("${id}.zip", "application/zip");
