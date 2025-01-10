@@ -49,7 +49,10 @@ dependencies:
   json_annotation: ^4.9.0
   badges: ^3.1.2
   image_picker: ^1.1.2
-  image_gallery_saver: ^2.0.3
+  image_gallery_saver:
+    git:
+      url: https://github.com/bgli100/flutter_image_gallery_saver_ohos.git
+      ref: master
   intl: ^0.19.0
   quiver: ^3.2.2
   # flutter_inappwebview >=6.1.0 requires dart >= 3.5.0
@@ -146,8 +149,6 @@ dependency_overrides:
     git:
       url: https://gitee.com/openharmony-sig/flutter_packages.git
       path: packages/image_picker/image_picker
-  image_gallery_saver:
-    path: 'D:\dev\flutter_image_gallery_saver'
   flutter_widget_from_html:
     git:
       url: https://gitee.com/openharmony-sig/flutter_widget_from_html
@@ -160,6 +161,7 @@ dependency_overrides:
     git:
       url: https://gitee.com/openharmony-sig/flutter_sqflite
       path: sqflite_common_ffi
+  # chewie >= 1.8.6 requires color value usage in newer dart
   chewie: < 1.8.6
 
 # For information on the generic Dart part of this file, see the

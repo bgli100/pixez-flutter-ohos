@@ -46,6 +46,7 @@ import 'package:pixez/page/user/detail/user_detail.dart';
 import 'package:pixez/page/user/user_store.dart';
 import 'package:pixez/page/user/works/works_page.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 /*
 🎵 Lyn-The Whims of Fate🎵
@@ -778,7 +779,10 @@ class _UsersPageState extends State<UsersPage> with TickerProviderStateMixin {
         'referer': 'https://app-api.pixiv.net/',
       });
       final bytes = await result.file.readAsBytes();
-      await DocumentPlugin.save(bytes, "${widget.id}_bg.jpg");
+      if (Platform.isOhos)
+        await ImageGallerySaver.saveImage(bytes, name: "${widget.id}_bg.jpg");
+      else
+        await DocumentPlugin.save(bytes, "${widget.id}_bg.jpg");
       BotToast.showText(text: I18n.of(context).saved);
     } catch (e) {
       print(e);

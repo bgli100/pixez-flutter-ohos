@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "PixEz"
+    },
+    {
+      "name": "write_imagevideo_reason",
+      "value": "For image download & save"
     }
   ]
 }

@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "PixEz"
+    },
+    {
+      "name": "write_imagevideo_reason",
+      "value": "用于图片下载保存任务"
     }
   ]
 }
