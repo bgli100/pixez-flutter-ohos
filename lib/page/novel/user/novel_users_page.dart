@@ -14,6 +14,7 @@ import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/document_plugin.dart';
 import 'package:pixez/er/hoster.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/exts.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/network/api_client.dart';
