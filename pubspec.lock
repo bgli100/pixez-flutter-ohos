@@ -214,10 +214,10 @@ packages:
     dependency: "direct overridden"
     description:
       name: chewie
-      sha256: "335df378c025588aef400c704bd71f0daea479d4cd57c471c88c056c1144e7cd"
+      sha256: "8bc4ac4cf3f316e50a25958c0f5eb9bb12cf7e8308bb1d74a43b230da2cfc144"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.8.5"
+    version: "1.7.5"
   ci:
     dependency: transitive
     description:
@@ -453,6 +453,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "7.0.1"
+  file_picker_ohos:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "4c8c26f75f3cc75909d2b7317e7cda579dab01d2"
+      url: "https://github.com/bgli100/flutter_file_picker_ohos.git"
+    source: git
+    version: "1.0.1"
   file_selector:
     dependency: "direct overridden"
     description:
@@ -1951,10 +1960,10 @@ packages:
     dependency: transitive
     description:
       name: wakelock_plus
-      sha256: "36c88af0b930121941345306d259ec4cc4ecca3b151c02e3a9e71aede83c615e"
+      sha256: f268ca2116db22e57577fb99d52515a24bdc1d570f12ac18bb762361d43b043d
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.2.10"
+    version: "1.1.4"
   wakelock_plus_platform_interface:
     dependency: transitive
     description:
@@ -2039,18 +2048,18 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "68d1e89a91ed61ad9c370f9f8b6effed9ae5e0ede22a270bdfa6daf79fc2290a"
+      sha256: "5a751eddf9db89b3e5f9d50c20ab8612296e4e8db69009788d6c8b060a84191c"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.5.4"
+    version: "4.1.4"
   win32_registry:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: "21ec76dfc731550fd3e2ce7a33a9ea90b828fdf19a5c3bcf556fa992cfa99852"
+      sha256: "1c52f994bdccb77103a6231ad4ea331a244dbcef5d1f37d8462f713143b0bfae"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.5"
+    version: "1.1.0"
   window_manager:
     dependency: "direct main"
     description:
