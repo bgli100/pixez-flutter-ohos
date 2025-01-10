@@ -809,7 +809,7 @@ class _UsersPageState extends State<UsersPage> with TickerProviderStateMixin {
       if (!userSetting.disableBypassSni) {
         dio.httpClientAdapter = ApiClient.createCompatibleClient();
       }
-      await dio.download(url, tempFile, deleteOnError: true);
+      await dio.download(url.toTrueUrl(), tempFile, deleteOnError: true);
       File file = File(tempFile);
       if (file.existsSync()) {
         await saveStore.saveToGallery(

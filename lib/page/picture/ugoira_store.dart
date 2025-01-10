@@ -131,7 +131,7 @@ abstract class _UgoiraStoreBase with Store {
     try {
       ugoiraMetadataResponse = await apiClient.getUgoiraMetadata(id);
       String zipUrl =
-          ugoiraMetadataResponse!.ugoiraMetadata.zipUrls.medium;
+          ugoiraMetadataResponse!.ugoiraMetadata.zipUrls.medium.toTrueUrl();
       if (!fullPathFile.existsSync()) {
         var dio = Dio(BaseOptions(
             headers: Hoster.header(
