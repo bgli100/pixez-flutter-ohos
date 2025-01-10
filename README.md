@@ -16,4 +16,5 @@ https://gitee.com/harmonycommando_flutter/flutter
 # 致谢
 
 原仓库各贡献者 (列表见原仓库)
+
 [HandwerSTD](https://github.com/HandwerSTD) OpenHarmony 移植踩坑
