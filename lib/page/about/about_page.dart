@@ -163,7 +163,7 @@ class _AboutPageState extends State<AboutPage> {
                   return Container(
                     height: 200.0,
                     child: Center(
-                      child: Text("喵"),
+                      child: Text("我...从没觉得玩乐队开心过"),
                     ),
                   );
                 },

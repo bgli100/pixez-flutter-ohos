@@ -268,7 +268,7 @@ abstract class _SaveStoreBase with Store {
       }
       return;
     } else if (Platform.isOhos) {
-      await ImageGallerySaver.saveImage(uint8list, quality: 100, name: fileName);
+      await ImageGallerySaver.saveImage(uint8list, name: fileName);
     } else {
       DocumentPlugin.save(uint8list, fileName);
     }

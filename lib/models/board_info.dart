@@ -34,13 +34,15 @@ class BoardInfo {
     if (kDebugMode) {
       return "android.json";
     }
-    if (Platform.isAndroid || Platform.isOhos) {
+    if (Platform.isAndroid) {
       if (Constants.isGooglePlay) {
         return "android_play.json";
       }
       return "android.json";
     } else if (Platform.isIOS) {
       return "ios.json";
+    } else if (Platform.isOhos) {
+      return "ohos.json";
     }
     return "";
   }
@@ -48,7 +50,7 @@ class BoardInfo {
   static Future<List<BoardInfo>> load() async {
     print(path());
     final request = await Dio().get(
-        'https://raw.githubusercontent.com/Notsfsssf/pixez-flutter/refs/heads/master/.github/board/${path()}');
+        'https://raw.githubusercontent.com/bgli100/pixez-flutter-ohos/refs/heads/master/.github/board/${path()}');
     final list = (jsonDecode(request.data) as List)
         .map((e) => BoardInfo.fromJson(e))
         .toList();
