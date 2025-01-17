@@ -13,6 +13,11 @@
 Flutter SDK:
 https://gitee.com/harmonycommando_flutter/flutter
 
+```
+dart run build_runner build --delete-conflicting-outputs
+flutter build hap --target-platform ohos-arm64 --release
+```
+
 # 致谢
 
 原仓库各贡献者 (列表见原仓库)
