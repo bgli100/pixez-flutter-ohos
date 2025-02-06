@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "com.example.pixez_flutter",
     "vendor": "example",
-    "versionCode": 460,
-    "versionName": "1.9.58",
+    "versionCode": 465,
+    "versionName": "1.9.61",
     "icon": "$media:app_icon",
     "label": "$string:app_name"
   }
