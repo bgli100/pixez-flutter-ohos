@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/er/lprinter.dart';
+import 'package:pixez/er/prefer.dart';
 import 'package:pixez/main.dart';
 import 'package:path/path.dart' as Path;
 

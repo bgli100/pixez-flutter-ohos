@@ -21,6 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pixez/component/pixiv_image.dart';
+import 'package:pixez/er/hoster.dart';
+import 'package:pixez/er/prefer.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/network/api_client.dart';
@@ -357,7 +359,7 @@ abstract class _UserSetting with Store {
 
   @action
   askInit() async {
-    prefs = await SharedPreferences.getInstance();
+    prefs = await Prefer.getInstance();
     int themeModeIndex = prefs.getInt(THEME_MODE_KEY) ?? 0;
     for (var i in ThemeMode.values) {
       if (i.index == themeModeIndex) {
@@ -401,7 +403,7 @@ abstract class _UserSetting with Store {
 
   @action
   Future<void> init() async {
-    prefs = await SharedPreferences.getInstance();
+    prefs = await Prefer.getInstance();
     zoomQuality = prefs.getInt(ZOOM_QUALITY_KEY) ?? 0;
     feedPreviewQuality = prefs.getInt(FEED_PREVIEW_QUALITY) ?? 0;
     singleFolder = prefs.getBool(SINGLE_FOLDER_KEY) ?? false;

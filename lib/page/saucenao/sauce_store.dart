@@ -27,6 +27,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pixez/er/lprinter.dart';
+import 'package:pixez/er/prefer.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:image/image.dart';
@@ -62,8 +63,7 @@ abstract class SauceStoreBase with Store {
   Future findImage(
       {BuildContext? context, String? path, bool retry = false}) async {
     if ((Platform.isAndroid || Platform.isOhos) && context != null) {
-      final pre = await SharedPreferences.getInstance();
-      final skipAlert = pre.getBool("photo_picker_type_selected") ?? false;
+      final skipAlert = Prefer.getBool("photo_picker_type_selected") ?? false;
       if (!skipAlert) {
         await showDialog(
             context: context,
@@ -108,7 +108,7 @@ abstract class SauceStoreBase with Store {
                 ),
               );
             });
-        await pre.setBool("photo_picker_type_selected", true);
+        await Prefer.setBool("photo_picker_type_selected", true);
       }
     }
     notStart = false;
@@ -136,7 +136,7 @@ abstract class SauceStoreBase with Store {
       MapEntry("file", await MultipartFile.fromFile(path)),
     ]);
     try {
-      BotToast.showText(text: "uploading");
+      BotToast.showText(text: I18n.ofContext().uploading);
       if (userSetting.disableBypassSni) {
         dio.options.baseUrl = "https://$host";
       } else {
@@ -148,7 +148,7 @@ abstract class SauceStoreBase with Store {
         });
       }
       Response response = await dio.post('/search.php', data: formData);
-      BotToast.showText(text: "parsing");
+      BotToast.showText(text: I18n.ofContext().parsing);
       var document = parse(response.data);
       document.querySelectorAll('a').forEach((element) {
         var link = element.attributes['href'];

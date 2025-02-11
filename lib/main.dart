@@ -28,6 +28,8 @@ import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
 import 'package:pixez/network/onezero_client.dart';
+import 'package:pixez/er/prefer.dart';
+import 'package:pixez/i18n.dart';
 import 'package:pixez/page/novel/history/novel_history_store.dart';
 import 'package:pixez/page/splash/splash_page.dart';
 import 'package:pixez/page/splash/splash_store.dart';
@@ -66,6 +68,7 @@ main(List<String> args) async {
   if (Platform.isWindows) {
     SingleInstancePlugin.initialize();
   }
+  await Prefer.init();
 
   runApp(ProviderScope(
     child: MyApp(arguments: args),
@@ -188,6 +191,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           builder: (context, child) {
             if (Platform.isIOS) child = _buildMaskBuilder(context, child);
             child = botToastBuilder(context, child);
+            I18n.context = context;
             return child;
           },
           themeMode: userSetting.themeMode,
@@ -199,6 +203,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               dialogBackgroundColor: lightColorScheme.surfaceContainer,
               chipTheme: ChipThemeData(
                 backgroundColor: lightColorScheme.surface,
+              ),
+              pageTransitionsTheme: PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+                },
               ),
               canvasColor: lightColorScheme.surfaceContainer),
           darkTheme: ThemeData.dark().copyWith(
