@@ -33,6 +33,7 @@ import 'package:pixez/i18n.dart';
 import 'package:pixez/page/novel/history/novel_history_store.dart';
 import 'package:pixez/page/splash/splash_page.dart';
 import 'package:pixez/page/splash/splash_store.dart';
+import 'package:pixez/paths_plugin.dart';
 import 'package:pixez/single_instance_plugin.dart';
 import 'package:pixez/store/account_store.dart';
 import 'package:pixez/store/book_tag_store.dart';
@@ -60,14 +61,21 @@ final Fetcher fetcher = new Fetcher();
 final FullScreenStore fullScreenStore = FullScreenStore();
 
 main(List<String> args) async {
-  if (Platform.isWindows || Platform.isLinux) {
+
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // sqflite ffi init
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-  }
-  WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isWindows) {
+
+    final dbPath = await Paths.getDatabaseFolderPath();
+    if (dbPath != null) databaseFactory.setDatabasesPath(dbPath);
+
+    // 确保只有一个实例正在运行
+    // Android 和 iOS 应用本身就是单例程序，无需额外操作
     SingleInstancePlugin.initialize();
   }
+
   await Prefer.init();
 
   runApp(ProviderScope(
@@ -122,7 +130,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     muteStore.fetchBanUserIds();
     muteStore.fetchBanIllusts();
     muteStore.fetchBanTags();
-   
+
     super.initState();
     if (Platform.isIOS) WidgetsBinding.instance.addObserver(this);
 
@@ -206,7 +214,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               ),
               pageTransitionsTheme: PageTransitionsTheme(
                 builders: {
-                  TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+                  TargetPlatform.android:
+                      PredictiveBackPageTransitionsBuilder(),
                 },
               ),
               canvasColor: lightColorScheme.surfaceContainer),
