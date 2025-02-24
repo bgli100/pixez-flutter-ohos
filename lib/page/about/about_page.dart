@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:pixez/component/new_version_chip.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/i18n.dart';
@@ -29,8 +30,7 @@ import 'package:pixez/page/about/contributors.dart';
 import 'package:pixez/page/about/thanks_list.dart';
 import 'package:pixez/page/about/update_page.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutPage extends StatefulWidget {
   final bool? newVersion;
@@ -135,7 +135,7 @@ class _AboutPageState extends State<AboutPage> {
                   return InkWell(
                     onTap: () {
                       if (Platform.isAndroid)
-                        launch(Constants.isGooglePlay
+                        launchUrlString(Constants.isGooglePlay
                             ? "https://music.youtube.com/watch?v=qfDhiBUNzwA&feature=share"
                             : "https://music.apple.com/cn/album/intrauterine-education-single/1515096587");
                     },
@@ -258,7 +258,7 @@ class _AboutPageState extends State<AboutPage> {
                 if (Platform.isIOS) {
                   var url = 'https://apps.apple.com/cn/app/pixez/id1494435126';
                   try {
-                    await launch(url);
+                    await launchUrlString(url);
                   } catch (e) {}
                 }
               },
@@ -269,10 +269,6 @@ class _AboutPageState extends State<AboutPage> {
               leading: Icon(Icons.device_hub),
               title: Text(I18n.of(context).original_repo_address),
               subtitle: Text('github.com/Notsfsssf/pixez-flutter'),
-              trailing: Visibility(
-                child: NewVersionChip(),
-                visible: hasNewVersion,
-              ),
               onTap: () {
                 if (!Constants.isGooglePlay)
                   showModalBottomSheet(
@@ -291,7 +287,7 @@ class _AboutPageState extends State<AboutPage> {
                                     I18n.of(context).go_to_project_address),
                                 onTap: () {
                                   try {
-                                    launch(
+                                    launchUrlString(
                                         'https://github.com/Notsfsssf/pixez-flutter');
                                   } catch (e) {}
                                 },
@@ -299,7 +295,7 @@ class _AboutPageState extends State<AboutPage> {
                                     icon: Icon(Icons.link),
                                     onPressed: () {
                                       try {
-                                        launch(
+                                        launchUrlString(
                                             'https://github.com/Notsfsssf/pixez-flutter');
                                       } catch (e) {}
                                     }),
@@ -346,7 +342,7 @@ class _AboutPageState extends State<AboutPage> {
                                   I18n.of(context).go_to_project_address),
                               onTap: () {
                                 try {
-                                  launch(
+                                  launchUrlString(
                                       'https://github.com/bgli100/pixez-flutter-ohos');
                                 } catch (e) {}
                               },
@@ -354,7 +350,7 @@ class _AboutPageState extends State<AboutPage> {
                                   icon: Icon(Icons.link),
                                   onPressed: () {
                                     try {
-                                      launch(
+                                      launchUrlString(
                                           'https://github.com/bgli100/pixez-flutter-ohos');
                                     } catch (e) {}
                                   }),
@@ -500,7 +496,7 @@ class _AboutPageState extends State<AboutPage> {
                 margin: EdgeInsets.all(8.0),
                 elevation: 1.0,
                 child: ListTile(
-                  leading: Icon(FontAwesomeIcons.coffee),
+                  leading: Icon(FontAwesomeIcons.mugSaucer),
                   title: Text(i.description),
                   subtitle: Text(i.price),
                   onTap: () {

@@ -16,7 +16,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
@@ -29,7 +28,6 @@ import 'package:pixez/models/ban_tag.dart';
 import 'package:pixez/models/ban_user_id.dart';
 import 'package:pixez/models/comment_response.dart';
 import 'package:pixez/saf_plugin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'mute_store.g.dart';
 
@@ -49,6 +47,15 @@ abstract class _MuteStoreBase with Store {
   bool banAIIllust = false;
 
   _MuteStoreBase() {}
+
+  @action
+  Future<void> init() async {
+    await Prefer.init();
+    fetchBanAI();
+    fetchBanUserIds();
+    fetchBanIllusts();
+    fetchBanTags();
+  }
 
   @action
   Future<void> changeBanAI(bool value) async {

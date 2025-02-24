@@ -49,7 +49,7 @@ class _PainterCardState extends State<PainterCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        final result = await Navigator.of(context, rootNavigator: true)
+        await Navigator.of(context, rootNavigator: true)
             .push(MaterialPageRoute(builder: (BuildContext context) {
           if (isNovel) {
             return NovelUsersPage(
@@ -166,6 +166,7 @@ class _PainterCardState extends State<PainterCard> {
           Spacer(),
           if (_user.user.isFollowed != null)
             UserFollowButton(
+              id: _user.user.id,
               followed: _user.user.isFollowed!,
               onPressed: () async {
                 try {
@@ -177,8 +178,7 @@ class _PainterCardState extends State<PainterCard> {
                       });
                     }
                   } else {
-                    final res =
-                        await apiClient.postFollowUser(_user.user.id, 'public');
+                    await apiClient.postFollowUser(_user.user.id, 'public');
                     if (mounted) {
                       setState(() {
                         _user.user.isFollowed = true;
@@ -186,6 +186,22 @@ class _PainterCardState extends State<PainterCard> {
                     }
                   }
                 } catch (e) {}
+              },
+              onConfirm: (follow, restrict) async {
+                try {
+                  if (follow) {
+                    await apiClient.postFollowUser(_user.user.id, restrict);
+                  } else {
+                    await apiClient.postUnFollowUser(_user.user.id);
+                  }
+                  if (mounted) {
+                    setState(() {
+                      _user.user.isFollowed = follow;
+                    });
+                  }
+                } catch (e) {
+                  print(e);
+                }
               },
             )
         ],

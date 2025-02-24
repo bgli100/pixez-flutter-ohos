@@ -21,20 +21,19 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
 import 'package:pixez/network/onezero_client.dart';
-import 'package:pixez/er/prefer.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/page/novel/history/novel_history_store.dart';
 import 'package:pixez/page/splash/splash_page.dart';
 import 'package:pixez/page/splash/splash_store.dart';
 import 'package:pixez/paths_plugin.dart';
 import 'package:pixez/single_instance_plugin.dart';
+import 'package:pixez/src/generated/i18n/app_localizations.dart';
 import 'package:pixez/store/account_store.dart';
 import 'package:pixez/store/book_tag_store.dart';
 import 'package:pixez/store/fullscreen_store.dart';
@@ -62,8 +61,9 @@ final FullScreenStore fullScreenStore = FullScreenStore();
 
 main(List<String> args) async {
 
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
+  if (Platform.isWindows || Platform.isLinux) {
     // sqflite ffi init
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
@@ -75,8 +75,6 @@ main(List<String> args) async {
     // Android 和 iOS 应用本身就是单例程序，无需额外操作
     SingleInstancePlugin.initialize();
   }
-
-  await Prefer.init();
 
   runApp(ProviderScope(
     child: MyApp(arguments: args),
@@ -126,10 +124,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     userSetting.init();
     accountStore.fetch();
     bookTagStore.init();
-    muteStore.fetchBanAI();
-    muteStore.fetchBanUserIds();
-    muteStore.fetchBanIllusts();
-    muteStore.fetchBanTags();
+    muteStore.init();
 
     super.initState();
     if (Platform.isIOS) WidgetsBinding.instance.addObserver(this);
@@ -211,12 +206,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               dialogBackgroundColor: lightColorScheme.surfaceContainer,
               chipTheme: ChipThemeData(
                 backgroundColor: lightColorScheme.surface,
-              ),
-              pageTransitionsTheme: PageTransitionsTheme(
-                builders: {
-                  TargetPlatform.android:
-                      PredictiveBackPageTransitionsBuilder(),
-                },
               ),
               canvasColor: lightColorScheme.surfaceContainer),
           darkTheme: ThemeData.dark().copyWith(

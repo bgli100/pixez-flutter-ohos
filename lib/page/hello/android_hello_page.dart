@@ -42,7 +42,6 @@ import 'package:pixez/page/search/search_page.dart';
 import 'package:pixez/page/search/suggest/search_suggestion_page.dart';
 import 'package:pixez/page/webview/saucenao_webview_page.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AndroidHelloPage extends StatefulWidget {
   const AndroidHelloPage({Key? key}) : super(key: key);
@@ -233,26 +232,29 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
             left: 0.0,
             right: 0.0,
             bottom: 0.0,
-            child: Padding(
+            child: Container(
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).padding.left,
                   bottom: MediaQuery.of(context).padding.bottom + 4.0),
               child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
-                    width: 2,
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
+                    ),
                   ),
-                ),
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: accountStore.now != null
-                      ? PainterAvatar(
-                          url: accountStore.now!.userImage,
-                          id: int.tryParse(accountStore.now!.userId) ?? 0)
-                      : Container(),
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: accountStore.now != null
+                        ? PainterAvatar(
+                            url: accountStore.now!.userImage,
+                            id: int.tryParse(accountStore.now!.userId) ?? 0)
+                        : Container(),
+                  ),
                 ),
               ),
             ),
