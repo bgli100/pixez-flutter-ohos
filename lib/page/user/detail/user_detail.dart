@@ -164,7 +164,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     final url = profile?.twitter_url;
                     if (url != null) {
                       try {
-                        if (Platform.isIOS) {
+                        if (Platform.isIOS || Platform.isOhos) {
                           await launchUrlString(url,
                               mode: LaunchMode.externalApplication);
                         } else {
@@ -191,7 +191,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                     if (public?.pawoo == null || !public!.pawoo) return;
                     var url = detail?.profile.pawoo_url;
                     try {
-                      await launchUrlString(url!);
+                      await launchUrlString(url!, mode: LaunchMode.externalApplication);
                     } catch (e) {}
                   }),
                 ]),

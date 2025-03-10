@@ -250,7 +250,7 @@ class NovelSpansGenerator {
                     );
                   });
               if (open == "open") {
-                launchUrlString(data.text);
+                launchUrlString(data.text, mode: LaunchMode.externalApplication);
               }
             });
     } else if (data is PixivImageSpanData) {

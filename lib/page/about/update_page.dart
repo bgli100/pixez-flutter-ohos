@@ -84,7 +84,7 @@ class _UpdatePageState extends State<UpdatePage> {
                       lastRelease!.assets.first.browserDownloadUrl),
                   onTap: () {
                     try {
-                      launchUrlString(lastRelease!.assets.first.browserDownloadUrl);
+                      launchUrlString(lastRelease!.assets.first.browserDownloadUrl, mode: LaunchMode.externalApplication);
                     } catch (e) {}
                   },
                 ),

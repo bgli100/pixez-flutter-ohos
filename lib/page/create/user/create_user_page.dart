@@ -108,7 +108,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   onPressed: () async {
                     final url = 'https://www.pixiv.net/terms/?page=term';
                     try {
-                      await launchUrlString(url);
+                      await launchUrlString(url, mode: LaunchMode.externalApplication);
                     } catch (e) {}
                   },
                 ),
