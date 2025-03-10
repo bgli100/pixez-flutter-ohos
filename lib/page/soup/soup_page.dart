@@ -76,7 +76,7 @@ class _SoupPageState extends State<SoupPage> {
                       icon: Icon(Icons.share),
                       onPressed: () async {
                         var url = widget.spotlight!.articleUrl;
-                        await launchUrlString(url);
+                        await launchUrlString(url, mode: LaunchMode.externalApplication);
                       },
                     )
                   ],

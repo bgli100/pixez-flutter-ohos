@@ -292,7 +292,9 @@ class _AboutPageState extends State<AboutPage> {
                                 onTap: () {
                                   try {
                                     launchUrlString(
-                                        'https://github.com/Notsfsssf/pixez-flutter');
+                                        'https://github.com/Notsfsssf/pixez-flutter',
+                                        mode: LaunchMode.externalApplication
+                                    );
                                   } catch (e) {}
                                 },
                                 trailing: IconButton(
@@ -300,7 +302,9 @@ class _AboutPageState extends State<AboutPage> {
                                     onPressed: () {
                                       try {
                                         launchUrlString(
-                                            'https://github.com/Notsfsssf/pixez-flutter');
+                                            'https://github.com/Notsfsssf/pixez-flutter',
+                                            mode: LaunchMode.externalApplication
+                                        );
                                       } catch (e) {}
                                     }),
                               ),
@@ -346,16 +350,20 @@ class _AboutPageState extends State<AboutPage> {
                                   I18n.of(context).go_to_project_address),
                               onTap: () {
                                 try {
-                                  launch(
-                                      'https://github.com/bgli100/pixez-flutter-ohos');
+                                  launchUrlString(
+                                      'https://github.com/bgli100/pixez-flutter-ohos',
+                                      mode: LaunchMode.externalApplication
+                                  );
                                 } catch (e) {}
                               },
                               trailing: IconButton(
                                   icon: Icon(Icons.link),
                                   onPressed: () {
                                     try {
-                                      launch(
-                                          'https://github.com/bgli100/pixez-flutter-ohos');
+                                      launchUrlString(
+                                          'https://github.com/bgli100/pixez-flutter-ohos',
+                                          mode: LaunchMode.externalApplication
+                                      );
                                     } catch (e) {}
                                   }),
                             ),
