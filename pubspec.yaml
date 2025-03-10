@@ -102,71 +102,71 @@ dev_dependencies:
 dependency_overrides:
   path_provider:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/path_provider/path_provider
   path_provider_ohos:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/path_provider/path_provider_ohos
   flutter_inappwebview:	
     git:
-      url: https://gitee.com/openharmony-sig/flutter_inappwebview.git
+      url: https://gitcode.com/openharmony-sig/flutter_inappwebview.git
       path: flutter_inappwebview
   permission_handler:
     git: 
-      url: https://gitee.com/openharmony-sig/flutter_permission_handler.git
+      url: https://gitcode.com/openharmony-sig/flutter_permission_handler.git
       path: permission_handler
   share_plus:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/share_plus/share_plus
   battery_plus:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/battery_plus/battery_plus
   url_launcher:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/url_launcher/url_launcher
   shared_preferences:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/shared_preferences/shared_preferences
   device_info_plus:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/device_info_plus/device_info_plus
   package_info_plus:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/package_info_plus/package_info_plus
   connectivity_plus:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/connectivity_plus/connectivity_plus
   network_info_plus:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/network_info_plus/network_info_plus
   file_selector:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/file_selector/file_selector
   image_picker:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_packages.git
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
       path: packages/image_picker/image_picker
   flutter_widget_from_html:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_widget_from_html
+      url: https://gitcode.com/openharmony-sig/flutter_widget_from_html
       path: packages/enhanced
   sqflite:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_sqflite
+      url: https://gitcode.com/openharmony-sig/flutter_sqflite
       path: sqflite
   sqflite_common_ffi:
     git:
-      url: https://gitee.com/openharmony-sig/flutter_sqflite
+      url: https://gitcode.com/openharmony-sig/flutter_sqflite
       path: sqflite_common_ffi
   # chewie >= 1.8.6 requires color value usage in newer dart
   chewie: < 1.8.6

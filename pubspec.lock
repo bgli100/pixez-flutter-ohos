@@ -78,8 +78,8 @@ packages:
     description:
       path: "packages/battery_plus/battery_plus"
       ref: HEAD
-      resolved-ref: ff774d947bd15d9be08629e3ccfb29dda2e864bd
-      url: "https://gitee.com/openharmony-sig/flutter_plus_plugins.git"
+      resolved-ref: f947cd9c477ae45221e6b76814e441f4ecc2eb9c
+      url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
     version: "4.1.0"
   battery_plus_platform_interface:
@@ -263,8 +263,8 @@ packages:
     description:
       path: "packages/connectivity_plus/connectivity_plus"
       ref: HEAD
-      resolved-ref: ff774d947bd15d9be08629e3ccfb29dda2e864bd
-      url: "https://gitee.com/openharmony-sig/flutter_plus_plugins.git"
+      resolved-ref: f947cd9c477ae45221e6b76814e441f4ecc2eb9c
+      url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
     version: "5.0.1"
   connectivity_plus_platform_interface:
@@ -368,8 +368,8 @@ packages:
     description:
       path: "packages/device_info_plus/device_info_plus"
       ref: HEAD
-      resolved-ref: ff774d947bd15d9be08629e3ccfb29dda2e864bd
-      url: "https://gitee.com/openharmony-sig/flutter_plus_plugins.git"
+      resolved-ref: f947cd9c477ae45221e6b76814e441f4ecc2eb9c
+      url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
     version: "9.1.0"
   device_info_plus_platform_interface:
@@ -467,8 +467,8 @@ packages:
     description:
       path: "packages/file_selector/file_selector"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "1.0.0"
   file_selector_android:
@@ -508,8 +508,8 @@ packages:
     description:
       path: "packages/file_selector/file_selector_ohos"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "0.5.0+2"
   file_selector_platform_interface:
@@ -586,8 +586,8 @@ packages:
     description:
       path: flutter_inappwebview
       ref: HEAD
-      resolved-ref: f2444392a756e9c367cc0a8f70f8c133c4654651
-      url: "https://gitee.com/openharmony-sig/flutter_inappwebview.git"
+      resolved-ref: fdbc08c8af3a91760c94ff4fefa908435880ef61
+      url: "https://gitcode.com/openharmony-sig/flutter_inappwebview.git"
     source: git
     version: "6.0.0"
   flutter_inappwebview_android:
@@ -706,7 +706,7 @@ packages:
       path: "packages/enhanced"
       ref: HEAD
       resolved-ref: a1fc3dab8ba9a4ccab222afa0b470add7193c8e5
-      url: "https://gitee.com/openharmony-sig/flutter_widget_from_html"
+      url: "https://gitcode.com/openharmony-sig/flutter_widget_from_html"
     source: git
     version: "0.14.11"
   flutter_widget_from_html_core:
@@ -899,8 +899,8 @@ packages:
     description:
       path: "packages/image_picker/image_picker"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "1.0.2"
   image_picker_android:
@@ -948,8 +948,8 @@ packages:
     description:
       path: "packages/image_picker/image_picker_ohos"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "0.8.7+4"
   image_picker_platform_interface:
@@ -1173,8 +1173,8 @@ packages:
     description:
       path: "packages/network_info_plus/network_info_plus"
       ref: HEAD
-      resolved-ref: ff774d947bd15d9be08629e3ccfb29dda2e864bd
-      url: "https://gitee.com/openharmony-sig/flutter_plus_plugins.git"
+      resolved-ref: f947cd9c477ae45221e6b76814e441f4ecc2eb9c
+      url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
     version: "4.1.0"
   network_info_plus_platform_interface:
@@ -1214,8 +1214,8 @@ packages:
     description:
       path: "packages/package_info_plus/package_info_plus"
       ref: HEAD
-      resolved-ref: ff774d947bd15d9be08629e3ccfb29dda2e864bd
-      url: "https://gitee.com/openharmony-sig/flutter_plus_plugins.git"
+      resolved-ref: f947cd9c477ae45221e6b76814e441f4ecc2eb9c
+      url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
     version: "4.2.0"
   package_info_plus_platform_interface:
@@ -1255,8 +1255,8 @@ packages:
     description:
       path: "packages/path_provider/path_provider"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "2.1.0"
   path_provider_android:
@@ -1288,8 +1288,8 @@ packages:
     description:
       path: "packages/path_provider/path_provider_ohos"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "2.2.1"
   path_provider_platform_interface:
@@ -1313,8 +1313,8 @@ packages:
     description:
       path: permission_handler
       ref: HEAD
-      resolved-ref: "14bec9c520874b8bb3392f85bf7364b9a966c2de"
-      url: "https://gitee.com/openharmony-sig/flutter_permission_handler.git"
+      resolved-ref: f139dc532352dcecb8e9132a910e4aa607f5d9c9
+      url: "https://gitcode.com/openharmony-sig/flutter_permission_handler.git"
     source: git
     version: "10.4.3"
   permission_handler_android:
@@ -1540,8 +1540,8 @@ packages:
     description:
       path: "packages/share_plus/share_plus"
       ref: HEAD
-      resolved-ref: ff774d947bd15d9be08629e3ccfb29dda2e864bd
-      url: "https://gitee.com/openharmony-sig/flutter_plus_plugins.git"
+      resolved-ref: f947cd9c477ae45221e6b76814e441f4ecc2eb9c
+      url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
     version: "7.2.0"
   share_plus_platform_interface:
@@ -1558,8 +1558,8 @@ packages:
     description:
       path: "packages/shared_preferences/shared_preferences"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "2.2.0"
   shared_preferences_android:
@@ -1591,8 +1591,8 @@ packages:
     description:
       path: "packages/shared_preferences/shared_preferences_ohos"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "2.2.0"
   shared_preferences_platform_interface:
@@ -1678,7 +1678,7 @@ packages:
       path: sqflite
       ref: HEAD
       resolved-ref: "64d1855cc1f8b4b362e08004b5faab1b9bfa88e0"
-      url: "https://gitee.com/openharmony-sig/flutter_sqflite"
+      url: "https://gitcode.com/openharmony-sig/flutter_sqflite"
     source: git
     version: "2.2.8+3"
   sqflite_common:
@@ -1696,7 +1696,7 @@ packages:
       path: sqflite_common_ffi
       ref: HEAD
       resolved-ref: "64d1855cc1f8b4b362e08004b5faab1b9bfa88e0"
-      url: "https://gitee.com/openharmony-sig/flutter_sqflite"
+      url: "https://gitcode.com/openharmony-sig/flutter_sqflite"
     source: git
     version: "2.2.5"
   sqlite3:
@@ -1800,8 +1800,8 @@ packages:
     description:
       path: "packages/url_launcher/url_launcher"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "6.1.12"
   url_launcher_android:
@@ -1841,8 +1841,8 @@ packages:
     description:
       path: "packages/url_launcher/url_launcher_ohos"
       ref: HEAD
-      resolved-ref: "488ed8207ad8121e3d4fefb18303305155c90b38"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
+      resolved-ref: c199e1745f242a0ca2d789dadee63b9953a4d27f
+      url: "https://gitcode.com/openharmony-sig/flutter_packages.git"
     source: git
     version: "6.0.38"
   url_launcher_platform_interface:
