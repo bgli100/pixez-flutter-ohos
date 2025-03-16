@@ -11,7 +11,7 @@
 # 编译
 
 Flutter SDK:
-https://gitee.com/harmonycommando_flutter/flutter
+https://gitcode.com/openharmony-sig/flutter_flutter
 
 ```
 dart run build_runner build --delete-conflicting-outputs
