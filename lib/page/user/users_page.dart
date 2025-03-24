@@ -336,7 +336,7 @@ class _UsersPageState extends State<UsersPage> with TickerProviderStateMixin {
                     if (_tabIndex == 2) _scrollController.position.jumpTo(0);
                   },
                   child: Tab(
-                    text: I18n.of(context).detail,
+                    text: I18n.of(context).user_page_info_title,
                   ),
                 ),
               ],
