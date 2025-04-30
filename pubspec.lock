@@ -890,7 +890,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "60f9b380f88d6dc09b7d2f7929a34dc3eb25f2d0"
+      resolved-ref: "80105a3eb5765449fa12ae49ba3c25ca20fdcc61"
       url: "https://github.com/bgli100/flutter_image_gallery_saver_ohos.git"
     source: git
     version: "2.0.3"

@@ -74,13 +74,13 @@ class _SettingQualityPageState extends State<SettingQualityPage>
       body: Observer(builder: (context) {
         return Container(
           child: ListView(children: [
-            if (Platform.isAndroid)
+            if (Platform.isAndroid || Platform.isOhos)
               ListTile(
-                leading: Icon(Icons.android),
+                leading: Icon(Platform.isAndroid ? Icons.android : Icons.folder),
                 trailing: const Icon(Icons.arrow_right),
                 title: Text(I18n.of(context).platform_special_setting),
                 subtitle: Text(
-                  "For Android",
+                  Platform.isAndroid ? "For Android" : "For HarmonyOS NEXT",
                   style: TextStyle(color: Colors.green),
                 ),
                 onTap: () {

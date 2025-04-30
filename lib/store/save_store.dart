@@ -268,7 +268,10 @@ abstract class _SaveStoreBase with Store {
       }
       return;
     } else if (Platform.isOhos) {
-      await ImageGallerySaver.saveImage(uint8list, name: fileName);
+      if (userSetting.overSanityLevelFolder && sanityLevel > 2)
+        await ImageGallerySaver.saveImageToDownload(uint8list, 'sanity/', fileName);
+      else
+        await ImageGallerySaver.saveImage(uint8list, name: fileName);
     } else {
       DocumentPlugin.save(uint8list, fileName);
     }
