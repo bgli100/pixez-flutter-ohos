@@ -13,6 +13,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class _PlatformPageState extends State<PlatformPage> {
         title: ListTile(
           title: Text("Platform Setting"),
           subtitle: Text(
-            "For Android",
+            Platform.isAndroid ? "For Android" : "For HarmonyOS NEXT",
             style: TextStyle(color: Colors.greenAccent),
           ),
         ),
@@ -116,74 +117,77 @@ class _PlatformPageState extends State<PlatformPage> {
         child: Observer(builder: (_) {
           return ListView(
             children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.folder),
-                title: Text(
-                    '${I18n.of(context).save_path}(${userSetting.saveMode != 0 ? (userSetting.saveMode == 2 ? I18n.of(context).old_way : 'SAF') : "Media"})'),
-                subtitle: Text(path),
-                onTap: () async {
-                  await showPathDialog(context);
-                  final path = await DocumentPlugin.getPath();
-                  if (mounted) {
-                    setState(() {
-                      this.path = path!;
-                    });
-                  }
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.format_align_left),
-                title: Text(I18n.of(context).save_format),
-                subtitle: Text(userSetting.fileNameEval == 1
-                    ? "Eval"
-                    : userSetting.format ?? ""),
-                onTap: () async {
-                  if (userSetting.fileNameEval == 1) {
-                    Leader.push(context, SaveEvalPage());
-                  } else {
-                    final result =
-                        await Navigator.of(context, rootNavigator: true).push(
-                            MaterialPageRoute(
-                                builder: (context) => SaveFormatPage()));
-                    if (result is String) {
-                      userSetting.setFormat(result);
+              if (Platform.isAndroid)
+                ListTile(
+                  leading: Icon(Icons.folder),
+                  title: Text(
+                      '${I18n.of(context).save_path}(${userSetting.saveMode != 0 ? (userSetting.saveMode == 2 ? I18n.of(context).old_way : 'SAF') : "Media"})'),
+                  subtitle: Text(path),
+                  onTap: () async {
+                    await showPathDialog(context);
+                    final path = await DocumentPlugin.getPath();
+                    if (mounted) {
+                      setState(() {
+                        this.path = path!;
+                      });
                     }
-                  }
-                  // if (result != null) userSetting.setPath(result);
-                },
-                trailing: InkWell(
-                  onTap: () {
-                    Leader.push(context, SaveEvalPage());
                   },
-                  child: Container(
-                    margin: EdgeInsets.all(8),
-                    child: userSetting.fileNameEval == 1
-                        ? Text(
-                            "Script",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor),
-                          )
-                        : Text("Script"),
+                ),
+              if (Platform.isAndroid)
+                ListTile(
+                  leading: Icon(Icons.format_align_left),
+                  title: Text(I18n.of(context).save_format),
+                  subtitle: Text(userSetting.fileNameEval == 1
+                      ? "Eval"
+                      : userSetting.format ?? ""),
+                  onTap: () async {
+                    if (userSetting.fileNameEval == 1) {
+                      Leader.push(context, SaveEvalPage());
+                    } else {
+                      final result =
+                          await Navigator.of(context, rootNavigator: true).push(
+                              MaterialPageRoute(
+                                  builder: (context) => SaveFormatPage()));
+                      if (result is String) {
+                        userSetting.setFormat(result);
+                      }
+                    }
+                    // if (result != null) userSetting.setPath(result);
+                  },
+                  trailing: InkWell(
+                    onTap: () {
+                      Leader.push(context, SaveEvalPage());
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      child: userSetting.fileNameEval == 1
+                          ? Text(
+                              "Script",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            )
+                          : Text("Script"),
+                    ),
                   ),
                 ),
-              ),
-              Observer(
-                builder: (context) {
-                  return SwitchListTile(
-                    secondary: Icon(Icons.folder_shared),
-                    onChanged: (bool value) async {
-                      if (value) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("可能会造成保存等待时间过长")));
-                      }
-                      await userSetting.setSingleFolder(value);
-                    },
-                    title: Text(I18n.of(context).separate_folder),
-                    subtitle: Text(I18n.of(context).separate_folder_message),
-                    value: userSetting.singleFolder,
-                  );
-                },
-              ),
+              if (Platform.isAndroid)
+                Observer(
+                  builder: (context) {
+                    return SwitchListTile(
+                      secondary: Icon(Icons.folder_shared),
+                      onChanged: (bool value) async {
+                        if (value) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("可能会造成保存等待时间过长")));
+                        }
+                        await userSetting.setSingleFolder(value);
+                      },
+                      title: Text(I18n.of(context).separate_folder),
+                      subtitle: Text(I18n.of(context).separate_folder_message),
+                      value: userSetting.singleFolder,
+                    );
+                  },
+                ),
               Observer(
                 builder: (context) {
                   return SwitchListTile(
@@ -191,77 +195,79 @@ class _PlatformPageState extends State<PlatformPage> {
                     onChanged: (bool value) async {
                       await userSetting.setOverSanityLevelFolder(value);
                     },
-                    title: Text("Sanity Single Folder"),
+                    title: Platform.isAndroid ? Text("Sanity Single Folder") : Text("Sanity to Downloads"),
                     value: userSetting.overSanityLevelFolder,
                   );
                 },
               ),
-              ListTile(
-                leading: Icon(Icons.mobile_screen_share),
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(8.0))),
-                      builder: (_) {
-                        return SafeArea(
-                          child: Container(
-                              child: modes.isNotEmpty
-                                  ? ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: modes.length + 1,
-                                      itemBuilder: (context, index) {
-                                        if (index == 0)
+              if (Platform.isAndroid)
+                ListTile(
+                  leading: Icon(Icons.mobile_screen_share),
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(8.0))),
+                        builder: (_) {
+                          return SafeArea(
+                            child: Container(
+                                child: modes.isNotEmpty
+                                    ? ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: modes.length + 1,
+                                        itemBuilder: (context, index) {
+                                          if (index == 0)
+                                            return ListTile(
+                                              title: Text(I18n.of(context)
+                                                  .display_mode_message),
+                                              subtitle: Text(I18n.of(context)
+                                                  .display_mode_warning),
+                                              onTap: () async {},
+                                            );
                                           return ListTile(
-                                            title: Text(I18n.of(context)
-                                                .display_mode_message),
-                                            subtitle: Text(I18n.of(context)
-                                                .display_mode_warning),
-                                            onTap: () async {},
+                                            title:
+                                                Text(modes[index - 1].toString()),
+                                            onTap: () async {
+                                              await FlutterDisplayMode
+                                                  .setPreferredMode(
+                                                      modes[index - 1]);
+                                              userSetting
+                                                  .setDisplayMode(index - 1);
+                                              setState(() {
+                                                selected = modes[index - 1];
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
                                           );
-                                        return ListTile(
-                                          title:
-                                              Text(modes[index - 1].toString()),
-                                          onTap: () async {
-                                            await FlutterDisplayMode
-                                                .setPreferredMode(
-                                                    modes[index - 1]);
-                                            userSetting
-                                                .setDisplayMode(index - 1);
-                                            setState(() {
-                                              selected = modes[index - 1];
-                                            });
-                                            Navigator.of(context).pop();
-                                          },
-                                        );
-                                      })
-                                  : Container()),
-                        );
-                      });
-                },
-                title: Text(I18n.of(context).display_mode),
-                subtitle: Text('${selected ?? ''}'),
-              ),
-              Observer(
-                builder: (context) {
-                  return SwitchListTile(
-                    secondary: Icon(Icons.photo_album),
-                    onChanged: (bool value) async {
-                      await userSetting.setImagePickerType(value ? 1 : 0);
-                    },
-                    title: InkWell(
-                      child: Text(I18n.of(context).photo_picker),
-                      onTap: () {
-                        launchUrlString(
-                            "https://developer.android.com/training/data-storage/shared/photopicker");
+                                        })
+                                    : Container()),
+                          );
+                        });
+                  },
+                  title: Text(I18n.of(context).display_mode),
+                  subtitle: Text('${selected ?? ''}'),
+                ),
+              if (Platform.isAndroid)
+                Observer(
+                  builder: (context) {
+                    return SwitchListTile(
+                      secondary: Icon(Icons.photo_album),
+                      onChanged: (bool value) async {
+                        await userSetting.setImagePickerType(value ? 1 : 0);
                       },
-                    ),
-                    subtitle: Text(I18n.of(context).photo_picker_subtitle),
-                    value: userSetting.imagePickerType == 1,
-                  );
-                },
-              ),
+                      title: InkWell(
+                        child: Text(I18n.of(context).photo_picker),
+                        onTap: () {
+                          launchUrlString(
+                              "https://developer.android.com/training/data-storage/shared/photopicker");
+                        },
+                      ),
+                      subtitle: Text(I18n.of(context).photo_picker_subtitle),
+                      value: userSetting.imagePickerType == 1,
+                    );
+                  },
+                ),
               if ((_androidInfo?.version.sdkInt ?? 0) > 30) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
