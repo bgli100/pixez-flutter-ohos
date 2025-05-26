@@ -133,43 +133,42 @@ class _PlatformPageState extends State<PlatformPage> {
                     }
                   },
                 ),
-              if (Platform.isAndroid)
-                ListTile(
-                  leading: Icon(Icons.format_align_left),
-                  title: Text(I18n.of(context).save_format),
-                  subtitle: Text(userSetting.fileNameEval == 1
-                      ? "Eval"
-                      : userSetting.format ?? ""),
-                  onTap: () async {
-                    if (userSetting.fileNameEval == 1) {
-                      Leader.push(context, SaveEvalPage());
-                    } else {
-                      final result =
-                          await Navigator.of(context, rootNavigator: true).push(
-                              MaterialPageRoute(
-                                  builder: (context) => SaveFormatPage()));
-                      if (result is String) {
-                        userSetting.setFormat(result);
-                      }
+              ListTile(
+                leading: Icon(Icons.format_align_left),
+                title: Text(I18n.of(context).save_format),
+                subtitle: Text(userSetting.fileNameEval == 1
+                    ? "Eval"
+                    : userSetting.format ?? ""),
+                onTap: () async {
+                  if (userSetting.fileNameEval == 1) {
+                    Leader.push(context, SaveEvalPage());
+                  } else {
+                    final result =
+                        await Navigator.of(context, rootNavigator: true).push(
+                            MaterialPageRoute(
+                                builder: (context) => SaveFormatPage()));
+                    if (result is String) {
+                      userSetting.setFormat(result);
                     }
-                    // if (result != null) userSetting.setPath(result);
+                  }
+                  // if (result != null) userSetting.setPath(result);
+                },
+                trailing: Platform.isOhos ? null : InkWell(
+                  onTap: () {
+                    Leader.push(context, SaveEvalPage());
                   },
-                  trailing: InkWell(
-                    onTap: () {
-                      Leader.push(context, SaveEvalPage());
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(8),
-                      child: userSetting.fileNameEval == 1
-                          ? Text(
-                              "Script",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            )
-                          : Text("Script"),
-                    ),
+                  child: Container(
+                    margin: EdgeInsets.all(8),
+                    child: userSetting.fileNameEval == 1
+                        ? Text(
+                            "Script",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          )
+                        : Text("Script"),
                   ),
                 ),
+              ),
               if (Platform.isAndroid)
                 Observer(
                   builder: (context) {
