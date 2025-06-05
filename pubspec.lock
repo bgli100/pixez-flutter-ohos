@@ -216,13 +216,13 @@ packages:
     source: hosted
     version: "2.0.3"
   chewie:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: chewie
-      sha256: "4d9554a8f87cc2dc6575dfd5ad20a4375015a29edd567fd6733febe6365e2566"
+      sha256: "335df378c025588aef400c704bd71f0daea479d4cd57c471c88c056c1144e7cd"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.11.3"
+    version: "1.8.5"
   ci:
     dependency: transitive
     description:

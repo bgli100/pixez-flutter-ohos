@@ -158,6 +158,10 @@ dependency_overrides:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_sqflite
       path: sqflite_common_ffi
+  # chewie >= 1.8.6 does not compile on 3.27.4-ohos:
+  # Error: The type 'TargetPlatform' is not exhaustively matched by the switch cases since it doesn't match 'TargetPlatform.ohos'.
+  # could be solved by fork but no need to
+  chewie: < 1.8.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
