@@ -21,7 +21,7 @@ Future<Result> checkUpdate(String arg) async {
   try {
     Response response =
         await Dio(BaseOptions(baseUrl: 'https://api.github.com'))
-            .get('/repos/Notsfsssf/pixez-flutter/releases/latest');
+            .get('/repos/bgli100/pixez-flutter-ohos/releases/latest');
     String tagName = response.data['tag_name'];
     LPrinter.d("tagName:$tagName ");
     if (tagName != Constants.tagName) {

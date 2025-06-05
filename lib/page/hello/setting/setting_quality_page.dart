@@ -434,7 +434,7 @@ class _SettingQualityPageState extends State<SettingQualityPage>
             onTap: () {
               try {
                 if ((Platform.isOhos || Platform.isAndroid) && !Constants.isGooglePlay)
-                  launchUrlString(langsponsor.uri);
+                  launchUrlString(langsponsor.uri, mode: LaunchMode.externalApplication);
               } catch (e) {}
             },
             child: Row(

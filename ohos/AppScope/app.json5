@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.perol.pixez_flutter",
+    "bundleName": "com.example.pixez_flutter",
     "vendor": "example",
     "versionCode": 482,
     "versionName": "1.9.73",

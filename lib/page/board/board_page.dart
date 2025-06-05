@@ -73,7 +73,7 @@ class _BoardPageState extends State<BoardPage> {
                     HtmlWidget(
                       board.content,
                       onTapUrl: (url) {
-                        return launchUrl(Uri.parse(url));
+                        return launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
                       },
                     ),
                   ],

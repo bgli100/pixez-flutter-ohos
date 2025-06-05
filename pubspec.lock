@@ -219,10 +219,10 @@ packages:
     dependency: "direct overridden"
     description:
       name: chewie
-      sha256: "8bc4ac4cf3f316e50a25958c0f5eb9bb12cf7e8308bb1d74a43b230da2cfc144"
+      sha256: "335df378c025588aef400c704bd71f0daea479d4cd57c471c88c056c1144e7cd"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.7.5"
+    version: "1.8.5"
   ci:
     dependency: transitive
     description:
@@ -463,7 +463,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "4c8c26f75f3cc75909d2b7317e7cda579dab01d2"
+      resolved-ref: b55e020d8ab2ce7876b00f6f57757ca837abf9df
       url: "https://github.com/bgli100/flutter_file_picker_ohos.git"
     source: git
     version: "1.0.1"
@@ -709,19 +709,19 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/enhanced"
-      ref: HEAD
-      resolved-ref: "492b0e68670a39c540e4563eaa54c5aec55764bb"
+      ref: "br_v0.15.2_ohos"
+      resolved-ref: c40e372b95bcf45b5556395d297f0469bb9624a6
       url: "https://gitcode.com/openharmony-sig/flutter_widget_from_html"
     source: git
-    version: "0.14.11"
+    version: "0.15.2"
   flutter_widget_from_html_core:
     dependency: transitive
     description:
       name: flutter_widget_from_html_core
-      sha256: cc1d9be3d187ce668ee02091cd5442dfb050cdaf98e0ab9a4d12ad008f966979
+      sha256: b1048fd119a14762e2361bd057da608148a895477846d6149109b2151d2f7abf
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.14.12"
+    version: "0.15.2"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -774,10 +774,10 @@ packages:
     dependency: transitive
     description:
       name: fwfh_just_audio
-      sha256: "209cf9644599e37b0edb6961c4f30ce80d156f5a53a50355f75fb4a22f9fdb0a"
+      sha256: "38dc2c55803bd3cef33042c473e0c40b891ad4548078424641a32032f6a1245f"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.14.3"
+    version: "0.15.2"
   fwfh_svg:
     dependency: transitive
     description:
@@ -798,10 +798,10 @@ packages:
     dependency: transitive
     description:
       name: fwfh_webview
-      sha256: b828bb5ddd4361a866cdb8f1b0de4f3348f332915ecf2f4215ba17e46c656adc
+      sha256: "894aa7d98ebdc2d86d79ac2309173043dec7f102575de87bf9626ddb26104e49"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.14.8"
+    version: "0.15.4"
   get_it:
     dependency: transitive
     description:
@@ -1145,10 +1145,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: "801fd0b26f14a4a58ccb09d5892c3fbdeff209594300a542492cf13fba9d247a"
+      sha256: "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.6"
+    version: "2.0.0"
   mobx:
     dependency: "direct main"
     description:
@@ -1552,20 +1552,20 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/share_plus/share_plus"
-      ref: HEAD
-      resolved-ref: c986a94fc6aa1139a6d3e05908289eebf065260c
+      ref: "br_share_plus-v10.1.1_ohos"
+      resolved-ref: cd7e39d8c22f44f5619e5526d2f3cf05e1a35ef9
       url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
-    version: "7.2.0"
+    version: "10.1.1"
   share_plus_platform_interface:
     dependency: transitive
     description:
       path: "packages/share_plus/share_plus_platform_interface"
-      ref: master
-      resolved-ref: c986a94fc6aa1139a6d3e05908289eebf065260c
+      ref: "br_share_plus-v10.1.1_ohos"
+      resolved-ref: cd7e39d8c22f44f5619e5526d2f3cf05e1a35ef9
       url: "https://gitcode.com/openharmony-sig/flutter_plus_plugins.git"
     source: git
-    version: "3.3.0"
+    version: "5.0.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1974,10 +1974,10 @@ packages:
     dependency: transitive
     description:
       name: wakelock_plus
-      sha256: f268ca2116db22e57577fb99d52515a24bdc1d570f12ac18bb762361d43b043d
+      sha256: a474e314c3e8fb5adef1f9ae2d247e57467ad557fa7483a2b895bc1b421c5678
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.4"
+    version: "1.3.2"
   wakelock_plus_platform_interface:
     dependency: transitive
     description:
@@ -2030,18 +2030,18 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter
-      sha256: ec81f57aa1611f8ebecf1d2259da4ef052281cb5ad624131c93546c79ccc7736
+      sha256: c3e4fe614b1c814950ad07186007eff2f2e5dd2935eba7b9a9a1af8e5885f1ba
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.9.0"
+    version: "4.13.0"
   webview_flutter_android:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: "47a8da40d02befda5b151a26dba71f47df471cddd91dfdb7802d0a87c5442558"
+      sha256: f6e6afef6e234801da77170f7a1847ded8450778caf2fe13979d140484be3678
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.16.9"
+    version: "4.7.0"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -2062,18 +2062,18 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "5a751eddf9db89b3e5f9d50c20ab8612296e4e8db69009788d6c8b060a84191c"
+      sha256: daf97c9d80197ed7b619040e86c8ab9a9dad285e7671ee7390f9180cc828a51e
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.1.4"
+    version: "5.10.1"
   win32_registry:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: "1c52f994bdccb77103a6231ad4ea331a244dbcef5d1f37d8462f713143b0bfae"
+      sha256: "21ec76dfc731550fd3e2ce7a33a9ea90b828fdf19a5c3bcf556fa992cfa99852"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.5"
   window_manager:
     dependency: "direct main"
     description:

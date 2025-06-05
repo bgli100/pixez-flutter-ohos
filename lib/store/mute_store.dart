@@ -171,10 +171,10 @@ abstract class _MuteStoreBase with Store {
     final uint8List = utf8.encode(exportJson);
     if (Platform.isIOS) {
       await Sharer.exportUint8List(context, uint8List,
-          "pixez_mute_${DateTime.now().toIso8601String()}.json");
+          "pixez_mute.json");
     } else {
       final uri = await SAFPlugin.createFile(
-          "pixez_mute_${DateTime.now().toIso8601String()}.json",
+          "pixez_mute.json",
           "application/json");
       LPrinter.d("exportJson:$exportJson");
       if (uri != null) {

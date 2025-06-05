@@ -117,6 +117,7 @@ dependency_overrides:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
       path: packages/share_plus/share_plus
+      ref: br_share_plus-v10.1.1_ohos
   battery_plus:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
@@ -157,6 +158,7 @@ dependency_overrides:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_widget_from_html
       path: packages/enhanced
+      ref: br_v0.15.2_ohos
   sqflite:
     git:
       url: https://gitcode.com/openharmony-sig/flutter_sqflite
@@ -168,7 +170,7 @@ dependency_overrides:
   # chewie >= 1.8.6 does not compile on 3.27.4-ohos:
   # Error: The type 'TargetPlatform' is not exhaustively matched by the switch cases since it doesn't match 'TargetPlatform.ohos'.
   # could be solved by fork but no need to
-  chewie: < 1.8.6
+  chewie: 1.8.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

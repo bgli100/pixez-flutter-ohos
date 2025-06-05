@@ -269,10 +269,6 @@ class _AboutPageState extends State<AboutPage> {
               leading: Icon(Icons.device_hub),
               title: Text(I18n.of(context).original_repo_address),
               subtitle: Text('github.com/Notsfsssf/pixez-flutter'),
-              trailing: Visibility(
-                child: NewVersionChip(),
-                visible: hasNewVersion,
-              ),
               onTap: () {
                 if (!Constants.isGooglePlay)
                   showModalBottomSheet(
