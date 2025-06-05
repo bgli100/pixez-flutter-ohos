@@ -81,7 +81,6 @@ dependencies:
   # Desktop Support
   flutter_acrylic: ^1.1.4
   window_manager: ^0.4.3
-  file_picker: ^9.0.0
 
 dev_dependencies:
   flutter_test:

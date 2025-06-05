@@ -166,6 +166,30 @@
           ]
         }
       ]
+    },
+    {
+      "name": "file_picker_ohos",
+      "srcPath": "../../pub_cache/git/flutter_file_picker_ohos-4c8c26f75f3cc75909d2b7317e7cda579dab01d2/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "image_gallery_saver",
+      "srcPath": "../../pub_cache/git/flutter_image_gallery_saver_ohos-80105a3eb5765449fa12ae49ba3c25ca20fdcc61/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
     }
   ]
 }

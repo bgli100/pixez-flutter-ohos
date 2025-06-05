@@ -1,4 +1,6 @@
 import { FlutterEngine, Log } from '@ohos/flutter_ohos';
+import FilePickerPlugin from 'file_picker_ohos';
+import ImageGallerySaverPlugin from 'image_gallery_saver';
 import InAppWebViewFlutterPlugin from 'flutter_inappwebview_ohos';
 import FileSelectorOhosPlugin from 'file_selector_ohos';
 import ImagePickerPlugin from 'image_picker_ohos';
@@ -8,11 +10,6 @@ import UrlLauncherPlugin from 'url_launcher_ohos';
 import PermissionHandlerPlugin from 'permission_handler_ohos';
 import ConnectivityPlugin from 'connectivity_plus';
 import DeviceInfoPlusOhosPlugin from 'device_info_plus';
-import FilePickerPlugin from 'file_picker_ohos';
-import FileSelectorOhosPlugin from 'file_selector_ohos';
-import InAppWebViewFlutterPlugin from 'flutter_inappwebview_ohos';
-import ImageGallerySaverPlugin from 'image_gallery_saver';
-import ImagePickerPlugin from 'image_picker_ohos';
 import PackageInfoPlugin from 'package_info_plus';
 import SharePlusOhosPlugin from 'share_plus';
 import SqflitePlugin from 'sqflite';
@@ -29,6 +26,8 @@ export class GeneratedPluginRegistrant {
 
   static registerWith(flutterEngine: FlutterEngine) {
     try {
+      flutterEngine.getPlugins()?.add(new FilePickerPlugin());
+      flutterEngine.getPlugins()?.add(new ImageGallerySaverPlugin());
       flutterEngine.getPlugins()?.add(new InAppWebViewFlutterPlugin());
       flutterEngine.getPlugins()?.add(new FileSelectorOhosPlugin());
       flutterEngine.getPlugins()?.add(new ImagePickerPlugin());
@@ -38,11 +37,6 @@ export class GeneratedPluginRegistrant {
       flutterEngine.getPlugins()?.add(new PermissionHandlerPlugin());
       flutterEngine.getPlugins()?.add(new ConnectivityPlugin());
       flutterEngine.getPlugins()?.add(new DeviceInfoPlusOhosPlugin());
-      flutterEngine.getPlugins()?.add(new FilePickerPlugin());
-      flutterEngine.getPlugins()?.add(new FileSelectorOhosPlugin());
-      flutterEngine.getPlugins()?.add(new InAppWebViewFlutterPlugin());
-      flutterEngine.getPlugins()?.add(new ImageGallerySaverPlugin());
-      flutterEngine.getPlugins()?.add(new ImagePickerPlugin());
       flutterEngine.getPlugins()?.add(new PackageInfoPlugin());
       flutterEngine.getPlugins()?.add(new SharePlusOhosPlugin());
       flutterEngine.getPlugins()?.add(new SqflitePlugin());
