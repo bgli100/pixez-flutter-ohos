@@ -25,7 +25,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
-import 'package:pixez/fluent/fluentui.dart';
+import 'package:pixez/er/hoster.dart';
+import 'package:pixez/network/onezero_client.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/page/novel/history/novel_history_store.dart';
 import 'package:pixez/page/splash/splash_page.dart';
@@ -74,7 +75,6 @@ main(List<String> args) async {
     // Android 和 iOS 应用本身就是单例程序，无需额外操作
     SingleInstancePlugin.initialize();
   }
-  await initFluent(args);
 
   runApp(ProviderScope(
     child: MyApp(arguments: args),
@@ -136,9 +136,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Constants.isFluent
-        ? buildFluentUI(context)
-        : _buildMaterial(context);
+    return _buildMaterial(context);
   }
 
   Widget _buildMaterial(BuildContext context) {
