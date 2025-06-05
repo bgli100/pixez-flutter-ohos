@@ -10,7 +10,7 @@ class CustomTabPlugin {
     if (Platform.isAndroid)
       return await platform.invokeMethod("launch", {'url': url});
     else
-      await launchUrlString(url);
+      await launchUrlString(url, mode: LaunchMode.externalApplication);
     return null;
   }
 }

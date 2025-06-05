@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _launch(url) async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isOhos) {
       final result = await Leader.push(
           context,
           WebViewPage(

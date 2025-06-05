@@ -115,7 +115,6 @@ class _WebViewPageState extends State<WebViewPage> {
                   onLoadStop:
                       (InAppWebViewController controller, Uri? uri) async {
                     if (uri != null &&
-                        !userSetting.disableBypassSni &&
                         uri.host == "accounts.pixiv.net") {
                       controller.evaluateJavascript(source: """
 javascript:(function() {
