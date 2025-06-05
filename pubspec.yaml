@@ -37,7 +37,7 @@ dependencies:
   flutter_mobx: ^2.2.1+1
   in_app_purchase: ^3.2.1
   flutter_widget_from_html: ^0.16.0
-  device_info_plus: ^11.4.0
+  device_info_plus: ^11.3.0
   flutter_displaymode: ^0.6.0
   receive_sharing_intent:
     git:
@@ -56,6 +56,7 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   dio_cache_interceptor: ^3.5.1
   photo_view: ^0.15.0
+  http_interceptor: ^2.0.0-beta.8
   image: ^4.5.4
   easy_refresh: ^3.4.0
   flutter_hooks: ^0.20.5
@@ -69,18 +70,9 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   freezed_annotation: ^2.4.4
-  # Design Style
-  fluent_ui: ^4.10.0
   # Desktop Support
   flutter_acrylic: ^1.1.4
   window_manager: ^0.4.3
-  rhttp:
-    git:
-      url: https://github.com/Tienisto/rhttp.git
-      path: rhttp
-      ref: main
-  dio_compatibility_layer: ^0.1.0
-  flutter_cache_manager_dio: ^4.0.0
   file_picker: ^9.0.0
 
 dev_dependencies:
@@ -96,6 +88,76 @@ dev_dependencies:
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
   freezed: ^2.5.2
+
+dependency_overrides:
+  path_provider:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/path_provider/path_provider
+  path_provider_ohos:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/path_provider/path_provider_ohos
+  flutter_inappwebview:	
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_inappwebview.git
+      path: flutter_inappwebview
+  permission_handler:
+    git: 
+      url: https://gitcode.com/openharmony-sig/flutter_permission_handler.git
+      path: permission_handler
+  share_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/share_plus/share_plus
+  battery_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/battery_plus/battery_plus
+  url_launcher:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/url_launcher/url_launcher
+  shared_preferences:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/shared_preferences/shared_preferences
+  device_info_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/device_info_plus/device_info_plus
+  package_info_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/package_info_plus/package_info_plus
+  connectivity_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/connectivity_plus/connectivity_plus
+  network_info_plus:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      path: packages/network_info_plus/network_info_plus
+  file_selector:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/file_selector/file_selector
+  image_picker:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_packages.git
+      path: packages/image_picker/image_picker
+  flutter_widget_from_html:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_widget_from_html
+      path: packages/enhanced
+  sqflite:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_sqflite
+      path: sqflite
+  sqflite_common_ffi:
+    git:
+      url: https://gitcode.com/openharmony-sig/flutter_sqflite
+      path: sqflite_common_ffi
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

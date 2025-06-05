@@ -1,18 +1,3 @@
-/*
-* Copyright (c) 2023 Hunan OpenValley Digital Industry Development Co., Ltd.
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
 {
   "app": {
     "signingConfigs": [],
@@ -21,7 +6,7 @@
         "name": "default",
         "signingConfig": "default",
         "compatibleSdkVersion": "5.0.0(12)",
-        "runtimeOS": "HarmonyOS",
+        "runtimeOS": "HarmonyOS"
       }
     ]
   },
@@ -29,6 +14,150 @@
     {
       "name": "entry",
       "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "flutter_inappwebview_ohos",
+      "srcPath": "../../pub_cache/git/flutter_inappwebview-5841b55e376aff25c8c0bb09241bb9440d8dfcba/flutter_inappwebview_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "file_selector_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/file_selector/file_selector_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "image_picker_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/image_picker/image_picker_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "path_provider_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/path_provider/path_provider_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "shared_preferences_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/shared_preferences/shared_preferences_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "url_launcher_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-906268a2f1cd7ac3602092959d9bddf2160b16f4/packages/url_launcher/url_launcher_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "permission_handler_ohos",
+      "srcPath": "../../pub_cache/git/flutter_permission_handler-1e7c80f0720aff742d9f1e08017e1753bcad76ef/permission_handler_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "connectivity_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/connectivity_plus/connectivity_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "device_info_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/device_info_plus/device_info_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "package_info_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/package_info_plus/package_info_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "share_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-c986a94fc6aa1139a6d3e05908289eebf065260c/packages/share_plus/share_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sqflite",
+      "srcPath": "../../pub_cache/git/flutter_sqflite-6321c1647149cbfb28b11b2b83e1d0bc9f3c6f73/sqflite/ohos",
       "targets": [
         {
           "name": "default",
