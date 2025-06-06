@@ -1,0 +1,1 @@
+"%DEVECO_SDK_HOME%\default\openharmony\native\llvm\bin\llvm-ar.exe" %*

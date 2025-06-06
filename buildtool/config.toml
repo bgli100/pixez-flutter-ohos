@@ -1,0 +1,2 @@
+[target.aarch64-unknown-linux-ohos]
+linker = "./aarch64-unknown-linux-ohos-clang.cmd"

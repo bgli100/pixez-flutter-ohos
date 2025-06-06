@@ -28,6 +28,7 @@
     "@ohos/flutter_module": "file:./entry",
     "sqflite": "file:./har/sqflite.har",
     "image_gallery_saver": "file:./har/image_gallery_saver.har",
-    "file_picker_ohos": "file:./har/file_picker_ohos.har"
+    "file_picker_ohos": "file:./har/file_picker_ohos.har",
+    "rhttp": "file:./har/rhttp.har"
   }
 }

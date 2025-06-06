@@ -20,7 +20,6 @@ import 'dart:typed_data';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:html/parser.dart' show parse;
@@ -46,8 +45,7 @@ class SauceStore = SauceStoreBase with _$SauceStore;
 
 abstract class SauceStoreBase with Store {
   static String host = "saucenao.com";
-  Dio dio = Dio(BaseOptions(
-      baseUrl: "https://saucenao.com", headers: {HttpHeaders.hostHeader: host}));
+  Dio dio = Dio(BaseOptions(baseUrl: "https://saucenao.com"));
   ObservableList<int> results = ObservableList();
   late StreamController _streamController;
   late ObservableStream observableStream;
@@ -142,16 +140,24 @@ abstract class SauceStoreBase with Store {
     ]);
     try {
       BotToast.showText(text: I18n.ofContext().uploading);
-      if (userSetting.disableBypassSni) {
-        dio.options.baseUrl = "https://$host";
-      } else {
-        dio.httpClientAdapter = IOHttpClientAdapter(createHttpClient: () {
-          HttpClient httpClient = HttpClient();
-          httpClient.badCertificateCallback =
-              (X509Certificate cert, String host, int port) => true;
-          return httpClient;
-        });
-      }
+
+      // if (!userSetting.disableBypassSni) {
+      //   final compatibleClient = await RhttpCompatibleClient.create(
+      //     settings: userSetting.disableBypassSni
+      //         ? null
+      //         : ClientSettings(
+      //             tlsSettings: TlsSettings(
+      //               verifyCertificates: false,
+      //               sni: false,
+      //             ),
+      //             dnsSettings: DnsSettings.dynamic(
+      //               resolver: (host) async {
+      //                 return ['104.26.14.28'];
+      //               },
+      //             )),
+      //   );
+      //   dio.httpClientAdapter = ConversionLayerAdapter(compatibleClient);
+      // }
       Response response = await dio.post('/search.php', data: formData);
       BotToast.showText(text: I18n.ofContext().parsing);
       var document = parse(response.data);

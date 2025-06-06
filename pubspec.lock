@@ -119,6 +119,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.2"
+  build_cli_annotations:
+    dependency: transitive
+    description:
+      name: build_cli_annotations
+      sha256: b59d2769769efd6c9ff6d4c4cede0be115a566afc591705c2040b707534b1172
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   build_config:
     dependency: transitive
     description:
@@ -401,6 +409,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.5.1"
+  dio_compatibility_layer:
+    dependency: "direct main"
+    description:
+      name: dio_compatibility_layer
+      sha256: bb7ea1dd6fe98b8f5e3d90da408802fc3abf14d4485416e882cf1b2c8fb4b209
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.0"
   dio_web_adapter:
     dependency: transitive
     description:
@@ -570,6 +586,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.4.1"
+  flutter_cache_manager_dio:
+    dependency: "direct main"
+    description:
+      name: flutter_cache_manager_dio
+      sha256: dec00b21ddd5206fe79201274ec53ab848f337a2716f11a5ead8e68a79e11ec0
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.0"
   flutter_displaymode:
     dependency: "direct main"
     description:
@@ -687,6 +711,15 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.6.1"
+  flutter_rust_bridge:
+    dependency: transitive
+    description:
+      path: frb_dart
+      ref: master
+      resolved-ref: "1a73c7c730133e674f7b1e4cf2adc6b593ca3108"
+      url: "https://github.com/bgli100/flutter_rust_bridge_ohos.git"
+    source: git
+    version: "2.7.0"
   flutter_svg:
     dependency: transitive
     description:
@@ -858,14 +891,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.0"
-  http_interceptor:
-    dependency: "direct main"
-    description:
-      name: http_interceptor
-      sha256: "288c6ded4a2c66de2730a16b30cbd29d05d042a5e61304d9b4be0e16378f4082"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -882,6 +907,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.1.2"
+  http_profile:
+    dependency: transitive
+    description:
+      name: http_profile
+      sha256: "7e679e355b09aaee2ab5010915c932cce3f2d1c11c3b2dc177891687014ffa78"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.0"
   image:
     dependency: "direct main"
     description:
@@ -1460,6 +1493,13 @@ packages:
       url: "https://github.com/KasemJaffer/receive_sharing_intent"
     source: git
     version: "1.8.1"
+  rhttp:
+    dependency: "direct main"
+    description:
+      path: "../rhttp/rhttp"
+      relative: true
+    source: path
+    version: "0.9.8"
   riverpod:
     dependency: transitive
     description:

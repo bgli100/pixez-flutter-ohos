@@ -64,7 +64,6 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   dio_cache_interceptor: ^3.5.1
   photo_view: ^0.15.0
-  http_interceptor: ^2.0.0-beta.8
   image: ^4.5.4
   easy_refresh: ^3.4.0
   flutter_hooks: ^0.20.5
@@ -81,6 +80,10 @@ dependencies:
   # Desktop Support
   flutter_acrylic: ^1.1.4
   window_manager: ^0.4.3
+  rhttp:
+    path: ../rhttp/rhttp/
+  dio_compatibility_layer: ^0.1.0
+  flutter_cache_manager_dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:

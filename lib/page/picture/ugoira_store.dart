@@ -135,7 +135,7 @@ abstract class _UgoiraStoreBase with Store {
             headers: Hoster.header(
                 url: ugoiraMetadataResponse!.ugoiraMetadata.zipUrls.medium)));
         if (!userSetting.disableBypassSni) {
-          dio.httpClientAdapter = ApiClient.createCompatibleClient();
+          dio.httpClientAdapter = await ApiClient.createCompatibleClient();
         }
         dio.download(zipUrl, fullPath,
             onReceiveProgress: (int count, int total) {
