@@ -173,7 +173,7 @@ class _CommentPageState extends State<CommentPage> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(I18n.of(context).view_comment),
+          title: Text('${I18n.of(context).view_comment}'),
         ),
         body: SafeArea(
           child: Column(
@@ -401,7 +401,7 @@ class _CommentPageState extends State<CommentPage> {
                                 ),
                                 child: TextField(
                                   controller: _editController,
-                                  maxLength: 10,
+                                  maxLength: 140,
                                   onChanged: (value) {
                                     setState(() {
                                       _commentText = value;
