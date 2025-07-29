@@ -610,7 +610,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.9.74;
+				MARKETING_VERSION = 1.9.75;
 				PRODUCT_BUNDLE_IDENTIFIER = com.perol.pixez;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -755,7 +755,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.9.74;
+				MARKETING_VERSION = 1.9.75;
 				PRODUCT_BUNDLE_IDENTIFIER = com.perol.pixez;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -792,7 +792,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.9.74;
+				MARKETING_VERSION = 1.9.75;
 				PRODUCT_BUNDLE_IDENTIFIER = com.perol.pixez;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
