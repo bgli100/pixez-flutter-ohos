@@ -356,8 +356,7 @@ class _IllustDetailContentState extends State<IllustDetailContent> {
               final pos = box != null
                   ? box.localToGlobal(Offset.zero) & box.size
                   : null;
-              SharePlus.instance.share(
-                  ShareParams(text: selectionText, sharePositionOrigin: pos));
+              Share.share(selectionText, sharePositionOrigin: pos);
               return;
             }
             await SupportorPlugin.start(selectionText);

@@ -397,18 +397,18 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "253a18bbd4851fecba42f7343a1df3a9a4c1d31a2c1b37e221086b4fa8c8dbc9"
+      sha256: d90ee57923d1828ac14e492ca49440f65477f4bb1263575900be731a3dac66a9
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.8.0+1"
+    version: "5.9.0"
   dio_cache_interceptor:
     dependency: "direct main"
     description:
       name: dio_cache_interceptor
-      sha256: "1346705a2057c265014d7696e3e2318b560bfb00b484dac7f9b01e2ceaebb07d"
+      sha256: ac9f312e5a81d79cbccb15f56b78aeae7343a981c1d7c169b11194fae806ec0b
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.5.1"
+    version: "4.0.5"
   dio_compatibility_layer:
     dependency: "direct main"
     description:
@@ -598,10 +598,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_displaymode
-      sha256: "42c5e9abd13d28ed74f701b60529d7f8416947e58256e6659c5550db719c57ef"
+      sha256: ecd44b1e902b0073b42ff5b55bf283f38e088270724cdbb7f7065ccf54aa60a8
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.0"
+    version: "0.7.0"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -891,6 +891,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.0"
+  http_cache_core:
+    dependency: transitive
+    description:
+      name: http_cache_core
+      sha256: "8f9f187d10f8d1a90c51db2389575bbddf71ca0f79d4527652ea1efa3f338071"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   http_multi_server:
     dependency: transitive
     description:

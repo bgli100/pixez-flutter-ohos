@@ -273,9 +273,8 @@ class _UsersPageState extends State<UsersPage> with TickerProviderStateMixin {
                     final pos = box != null
                         ? box.localToGlobal(Offset.zero) & box.size
                         : null;
-                    final link = "https://www.pixiv.net/users/${widget.id}";
-                    SharePlus.instance.share(
-                        ShareParams(text: link, sharePositionOrigin: pos));
+                    Share.share('https://www.pixiv.net/users/${widget.id}',
+                        sharePositionOrigin: pos);
                   });
             }),
             _buildPopMenu(context)

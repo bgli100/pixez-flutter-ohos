@@ -171,7 +171,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                           await launchUrlString(url);
                         }
                       } catch (e) {
-                        SharePlus.instance.share(ShareParams(text: url));
+                        Share.share(url);
                       }
                     }
                   }),

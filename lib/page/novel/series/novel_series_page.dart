@@ -145,9 +145,8 @@ class NovelSeriesPage extends HookConsumerWidget {
                   final pos = box != null
                       ? box.localToGlobal(Offset.zero) & box.size
                       : null;
-                  final link = "https://www.pixiv.net/novel/series/$id";
-                  SharePlus.instance
-                      .share(ShareParams(text: link, sharePositionOrigin: pos));
+                  Share.share("https://www.pixiv.net/novel/series/$id",
+                      sharePositionOrigin: pos);
                 },
                 icon: Icon(Icons.share));
           })

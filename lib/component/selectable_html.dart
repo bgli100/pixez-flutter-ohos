@@ -67,7 +67,7 @@ class _SelectableHtmlState extends State<SelectableHtml> {
                   mode: LaunchMode.externalNonBrowserApplication);
             }
           } catch (e) {
-            SharePlus.instance.share(ShareParams(text: url));
+            Share.share(url);
           }
           return true;
         },

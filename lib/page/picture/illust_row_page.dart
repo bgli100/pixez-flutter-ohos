@@ -984,10 +984,9 @@ class _IllustRowPageState extends State<IllustRowPage>
                                 ? box.localToGlobal(Offset.zero) & box.size
                                 : null;
                             Navigator.of(context).pop();
-                            final link =
-                                "https://www.pixiv.net/artworks/${widget.id}";
-                            SharePlus.instance.share(ShareParams(
-                                text: link, sharePositionOrigin: pos));
+                            Share.share(
+                                "https://www.pixiv.net/artworks/${widget.id}",
+                                sharePositionOrigin: pos);
                           },
                         );
                       }),

@@ -416,8 +416,7 @@ class _AboutPageState extends State<AboutPage> {
               subtitle: Text(I18n.of(context).share_this_app_link),
               onTap: () {
                 if (Platform.isIOS) {
-                  SharePlus.instance.share(ShareParams(
-                      text: 'https://apps.apple.com/cn/app/pixez/id1494435126'));
+                  Share.share('https://apps.apple.com/cn/app/pixez/id1494435126');
                 }
               },
             ),
