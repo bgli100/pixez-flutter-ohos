@@ -14,7 +14,6 @@
  *
  */
 
-import 'dart:io';
 import 'dart:math';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart' hide SearchBar;
@@ -401,12 +400,11 @@ class _SearchPageState extends State<SearchPage>
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: rowCount)),
             ),
-          if (Platform.isAndroid || Platform.isOhos)
-            SliverToBoxAdapter(
-              child: Container(
-                height: (MediaQuery.of(context).size.width / 3) - 16,
-              ),
-            )
+          SliverToBoxAdapter(
+            child: Container(
+              height: (MediaQuery.of(context).size.width / 3) - 16,
+            ),
+          )
         ],
       ),
     );
