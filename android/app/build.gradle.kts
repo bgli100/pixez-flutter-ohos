@@ -81,14 +81,15 @@ android {
         minSdk = flutter.minSdkVersion
         targetSdk = 35
         versionCode = 10009770
-        versionName = "0.9.77 red"
+        versionName = "0.9.78 red"
         ndk {
             abiFilters.addAll(arrayOf("armeabi-v7a", "arm64-v8a", "x86_64"))
         }
     }
     splits {
         abi {
-            isEnable = true
+            val isBuildingBundle = gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
+            isEnable = !isBuildingBundle
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86_64")
             isUniversalApk = true

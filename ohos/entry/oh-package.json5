@@ -21,6 +21,11 @@
     "image_gallery_saver": "file:../har/image_gallery_saver.har",
     "file_picker_ohos": "file:../har/file_picker_ohos.har",
     "rhttp": "file:../har/rhttp.har",
-    "@ohos/flutter_ohos": "har/flutter.har"
+    "@ohos/flutter_ohos": "har/flutter.har",
+    "in_app_purchase_ohos": "file:../har/in_app_purchase_ohos.har",
+    "video_player_ohos": "file:../har/video_player_ohos.har",
+    "battery_plus": "file:../har/battery_plus.har",
+    "sqflite_ohos": "file:../har/sqflite_ohos.har",
+    "receive_sharing_intent": "file:../har/receive_sharing_intent.har"
   }
 }
