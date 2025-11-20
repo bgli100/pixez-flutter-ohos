@@ -1162,9 +1162,8 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
                                 : null;
                             Navigator.of(context).pop();
                             Share.share(
-                                "https://www.pixiv.net/artworks/${widget.id}",
-                                sharePositionOrigin: pos,
-                              ),
+                              "https://www.pixiv.net/artworks/${widget.id}",
+                              sharePositionOrigin: pos,
                             );
                           },
                         );
