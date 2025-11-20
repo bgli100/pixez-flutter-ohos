@@ -168,13 +168,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             final brightness =
                 SchedulerBinding.instance.platformDispatcher.platformBrightness;
             if (userSetting.themeInitState != 1) {
-              return MaterialApp(
-                home: Container(
-                  color:
-                      brightness == Brightness.dark
-                          ? Colors.black
-                          : Colors.white,
-                  child: Center(child: CircularProgressIndicator()),
+              return Container(
+                color: brightness == Brightness.dark
+                    ? Colors.black
+                    : Colors.white,
+                child: Center(
+                  child: Material(child: CircularProgressIndicator()),
                 ),
               );
             }
@@ -201,7 +200,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 return child;
               },
               themeMode: userSetting.themeMode,
-              theme: ThemeData.light().copyWith(
+              theme: ThemeData(
+                brightness: Brightness.light,
+                useMaterial3: true,
+                fontFamily: (Platform.isAndroid) ? 'Roboto' : null,
                 primaryColor: lightColorScheme.primary,
                 colorScheme: lightColorScheme,
                 scaffoldBackgroundColor: lightColorScheme.surface,
@@ -213,10 +215,26 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 dialogTheme: DialogThemeData(
                   backgroundColor: lightColorScheme.surfaceContainer,
                 ),
+                pageTransitionsTheme: PageTransitionsTheme(
+                  builders: {
+                    TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                  },
+                ),
               ),
-              darkTheme: ThemeData.dark().copyWith(
-                scaffoldBackgroundColor:
-                    userSetting.isAMOLED ? Colors.black : null,
+              darkTheme: ThemeData(
+                brightness: Brightness.dark,
+                useMaterial3: true,
+                fontFamily: (Platform.isAndroid) ? 'Roboto' : null,
+                scaffoldBackgroundColor: userSetting.isAMOLED
+                    ? Colors.black
+                    : null,
+                pageTransitionsTheme: PageTransitionsTheme(
+                  builders: {
+                    TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                  },
+                ),
                 // tabBarTheme: TabBarTheme(dividerColor: Colors.transparent),
                 tabBarTheme: TabBarThemeData(dividerColor: Colors.transparent),
                 colorScheme: darkColorScheme,
@@ -232,23 +250,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   _buildMaskBuilder(BuildContext context, Widget? widget) {
     if (userSetting.nsfwMask) {
-      final needShowMask =
-          (Platform.isAndroid
-              ? (_appState == AppLifecycleState.paused ||
-                  _appState == AppLifecycleState.paused)
-              : _appState == AppLifecycleState.inactive);
+      final needShowMask = (Platform.isAndroid
+          ? (_appState == AppLifecycleState.paused ||
+                _appState == AppLifecycleState.paused)
+          : _appState == AppLifecycleState.inactive);
       return Stack(
         children: [
           widget ?? Container(),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
-            child:
-                needShowMask
-                    ? Container(
-                      color: Theme.of(context).canvasColor,
-                      child: Center(child: Icon(Icons.privacy_tip_outlined)),
-                    )
-                    : null,
+            child: needShowMask
+                ? Container(
+                    color: Theme.of(context).canvasColor,
+                    child: Center(child: Icon(Icons.privacy_tip_outlined)),
+                  )
+                : null,
           ),
         ],
       );
