@@ -27,6 +27,7 @@ import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
 import 'package:pixez/network/onezero_client.dart';
+import 'package:pixez/er/illust_cacher.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/page/novel/history/novel_history_store.dart';
 import 'package:pixez/page/splash/splash_page.dart';
@@ -61,7 +62,7 @@ final FullScreenStore fullScreenStore = FullScreenStore();
 
 main(List<String> args) async {
   await Rhttp.init();
-
+  await MmapCache.init();
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isWindows || Platform.isLinux) {
@@ -203,7 +204,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               theme: ThemeData(
                 brightness: Brightness.light,
                 useMaterial3: true,
-                fontFamily: (Platform.isAndroid) ? 'Roboto' : null,
                 primaryColor: lightColorScheme.primary,
                 colorScheme: lightColorScheme,
                 scaffoldBackgroundColor: lightColorScheme.surface,
@@ -225,7 +225,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               darkTheme: ThemeData(
                 brightness: Brightness.dark,
                 useMaterial3: true,
-                fontFamily: (Platform.isAndroid) ? 'Roboto' : null,
                 scaffoldBackgroundColor: userSetting.isAMOLED
                     ? Colors.black
                     : null,

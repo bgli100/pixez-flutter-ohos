@@ -66,7 +66,7 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   dio_cache_interceptor: ^4.0.5
   photo_view: ^0.15.0
-  image: ^4.5.4
+  image: ^4.7.1
   easy_refresh: ^3.4.0
   sqflite: ^2.4.2
   dynamic_color:
@@ -261,3 +261,8 @@ msix_config:
   install_certificate: false
   store: false
   publisher: CN=Notsfsssf, C=CN
+
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3

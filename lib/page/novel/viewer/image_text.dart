@@ -14,13 +14,17 @@
  *
  */
 
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pixez/er/hoster.dart';
 import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/er/leader.dart';
 import 'package:pixez/er/lprinter.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/models/novel_web_response.dart';
 import 'package:pixez/network/api_client.dart';
@@ -34,12 +38,95 @@ class UploadedImageSpan extends WidgetSpan {
   final String imageUrl;
 
   UploadedImageSpan(this.imageUrl)
-      : super(child: Builder(builder: (context) {
-          return Container(
-              child: PixivImage(
-            imageUrl,
-          ));
-        }));
+    : super(
+        child: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onLongPress: () async {
+                final action = await showDialog<String>(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      children: <Widget>[
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.of(context).pop('save');
+                          },
+                          child: Text(I18n.of(context).save),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(I18n.of(context).cancel),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                if (action == 'save' && context.mounted) {
+                  await _saveUploadedImage(context, imageUrl);
+                }
+              },
+              child: Container(child: PixivImage(imageUrl)),
+            );
+          },
+        ),
+      );
+
+  static Future<void> _saveUploadedImage(
+    BuildContext context,
+    String url,
+  ) async {
+    try {
+      final fileInfo = await pixivCacheManager?.getFileFromCache(url);
+      final bytes = fileInfo?.file.readAsBytesSync();
+      final Uint8List data;
+      if (bytes != null) {
+        data = bytes;
+      } else {
+        final dio = Dio();
+        final response = await dio.get<List<int>>(
+          url,
+          options: Options(
+            responseType: ResponseType.bytes,
+            headers: {...Hoster.header(url: url)},
+          ),
+        );
+        final list = response.data;
+        if (list == null || list.isEmpty) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(I18n.of(context).failed)));
+          return;
+        }
+        data = Uint8List.fromList(list);
+      }
+
+      final uri = Uri.tryParse(url);
+      String fileName = (uri != null && uri.pathSegments.isNotEmpty)
+          ? uri.pathSegments.last
+          : '';
+      if (fileName.isEmpty) {
+        fileName = 'uploaded_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      } else if (!fileName.contains('.')) {
+        fileName = '$fileName.jpg';
+      }
+
+      await saveStore.saveToGalleryWithUser(data, 'novel', 0, 0, fileName);
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(I18n.of(context).saved)));
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(I18n.of(context).failed)));
+      }
+    }
+  }
 }
 
 //[pixivimage:12551-1]
@@ -61,33 +148,51 @@ class PixivImageSpan extends WidgetSpan {
   }
 
   PixivImageSpan(this.id, this.targetIndex, this.actualText, this.illusts)
-      : super(child: Builder(builder: (context) {
-          return Container(
-            child: (illusts != null)
-                ? Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: PixivImage(illusts.illust.images.medium ??
-                        illusts.illust.images.original ??
-                        illusts.illust.images.small!),
-                  )
-                : FutureBuilder(
-                    future: _getData(id),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<Illusts?> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done &&
-                          snapshot.data != null)
-                        return Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: targetIndex != 0
-                              ? PixivImage(snapshot.data!.metaPages[targetIndex]
-                                  .imageUrls!.medium)
-                              : PixivImage(snapshot.data!.imageUrls.medium),
-                        );
+    : super(
+        child: Builder(
+          builder: (context) {
+            return Container(
+              child: (illusts != null)
+                  ? Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: PixivImage(
+                        illusts.illust.images.medium ??
+                            illusts.illust.images.original ??
+                            illusts.illust.images.small!,
+                      ),
+                    )
+                  : FutureBuilder(
+                      future: _getData(id),
+                      builder:
+                          (
+                            BuildContext context,
+                            AsyncSnapshot<Illusts?> snapshot,
+                          ) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.data != null)
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: targetIndex != 0
+                                    ? PixivImage(
+                                        snapshot
+                                            .data!
+                                            .metaPages[targetIndex]
+                                            .imageUrls!
+                                            .medium,
+                                      )
+                                    : PixivImage(
+                                        snapshot.data!.imageUrls.medium,
+                                      ),
+                              );
 
-                      return Container();
-                    }),
-          );
-        }));
+                            return Container();
+                          },
+                    ),
+            );
+          },
+        ),
+      );
 }
 
 // (newpage)
@@ -96,6 +201,7 @@ class PixivImageSpan extends WidgetSpan {
 // [jump:链接目标的页面編号]
 // [[jumpuri:标题 ＞ 链接目标的URL]]
 // [[rb:汉宇＞假名]]
+// [uploadedimage:123456]
 class NovelSpansGenerator {
   List<NovelSpansData> buildSpans(NovelWebResponse webResponse) {
     final source = webResponse.text;
@@ -106,7 +212,10 @@ class NovelSpansGenerator {
       for (var i = 0; i < source.length; i++) {
         final posStr = source[i];
         if (posStr == '[') {
-          if (nowStr.isNotEmpty) {
+          if (nowStr.isEmpty) {
+            nowStr = posStr;
+            spanCollectStart = true;
+          } else {
             if (nowStr == '[') {
               spanCollectStart = true;
               nowStr += posStr;
@@ -175,7 +284,8 @@ class NovelSpansGenerator {
       LPrinter.d(key);
       String now = key.substring(flag.length, key.indexOf("]"));
       final image = webResponse.images?[now];
-      final url = image?.urls.the128X128 ??
+      final url =
+          image?.urls.the128X128 ??
           image?.urls.the1200X1200 ??
           image?.urls.original;
       if (url != null) {
@@ -205,8 +315,10 @@ class NovelSpansGenerator {
     } else if (spanStr.startsWith('[[rb:')) {
       final String key = spanStr.toString();
       final flag = '[[rb:';
-      final contentText =
-          key.replaceAll(flag, '').replaceAll(']', '').split('>');
+      final contentText = key
+          .replaceAll(flag, '')
+          .replaceAll(']', '')
+          .split('>');
       final resultText = '${contentText.first}(${contentText.last})';
       return NovelSpansData(NovelSpansType.normal, resultText);
     } else {
@@ -215,14 +327,13 @@ class NovelSpansGenerator {
   }
 
   InlineSpan novelSpansDatatoInlineSpan(
-      BuildContext context, NovelSpansData data) {
+    BuildContext context,
+    NovelSpansData data,
+  ) {
     if (data.type == NovelSpansType.newPage) {
       return WidgetSpan(
-          child: Container(
-        child: Center(
-          child: Text(''),
-        ),
-      ));
+        child: Container(child: Center(child: Text(''))),
+      );
     } else if (data.type == NovelSpansType.jumpUri) {
       return TextSpan(
           text: data.text,
@@ -260,11 +371,12 @@ class NovelSpansGenerator {
       final key = data.text;
 
       return TextSpan(
-          children: [PixivImageSpan(trueId, targetIndex, key, illust)],
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              Leader.push(context, IllustLightingPage(id: trueId));
-            });
+        children: [PixivImageSpan(trueId, targetIndex, key, illust)],
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            Leader.push(context, IllustLightingPage(id: trueId));
+          },
+      );
     } else if (data.type == NovelSpansType.uploadedImage) {
       return UploadedImageSpan(data.text);
     }
@@ -272,14 +384,7 @@ class NovelSpansGenerator {
   }
 }
 
-enum NovelSpansType {
-  normal,
-  newPage,
-  pixivImage,
-  uploadedImage,
-  jumpUri,
-  rb,
-}
+enum NovelSpansType { normal, newPage, pixivImage, uploadedImage, jumpUri, rb }
 
 class NovelSpansData {
   final NovelSpansType type;
@@ -294,5 +399,5 @@ class PixivImageSpanData extends NovelSpansData {
   final NovelIllusts illust;
 
   PixivImageSpanData(this.illustId, this.targetIndex, String text, this.illust)
-      : super(NovelSpansType.pixivImage, text);
+    : super(NovelSpansType.pixivImage, text);
 }
