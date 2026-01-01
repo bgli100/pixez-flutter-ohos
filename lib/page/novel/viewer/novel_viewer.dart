@@ -641,7 +641,7 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
               buildListTile(
                 _novelStore.novelTextResponse!.seriesNavigation?.nextNovel,
               ),
-              if (Platform.isAndroid)
+              if (Platform.isAndroid || Platform.isOhos)
                 ListTile(
                   title: Text(I18n.of(context).export),
                   leading: Icon(Icons.folder_zip),
