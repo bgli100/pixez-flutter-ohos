@@ -60,8 +60,9 @@ abstract class _TagForIllustStoreBase with Store {
 
   @action
   checkAll() {
-    for (var i in checkList) {
-      check(checkList.indexOf(i), !i);
+    bool isAllChecked = checkList.every((element) => element);
+    for (int i = 0; i < checkList.length; i++) {
+      check(i, !isAllChecked);
     }
   }
 }

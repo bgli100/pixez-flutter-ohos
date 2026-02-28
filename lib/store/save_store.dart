@@ -23,7 +23,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/document_plugin.dart';
 import 'package:pixez/er/toaster.dart';
 import 'package:pixez/exts.dart';
@@ -68,7 +67,7 @@ class JobEntity {
   int? min;
   int? status;
 
-// JobEntity({required this.max, required this.min, required this.status});
+  // JobEntity({required this.max, required this.min, required this.status});
 }
 
 class SaveStore = _SaveStoreBase with _$SaveStore;
@@ -87,96 +86,127 @@ abstract class _SaveStoreBase with Store {
     switch (stream.state) {
       case SaveState.SUCCESS:
         Toaster.downloadOk(
-            "${stream.data.title} (p${stream.index ?? 0}) ${I18n.of(ctx!).saved}");
+          "${stream.data.title} (p${stream.index ?? 0}) ${I18n.of(ctx!).saved}",
+        );
         break;
       case SaveState.JOIN:
         BotToast.showCustomText(
-            onlyOne: true,
-            duration: Duration(seconds: 1),
-            toastBuilder: (textCancel) => Align(
-                  alignment: Alignment(0, 0.8),
-                  child: Card(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.arrow_downward),
-                            onPressed: () {
-                              Navigator.of(ctx!, rootNavigator: true)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return JobPage();
-                              }));
-                            }),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 8.0),
-                          child: Text("${I18n.of(ctx!).append_to_query}"),
-                        )
-                      ],
-                    ),
+          onlyOne: true,
+          duration: Duration(seconds: 1),
+          toastBuilder: (textCancel) => Align(
+            alignment: Alignment(0, 0.8),
+            child: Card(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.arrow_downward),
+                    onPressed: () {
+                      Navigator.of(ctx!, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return JobPage();
+                          },
+                        ),
+                      );
+                    },
                   ),
-                ));
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 8.0,
+                    ),
+                    child: Text("${I18n.of(ctx!).append_to_query}"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
         break;
       case SaveState.INQUEUE:
         BotToast.showCustomText(
-            onlyOne: true,
-            duration: Duration(seconds: 1),
-            toastBuilder: (textCancel) => Align(
-                  alignment: Alignment(0, 0.8),
-                  child: Card(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(icon: Icon(Icons.info), onPressed: () {}),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 8.0),
-                          child: Text("${I18n.of(ctx!).already_in_query}"),
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              if (stream.entity is QueueRetryEntity) {
-                                QueueRetryEntity entity =
-                                    stream.entity as QueueRetryEntity;
-                                final id = entity.taskPersist.id;
-                                if (id != null) {
-                                  await fetcher.taskPersistProvider.remove(id);
-                                  _joinQueue(entity.url, entity.illusts,
-                                      entity.fileName);
-                                }
-                              }
-                            },
-                            icon: Icon(Icons.refresh))
-                      ],
+          onlyOne: true,
+          duration: Duration(seconds: 2),
+          toastBuilder: (textCancel) => Align(
+            alignment: Alignment(0, 0.8),
+            child: Card(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(ctx!, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return JobPage();
+                      },
                     ),
-                  ),
-                ));
+                  );
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    IconButton(icon: Icon(Icons.info), onPressed: () {}),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 8.0,
+                      ),
+                      child: Text("${I18n.of(ctx!).already_in_query}"),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        if (stream.entity is QueueRetryEntity) {
+                          QueueRetryEntity entity =
+                              stream.entity as QueueRetryEntity;
+                          final id = entity.taskPersist.id;
+                          if (id != null) {
+                            await fetcher.taskPersistProvider.remove(id);
+                            _joinQueue(
+                              entity.url,
+                              entity.illusts,
+                              entity.fileName,
+                            );
+                          }
+                        }
+                      },
+                      icon: Icon(Icons.refresh),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
         break;
       case SaveState.ALREADY:
         BotToast.showCustomText(
-            onlyOne: true,
-            duration: Duration(seconds: 1),
-            toastBuilder: (textCancel) => Align(
-                  alignment: Alignment(0, 0.8),
-                  child: Card(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.refresh),
-                            onPressed: () {
-                              saveStore.redo(stream.data, stream.index ?? 0);
-                            }),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 8.0),
-                          child: Text(
-                              "${stream.data.title} (p${stream.index ?? 0}) ${I18n.of(ctx!).already_saved}"),
-                        )
-                      ],
+          onlyOne: true,
+          duration: Duration(seconds: 1),
+          toastBuilder: (textCancel) => Align(
+            alignment: Alignment(0, 0.8),
+            child: Card(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.refresh),
+                    onPressed: () {
+                      saveStore.redo(stream.data, stream.index ?? 0);
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 8.0,
+                    ),
+                    child: Text(
+                      "${stream.data.title} (p${stream.index ?? 0}) ${I18n.of(ctx!).already_saved}",
                     ),
                   ),
-                ));
+                ],
+              ),
+            ),
+          ),
+        );
         break;
     }
   }
@@ -196,29 +226,40 @@ abstract class _SaveStoreBase with Store {
   _joinQueue(String url, Illusts illusts, String fileName) async {
     final result = await fetcher.taskPersistProvider.getAccount(url);
     if (result != null) {
-      streamController.add(SaveStream(SaveState.INQUEUE, illusts,
-          entity: QueueRetryEntity(url, illusts, fileName, result)));
+      streamController.add(
+        SaveStream(
+          SaveState.INQUEUE,
+          illusts,
+          entity: QueueRetryEntity(url, illusts, fileName, result),
+        ),
+      );
       return;
     }
     var taskPersist = TaskPersist(
-        userId: illusts.user.id,
-        userName: illusts.user.name,
-        illustId: illusts.id,
-        title: illusts.title,
-        sanityLevel: illusts.sanityLevel,
-        fileName: fileName,
-        status: 0,
-        medium: illusts.imageUrls.medium,
-        url: url);
+      userId: illusts.user.id,
+      userName: illusts.user.name,
+      illustId: illusts.id,
+      title: illusts.title,
+      sanityLevel: illusts.sanityLevel,
+      fileName: fileName,
+      status: 0,
+      medium: illusts.imageUrls.medium,
+      url: url,
+    );
     try {
       await fetcher.taskPersistProvider.insert(taskPersist);
       fetcher.save(url, illusts, fileName);
     } catch (e) {}
   }
 
-  _saveInternal(String url, Illusts illusts, String fileName, int index,
-      {bool redo = false}) async {
-    if (Platform.isAndroid) {
+  _saveInternal(
+    String url,
+    Illusts illusts,
+    String fileName,
+    int index, {
+    bool redo = false,
+  }) async {
+    if (Platform.isAndroid || Platform.isWindows) {
       try {
         String targetFileName = fileName;
         if (userSetting.singleFolder) {
@@ -227,26 +268,25 @@ abstract class _SaveStoreBase with Store {
         }
         final isExist = await DocumentPlugin.exist(targetFileName);
         if (isExist! && !redo) {
-          streamController
-              .add(SaveStream(SaveState.ALREADY, illusts, index: index));
+          streamController.add(
+            SaveStream(SaveState.ALREADY, illusts, index: index),
+          );
           return;
         }
       } catch (e) {}
     }
     streamController.add(SaveStream(SaveState.JOIN, illusts, index: index));
-    File? file = (await pixivCacheManager!.getFileFromCache(url))?.file;
-    if (file == null) {
-      _joinQueue(url, illusts, fileName);
-    } else {
-      saveToGallery(file.readAsBytesSync(), illusts, fileName);
-      streamController
-          .add(SaveStream(SaveState.SUCCESS, illusts, index: index));
-    }
+    _joinQueue(url, illusts, fileName);
   }
 
-  Future<void> saveToGalleryWithUser(Uint8List uint8list, String userName,
-      int userId, int sanityLevel, String fileName) async {
-    if (Platform.isAndroid || Platform.isIOS) {
+  Future<void> saveToGalleryWithUser(
+    Uint8List uint8list,
+    String userName,
+    int userId,
+    int sanityLevel,
+    String fileName,
+  ) async {
+    if (Platform.isAndroid || Platform.isIOS || Platform.isWindows) {
       try {
         String overFileName = fileName;
         if (userSetting.singleFolder) {
@@ -259,8 +299,11 @@ abstract class _SaveStoreBase with Store {
         }
 
         if (userSetting.isClearOldFormatFile)
-          DocumentPlugin.save(uint8list, fileName,
-              clearOld: userSetting.isClearOldFormatFile);
+          DocumentPlugin.save(
+            uint8list,
+            fileName,
+            clearOld: userSetting.isClearOldFormatFile,
+          );
         else
           DocumentPlugin.save(uint8list, fileName);
       } catch (e) {
@@ -279,15 +322,25 @@ abstract class _SaveStoreBase with Store {
 
   void uint8ListProcess(Uint8List uint8list) {
     var random = Random(DateTime.now().millisecondsSinceEpoch);
-    var randomList =
-        List<int>.generate(8, (x) => random.nextInt(9223372036854775807));
+    var randomList = List<int>.generate(
+      8,
+      (x) => random.nextInt(9223372036854775807),
+    );
     uint8list.addAll(randomList);
   }
 
   Future<void> saveToGallery(
-      Uint8List uint8list, Illusts illusts, String fileName) async {
-    saveToGalleryWithUser(uint8list, illusts.user.name, illusts.user.id,
-        illusts.sanityLevel, fileName);
+    Uint8List uint8list,
+    Illusts illusts,
+    String fileName,
+  ) async {
+    saveToGalleryWithUser(
+      uint8list,
+      illusts.user.name,
+      illusts.user.id,
+      illusts.sanityLevel,
+      fileName,
+    );
   }
 
   @action
@@ -308,48 +361,68 @@ abstract class _SaveStoreBase with Store {
   }
 
   String main(
-      int index,
-      String memType,
-      int id,
-      String title,
-      String type,
-      String caption,
-      String createDate,
-      int pageCount,
-      int width,
-      int height,
-      int totalView,
-      int totalBookmarks,
-      String userName,
-      int userId,
-      String tags) {
+    int index,
+    String memType,
+    int id,
+    String title,
+    String type,
+    String caption,
+    String createDate,
+    int pageCount,
+    int width,
+    int height,
+    int totalView,
+    int totalBookmarks,
+    String userName,
+    int userId,
+    String tags,
+  ) {
     return "${id}_p${index}_${tags.isEmpty}.$memType";
   }
 
   Future<String> testEvalName(
-      String func, Illusts illust, int index, String memType) async {
+    String func,
+    Illusts illust,
+    int index,
+    String memType,
+  ) async {
     final result = await JSEvalPlugin.eval(illust, func, index, memType);
     return result ?? "";
   }
 
   Future<String?> _handleEvalName(
-      String text, Illusts illust, int index, String memType) async {
+    String text,
+    Illusts illust,
+    int index,
+    String memType,
+  ) async {
     if (userSetting.fileNameEval == 1) {
       if (userSetting.nameEval == null) {
         await userSetting.setFileNameEval(0);
         return null;
       }
       return await JSEvalPlugin.eval(
-          illust, userSetting.nameEval!, index, memType);
+        illust,
+        userSetting.nameEval!,
+        index,
+        memType,
+      );
     }
     return null;
   }
 
   Future<String> _handleFileName(
-      Illusts illust, int index, String memType) async {
+    Illusts illust,
+    int index,
+    String memType,
+  ) async {
     if (userSetting.fileNameEval == 1) {
-      final result =
-          await _handleEvalName(userSetting.nameEval!, illust, index, memType);
+      final result = await _handleEvalName(
+        userSetting.nameEval!,
+        illust,
+        index,
+        memType,
+      );
       if (result != null) return result;
     }
     final result = userSetting.format!
@@ -362,8 +435,11 @@ abstract class _SaveStoreBase with Store {
   }
 
   @action
-  Future<void> saveImage(Illusts illusts,
-      {int? index, bool redo = false}) async {
+  Future<void> saveImage(
+    Illusts illusts, {
+    int? index,
+    bool redo = false,
+  }) async {
     if (Platform.isIOS) {
       //IOS APP STORE REVIEW
       final status = await DocumentPlugin.permissionStatus() ?? false;

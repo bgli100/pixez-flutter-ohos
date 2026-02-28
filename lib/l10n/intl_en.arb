@@ -5,6 +5,8 @@
   "account_message": "Account info",
   "ai_generated": "AI-generated",
   "all": "All",
+  "ugoira_only": "Only Ugoira",
+  "ugoira_none": "No Ugoira",
   "already_in_query": "Already in queue",
   "already_saved": "Already saved",
   "android_special_setting": "Android-specific Settings",

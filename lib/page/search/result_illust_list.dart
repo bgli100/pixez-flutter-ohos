@@ -27,6 +27,12 @@ import 'package:pixez/network/api_client.dart';
 import 'package:pixez/page/search/result_illust_store.dart';
 import 'package:pixez/page/search/suggest/search_suggestion_page.dart';
 
+enum UgoiraFilter {
+  all,
+  onlyUgoira,
+  noUgoira,
+}
+
 class ResultIllustList extends StatefulWidget {
   final String word;
 
@@ -56,6 +62,7 @@ class _ResultIllustListState extends State<ResultIllustList> {
   String searchTarget = search_target[0];
   String selectSort = "date_desc";
   int searchAIType = 0;
+  UgoiraFilter ugoiraFilter = UgoiraFilter.all;
   int selectStarNum = 0;
   List<int> starNum = [
     0,
@@ -105,6 +112,7 @@ class _ResultIllustListState extends State<ResultIllustList> {
     final searchAIKey = '${prefix}_search_ai_type';
     final searchTargetKey = '${prefix}_search_target';
     final searchSortKey = '${prefix}_search_sort';
+    final ugoiraFilterKey = '${prefix}_ugoira_filter';
     final recordRememberCurrentSelectionKey =
         'illust_search_result_record_remember_current_selection';
     recordRememberCurrentSelection =
@@ -115,6 +123,8 @@ class _ResultIllustListState extends State<ResultIllustList> {
           searchTarget = Prefer.getString(searchTargetKey) ?? search_target[0];
           selectSort = Prefer.getString(searchSortKey) ?? "date_desc";
           searchAIType = Prefer.getInt(searchAIKey) ?? 0;
+          ugoiraFilter = UgoiraFilter
+              .values[Prefer.getInt(ugoiraFilterKey) ?? UgoiraFilter.all.index];
         });
       }
     }
@@ -129,9 +139,11 @@ class _ResultIllustListState extends State<ResultIllustList> {
     final searchAIKey = '${prefix}_search_ai_type';
     final searchTargetKey = '${prefix}_search_target';
     final searchSortKey = '${prefix}_search_sort';
+    final ugoiraFilterKey = '${prefix}_ugoira_filter';
     await Prefer.setString(searchTargetKey, searchTarget);
     await Prefer.setString(searchSortKey, selectSort);
     await Prefer.setInt(searchAIKey, searchAIType);
+    await Prefer.setInt(ugoiraFilterKey, ugoiraFilter.index);
   }
 
   @override
@@ -211,6 +223,13 @@ class _ResultIllustListState extends State<ResultIllustList> {
                   : LightingList(
                       source: futureGet,
                       scrollController: _scrollController,
+                      filter: (illust) {
+                        return switch (ugoiraFilter) {
+                          UgoiraFilter.all => true,
+                          UgoiraFilter.onlyUgoira => illust.type == 'ugoira',
+                          UgoiraFilter.noUgoira => illust.type != 'ugoira',
+                        };
+                      },
                     ))
         ],
       ),
@@ -260,6 +279,7 @@ class _ResultIllustListState extends State<ResultIllustList> {
         searchAIType: searchAIType,
         selectSort: selectSort,
         searchTarget: searchTarget,
+        ugoiraFilter: ugoiraFilter,
         onPremium: () {
           setState(() {
             futureGet = ApiForceSource(
@@ -276,11 +296,13 @@ class _ResultIllustListState extends State<ResultIllustList> {
             {required bool recordRememberCurrentSelection,
             required int searchAIType,
             required String searchTarget,
-            required String selectSort}) {
+            required String selectSort,
+            required UgoiraFilter ugoiraFilter}) {
           setState(() {
             this.searchAIType = searchAIType;
             this.searchTarget = searchTarget;
             this.selectSort = selectSort;
+            this.ugoiraFilter = ugoiraFilter;
             this.recordRememberCurrentSelection =
                 recordRememberCurrentSelection;
           });
@@ -389,18 +411,21 @@ class ResultIllustSortWidget extends StatefulWidget {
   final int searchAIType;
   final String selectSort;
   final String searchTarget;
+  final UgoiraFilter ugoiraFilter;
   final Function onPremium;
   final Function onApply;
   final Function(
       {required String searchTarget,
       required String selectSort,
       required int searchAIType,
+      required UgoiraFilter ugoiraFilter,
       required bool recordRememberCurrentSelection}) onSateChange;
   const ResultIllustSortWidget(
       {super.key,
       required this.searchAIType,
       required this.selectSort,
       required this.searchTarget,
+      required this.ugoiraFilter,
       required this.onPremium,
       required this.onApply,
       required this.onSateChange});
@@ -413,6 +438,7 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
   late int searchAIType = widget.searchAIType;
   late String selectSort = widget.selectSort;
   late String searchTarget = widget.searchTarget;
+  late UgoiraFilter ugoiraFilter = widget.ugoiraFilter;
   final sort = [
     "date_desc",
     "date_asc",
@@ -457,6 +483,11 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
         4: I18n.of(context).popular_female_desc,
       }
     };
+    final ugoiraFilterMap = {
+      UgoiraFilter.all: I18n.of(context).all,
+      UgoiraFilter.onlyUgoira: I18n.of(context).ugoira_only,
+      UgoiraFilter.noUgoira: I18n.of(context).ugoira_none,
+    };
     return SafeArea(
       child: Container(
           width: MediaQuery.of(context).size.width,
@@ -476,6 +507,13 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
                                     Theme.of(context).colorScheme.secondary))),
                     TextButton(
                         onPressed: () {
+                          widget.onSateChange(
+                              searchTarget: searchTarget,
+                              selectSort: selectSort,
+                              searchAIType: searchAIType,
+                              ugoiraFilter: ugoiraFilter,
+                              recordRememberCurrentSelection:
+                                  recordRememberCurrentSelection);
                           widget.onApply();
                           Navigator.of(context).pop();
                         },
@@ -506,18 +544,46 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
                     ],
                   ),
                 ),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      for (final entry in ugoiraFilterMap.entries)
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                ugoiraFilter = entry.key;
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 4.0),
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              decoration: ugoiraFilter == entry.key
+                                  ? BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondaryContainer,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    )
+                                  : null,
+                              child: Text(
+                                entry.value,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
                 SwitchListTile(
                   value: searchAIType != 1,
                   onChanged: (v) {
                     setState(() {
                       searchAIType = !v ? 1 : 0;
                     });
-                    widget.onSateChange(
-                        searchTarget: searchTarget,
-                        selectSort: selectSort,
-                        searchAIType: searchAIType,
-                        recordRememberCurrentSelection:
-                            recordRememberCurrentSelection);
                   },
                   title: Text(I18n.of(context).ai_generated),
                 ),
@@ -528,12 +594,6 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
                     setState(() {
                       recordRememberCurrentSelection = v;
                     });
-                    widget.onSateChange(
-                        searchTarget: searchTarget,
-                        selectSort: selectSort,
-                        searchAIType: searchAIType,
-                        recordRememberCurrentSelection:
-                            recordRememberCurrentSelection);
                   },
                   title: Text(I18n.of(context).remember_current_selections),
                 ),
@@ -561,11 +621,6 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
         setState(() {
           selectSort = sort[index];
         });
-        widget.onSateChange(
-            searchTarget: searchTarget,
-            selectSort: selectSort,
-            searchAIType: searchAIType,
-            recordRememberCurrentSelection: recordRememberCurrentSelection);
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -591,11 +646,6 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
         setState(() {
           searchTarget = search_target[index];
         });
-        widget.onSateChange(
-            searchTarget: searchTarget,
-            selectSort: selectSort,
-            searchAIType: searchAIType,
-            recordRememberCurrentSelection: recordRememberCurrentSelection);
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -614,3 +664,4 @@ class _ResultIllustSortWidgetState extends State<ResultIllustSortWidget> {
     );
   }
 }
+
