@@ -620,7 +620,7 @@ packages:
     source: hosted
     version: "0.21.2"
   flutter_inappwebview:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       path: flutter_inappwebview
       ref: HEAD
@@ -1762,7 +1762,7 @@ packages:
     source: hosted
     version: "7.0.0"
   sqflite:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       path: sqflite
       ref: "br_v2.4.1_ohos"
@@ -1788,7 +1788,7 @@ packages:
     source: git
     version: "2.5.4+5"
   sqflite_common_ffi:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: sqflite_common_ffi
       sha256: "883dd810b2b49e6e8c3b980df1829ef550a94e3f87deab5d864917d27ca6bf36"
@@ -2146,7 +2146,7 @@ packages:
     source: hosted
     version: "3.0.3"
   webview_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter
       sha256: c3e4fe614b1c814950ad07186007eff2f2e5dd2935eba7b9a9a1af8e5885f1ba

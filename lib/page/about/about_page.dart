@@ -156,35 +156,30 @@ class _AboutPageState extends State<AboutPage> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/bgli100.jpg'),
+                    );
+                  },
+                );
+              },
             ),
-            title: Text('bgli100'),
-            subtitle: Text(I18n.of(context).bgli100_message),
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 200.0,
-                    child: Center(
-                      child: Text("我...从没觉得玩乐队开心过"),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/right_now.jpg'),
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/bgli100.jpg'),
+              ),
+              title: Text('bgli100'),
+              subtitle: Text(I18n.of(context).bgli100_message),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 200.0,
+                      child: Center(
+                        child: Text("我...从没觉得玩乐队开心过"),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
             ListTile(
               leading: CircleAvatar(
@@ -257,37 +252,100 @@ class _AboutPageState extends State<AboutPage> {
                       ),
                     ),
                   );
-                }),
-          ),
-          if (Platform.isIOS) ...[
-            ListTile(
-              leading: Icon(Icons.rate_review),
-              title: Text(I18n.of(context).rate_title),
-              subtitle: Text(I18n.of(context).rate_message),
-              onTap: () async {
-                if (Platform.isIOS) {
-                  var url = 'https://apps.apple.com/cn/app/pixez/id1494435126';
-                  try {
-                    await launchUrlString(url);
-                  } catch (e) {}
-                }
-              },
+                },
+              ),
             ),
-          ],
-          if (Platform.isAndroid || Platform.isOhos) ...[
-            ListTile(
-              leading: Icon(Icons.device_hub),
-              title: Text(I18n.of(context).original_repo_address),
-              subtitle: Text('github.com/Notsfsssf/pixez-flutter'),
-              onTap: () {
-                if (!Constants.isGooglePlay)
+            if (Platform.isIOS) ...[
+              ListTile(
+                leading: Icon(Icons.rate_review),
+                title: Text(I18n.of(context).rate_title),
+                subtitle: Text(I18n.of(context).rate_message),
+                onTap: () async {
+                  if (Platform.isIOS) {
+                    var url = 'https://apps.apple.com/cn/app/pixez/id1494435126';
+                    try {
+                      await launchUrlString(url);
+                    } catch (e) {}
+                  }
+                },
+              ),
+            ],
+            if (Platform.isAndroid || Platform.isOhos) ...[
+              ListTile(
+                leading: Icon(Icons.device_hub),
+                title: Text(I18n.of(context).original_repo_address),
+                subtitle: Text('github.com/Notsfsssf/pixez-flutter'),
+                onTap: () {
+                  if (!Constants.isGooglePlay)
+                    showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(16.0),
+                          ),
+                        ),
+                        builder: (_) {
+                          return SafeArea(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ListTile(
+                                  title: Text('Version ${Constants.tagName}'),
+                                  subtitle: Text(
+                                    I18n.of(context).go_to_project_address,
+                                  ),
+                                  onTap: () {
+                                    try {
+                                      launchUrlString(
+                                          'https://github.com/Notsfsssf/pixez-flutter',
+                                          mode: LaunchMode.externalApplication
+                                      );
+                                    } catch (e) {}
+                                  },
+                                  trailing: IconButton(
+                                      icon: Icon(Icons.link),
+                                      onPressed: () {
+                                        try {
+                                          launchUrlString(
+                                              'https://github.com/Notsfsssf/pixez-flutter',
+                                              mode: LaunchMode.externalApplication
+                                          );
+                                        } catch (e) {}
+                                      }),
+                                ),
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                      'https://avatars1.githubusercontent.com/u/9017470?s=400&v=4',
+                                    ),
+                                  ),
+                                  title: Text('Skimige'),
+                                  subtitle: Text(
+                                    I18n.of(context).skimige_message,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                },
+              )
+            ],
+            if (Platform.isOhos) ...[
+              ListTile(
+                leading: Icon(Icons.device_hub),
+                title: Text(I18n.of(context).ohos_repo_address),
+                subtitle: Text('github.com/bgli100/pixez-flutter-ohos'),
+                trailing: Visibility(
+                  child: NewVersionChip(),
+                  visible: hasNewVersion,
+                ),
+                onTap: () {
                   showModalBottomSheet(
                       context: context,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(16.0),
-                        ),
-                      ),
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16.0))),
                       builder: (_) {
                         return SafeArea(
                           child: Column(
@@ -296,12 +354,11 @@ class _AboutPageState extends State<AboutPage> {
                               ListTile(
                                 title: Text('Version ${Constants.tagName}'),
                                 subtitle: Text(
-                                  I18n.of(context).go_to_project_address,
-                                ),
+                                    I18n.of(context).go_to_project_address),
                                 onTap: () {
                                   try {
                                     launchUrlString(
-                                        'https://github.com/Notsfsssf/pixez-flutter',
+                                        'https://github.com/bgli100/pixez-flutter-ohos',
                                         mode: LaunchMode.externalApplication
                                     );
                                   } catch (e) {}
@@ -311,147 +368,35 @@ class _AboutPageState extends State<AboutPage> {
                                     onPressed: () {
                                       try {
                                         launchUrlString(
-                                            'https://github.com/Notsfsssf/pixez-flutter',
+                                            'https://github.com/bgli100/pixez-flutter-ohos',
                                             mode: LaunchMode.externalApplication
                                         );
                                       } catch (e) {}
                                     }),
                               ),
                               ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    'https://avatars1.githubusercontent.com/u/9017470?s=400&v=4',
-                                  ),
-                                ),
-                                title: Text('Skimige'),
-                                subtitle: Text(
-                                  I18n.of(context).skimige_message,
-                                ),
-                              ),
+                                title: Text(I18n.of(context).check_for_updates),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => UpdatePage()));
+                                },
+                                trailing: Icon(Icons.update),
+                              )
                             ],
                           ),
                         );
-                      });
-              },
-            )
-          ],
-          if (Platform.isOhos) ...[
-            ListTile(
-              leading: Icon(Icons.device_hub),
-              title: Text(I18n.of(context).ohos_repo_address),
-              subtitle: Text('github.com/bgli100/pixez-flutter-ohos'),
-              trailing: Visibility(
-                child: NewVersionChip(),
-                visible: hasNewVersion,
-              ),
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(16.0))),
-                    builder: (_) {
-                      return SafeArea(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              title: Text('Version ${Constants.tagName}'),
-                              subtitle: Text(
-                                  I18n.of(context).go_to_project_address),
-                              onTap: () {
-                                try {
-                                  launchUrlString(
-                                      'https://github.com/bgli100/pixez-flutter-ohos',
-                                      mode: LaunchMode.externalApplication
-                                  );
-                                } catch (e) {}
-                              },
-                              trailing: IconButton(
-                                  icon: Icon(Icons.link),
-                                  onPressed: () {
-                                    try {
-                                      launchUrlString(
-                                          'https://github.com/bgli100/pixez-flutter-ohos',
-                                          mode: LaunchMode.externalApplication
-                                      );
-                                    } catch (e) {}
-                                  }),
-                            ),
-                            ListTile(
-                              title: Text(I18n.of(context).check_for_updates),
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => UpdatePage()));
-                              },
-                              trailing: Icon(Icons.update),
-                            )
-                          ],
-                        ),
-                      );
-                    });
-              },
-            )
-          ],
-          Visibility(
-            visible: false,
-            child: ListTile(
-                leading: Icon(Icons.home),
-                title: Text('GitHub Page'),
-                subtitle: Text('https://github.com/Notsfsssf'),
-                onTap: () async {}),
-          ),
-          ListTile(
-            leading: Icon(Icons.email),
-            title: Text(I18n.of(context).feedback),
-            subtitle: Text('PxezFeedBack@outlook.com'),
-          ),
-          ListTile(
-            leading: Icon(Icons.stars),
-            title: Text(I18n.of(context).support),
-            subtitle: Text(I18n.of(context).support_message),
-          ),
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(I18n.of(context).thanks),
-            subtitle: Text('感谢帮助我测试的弹幕委员会群友们\n感谢pixiv cat站主提供的图床'),
-            onTap: () {
-              if (Platform.isAndroid || Platform.isOhos)
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => Scaffold(
-                          appBar: AppBar(),
-                          body: ThanksList(),
-                        )));
-            },
-          ),
-          if (Platform.isIOS) ...[
-            ListTile(
-              leading: Icon(Icons.share),
-              title: Text(I18n.of(context).share),
-              subtitle: Text(I18n.of(context).share_this_app_link),
-              onTap: () {
-                if (Platform.isIOS) {
-                  Share.share('https://apps.apple.com/cn/app/pixez/id1494435126');
-                }
-              },
-            ),
-          ],
-          ListTile(
-            leading: Icon(FontAwesomeIcons.telegram),
-            title: Text("原版TG群"),
-            subtitle: Text('t.me/PixEzChannel'),
-          ),
-          if (Platform.isAndroid && !Constants.isGooglePlay) ...[
-            ListTile(
-              title: Text(I18n.of(context).donate_title),
-              subtitle: Text(I18n.of(context).donate_message),
-            ),
-            Card(
+                      }
+                    );
+                },
+              )
+            ],
+            Visibility(
+              visible: false,
               child: ListTile(
-                title: Text('AliPay'),
-                subtitle: Text('912756674@qq.com'),
-                onTap: () async {},
-              ),
+                  leading: Icon(Icons.home),
+                  title: Text('GitHub Page'),
+                  subtitle: Text('https://github.com/Notsfsssf'),
+                  onTap: () async {}),
             ),
             ListTile(
               leading: Icon(Icons.email),
@@ -468,32 +413,31 @@ class _AboutPageState extends State<AboutPage> {
               title: Text(I18n.of(context).thanks),
               subtitle: Text('感谢帮助我测试的弹幕委员会群友们\n感谢pixiv cat站主提供的图床'),
               onTap: () {
-                if (Platform.isAndroid)
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          Scaffold(appBar: AppBar(), body: ThanksList()),
+                if (Platform.isAndroid || Platform.isOhos)
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => Scaffold(
+                      appBar: AppBar(),
+                      body: ThanksList(),
                     ),
-                  );
+                  ),
+                );
               },
             ),
-            ListTile(
-              leading: Icon(Icons.share),
-              title: Text(I18n.of(context).share),
-              subtitle: Text(I18n.of(context).share_this_app_link),
-              onTap: () {
-                if (Platform.isIOS) {
-                  SharePlus.instance.share(
-                    ShareParams(
-                      text: 'https://apps.apple.com/cn/app/pixez/id1494435126',
-                    ),
-                  );
-                }
-              },
-            ),
+            if (Platform.isIOS) ...[
+              ListTile(
+                leading: Icon(Icons.share),
+                title: Text(I18n.of(context).share),
+                subtitle: Text(I18n.of(context).share_this_app_link),
+                onTap: () {
+                  if (Platform.isIOS) {
+                    Share.share('https://apps.apple.com/cn/app/pixez/id1494435126');
+                  }
+                },
+              ),
+            ],
             ListTile(
               leading: Icon(FontAwesomeIcons.telegram),
-              title: Text("Group"),
+              title: Text("原版TG群"),
               subtitle: Text('t.me/PixEzChannel'),
             ),
             if (Platform.isAndroid && !Constants.isGooglePlay) ...[
@@ -539,27 +483,6 @@ class _AboutPageState extends State<AboutPage> {
                     BotToast.showText(text: 'try to Purchase');
                     for (var p in products) {
                       if (p.id == "support") {
-                        final PurchaseParam purchaseParam = PurchaseParam(
-                          productDetails: p,
-                        );
-                        InAppPurchase.instance.buyConsumable(
-                          purchaseParam: purchaseParam,
-                        );
-                        break;
-                      }
-                    }
-                  },
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  subtitle: Text('如果你觉得这个应用非常不错，支持一下开发者吧！'),
-                  title: Text('支持开发者工作'),
-                  trailing: Text('25￥'),
-                  onTap: () async {
-                    BotToast.showText(text: 'try to Purchase');
-                    for (var p in products) {
-                      if (p.id == "support1") {
                         final PurchaseParam purchaseParam = PurchaseParam(
                           productDetails: p,
                         );
