@@ -331,5 +331,7 @@
   "start_follow": "Bắt đầu theo dõi",
   "news_follow_title": "Đang theo dõi",
   "user_page_info_title": "Thông tin người dùng",
-  "input_regexp_hint": "Nhập tag name hoặc biểu thức regex"
+  "input_regexp_hint": "Nhập tag name hoặc biểu thức regex",
+  "ugoira_only": "Chỉ Ugoira",
+  "ugoira_none": "Không có Ugoira"
 }

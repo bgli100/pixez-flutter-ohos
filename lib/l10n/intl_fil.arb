@@ -329,5 +329,9 @@
   "start_follow": "Simulan ang pagsundan",
   "news_follow_title": "Sinusundan",
   "user_page_info_title": "Impormasyon ng user",
-  "input_regexp_hint": "Maglagay ng mga keyword o pangalan tulad ng"
+  "input_regexp_hint": "Maglagay ng mga keyword o pangalan tulad ng",
+  "ugoira_only": "Ugoira lang",
+  "ugoira_none": "Walang Ugoira",
+  "export_novel_history": "I-export ang history ng novel",
+  "import_novel_history": "I-import ang history ng novel"
 }

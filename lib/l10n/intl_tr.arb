@@ -330,5 +330,9 @@
   "start_follow": "Takip etmeye başla",
    "news_follow_title": "Takip et",
   "user_page_info_title": "Kullanıcı bilgileri",
-  "input_regexp_hint": "Etiket adı veya düzenli ifade girin"
+  "input_regexp_hint": "Etiket adı veya düzenli ifade girin",
+  "ugoira_only": "Sadece Ugoira",
+  "ugoira_none": "Ugoira Olmayanlar",
+  "popular_male_desc": "Erkekler arasında popüler",
+  "popular_female_desc": "Kadınlar arasında popüler"
 }

@@ -321,5 +321,9 @@
   "start_follow": "Start follow",
   "news_follow_title": "Siguiente",
   "user_page_info_title": "Información de usuario",
-  "input_regexp_hint": "Ingrese el nombre de la etiqueta o expresión regular"
+  "input_regexp_hint": "Ingrese el nombre de la etiqueta o expresión regular",
+  "ugoira_only": "Solo Ugoira",
+  "ugoira_none": "Sin Ugoira",
+  "popular_male_desc": "Popular entre los hombres",
+  "popular_female_desc": "Popular entre las mujeres"
 }

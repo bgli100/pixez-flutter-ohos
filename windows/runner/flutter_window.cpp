@@ -29,7 +29,7 @@ bool FlutterWindow::OnCreate() {
   RegisterPixEzPlugins(flutter_controller_->engine(), GetHandle());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
-    this->Show();
+    // this->Show();
   });
 
   // Flutter can complete the first frame before the "show window" callback is

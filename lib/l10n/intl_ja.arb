@@ -332,5 +332,7 @@
   "start_follow": "Start follow",
   "news_follow_title": "フォロー中",
   "user_page_info_title": "ユーザー情報",
-  "input_regexp_hint": "タグ名または正規表現を入力"
+  "input_regexp_hint": "タグ名または正規表現を入力",
+  "popular_male_desc": "男性に人気",
+  "popular_female_desc": "女性に人気"
 }

@@ -170,6 +170,11 @@ jobs:
           name: installer
           path: artifacts
 
+      - shell: pwsh
+        run: |-
+          Move-Item -LiteralPath artifacts/pixez.msix -Destination artifacts/pixez.windows-amd64.msix
+          Move-Item -LiteralPath artifacts/MsixInstaller.exe -Destination artifacts/pixez.windows-amd64.exe
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:

@@ -330,6 +330,9 @@
     "start_follow": "Ikuti",
     "news_follow_title": "Mengikuti",
     "user_page_info_title": "Informasi pengguna",
-    "input_regexp_hint": "Masukkan nama tag atau ekspresi reguler"
-  }
-  
+    "input_regexp_hint": "Masukkan nama tag atau ekspresi reguler",
+    "ugoira_only": "Hanya Ugoira",
+    "ugoira_none": "Tanpa Ugoira",
+    "popular_male_desc": "Populer di kalangan pria",
+    "popular_female_desc": "Populer di kalangan wanita"
+}

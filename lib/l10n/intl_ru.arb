@@ -330,5 +330,9 @@
   "start_follow": "Подписаться",
   "news_follow_title": "Подписки на пользователей",
   "user_page_info_title": "Информация",
-  "input_regexp_hint": "Введите название метки или регулярное выражение"
+  "input_regexp_hint": "Введите название метки или регулярное выражение",
+  "ugoira_only": "Только Ugoira",
+  "ugoira_none": "Без Ugoira",
+  "popular_male_desc": "Популярно у мужчин",
+  "popular_female_desc": "Популярно у женщин"
 }

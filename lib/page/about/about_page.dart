@@ -18,6 +18,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,14 +57,20 @@ class _AboutPageState extends State<AboutPage> {
   initIap() async {
     if (!Constants.isGooglePlay && !Platform.isIOS) return;
     final Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription?.cancel();
-    }, onError: (error) {}) as StreamSubscription<List<PurchaseDetails>>?;
+    _subscription =
+        purchaseUpdated.listen(
+              (purchaseDetailsList) {
+                _listenToPurchaseUpdated(purchaseDetailsList);
+              },
+              onDone: () {
+                _subscription?.cancel();
+              },
+              onError: (error) {},
+            )
+            as StreamSubscription<List<PurchaseDetails>>?;
     const Set<String> _kIds = <String>{'support', 'support1'};
-    final ProductDetailsResponse response =
-        await InAppPurchase.instance.queryProductDetails(_kIds);
+    final ProductDetailsResponse response = await InAppPurchase.instance
+        .queryProductDetails(_kIds);
     if (response.notFoundIDs.isNotEmpty) {}
     List<ProductDetails> pDetails = response.productDetails;
     products.clear();
@@ -72,8 +79,9 @@ class _AboutPageState extends State<AboutPage> {
       try {
         var transactions = await SKPaymentQueueWrapper().transactions();
         transactions.forEach((skPaymentTransactionWrapper) {
-          SKPaymentQueueWrapper()
-              .finishTransaction(skPaymentTransactionWrapper);
+          SKPaymentQueueWrapper().finishTransaction(
+            skPaymentTransactionWrapper,
+          );
         });
       } catch (e) {}
     }
@@ -114,35 +122,39 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   Widget _buildInfo(BuildContext context) {
-    return Observer(builder: (context) {
-      return ListView(
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/images/me.jpg'),
-            ),
-            title: Text('Perol_Notsfsssf'),
-            subtitle: Text(I18n.of(context).perol_message),
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(16),
+    return Observer(
+      builder: (context) {
+        return ListView(
+          children: <Widget>[
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/me.jpg'),
+              ),
+              title: Text('Perol_Notsfsssf'),
+              subtitle: Text(I18n.of(context).perol_message),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
                   ),
-                ),
-                builder: (BuildContext context) {
-                  return InkWell(
-                    onTap: () {
-                      if (Platform.isAndroid)
-                        launchUrlString(Constants.isGooglePlay
-                            ? "https://music.youtube.com/watch?v=qfDhiBUNzwA&feature=share"
-                            : "https://music.apple.com/cn/album/intrauterine-education-single/1515096587");
-                    },
-                    child: Container(
-                      child: Image.asset(
-                        'assets/images/liz.png',
-                        fit: BoxFit.cover,
+                  builder: (BuildContext context) {
+                    return InkWell(
+                      onTap: () {
+                        if (Platform.isAndroid)
+                          launchUrlString(
+                            Constants.isGooglePlay
+                                ? "https://music.youtube.com/watch?v=qfDhiBUNzwA&feature=share"
+                                : "https://music.apple.com/cn/album/intrauterine-education-single/1515096587",
+                          );
+                      },
+                      child: Container(
+                        child: Image.asset(
+                          'assets/images/liz.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   );
@@ -174,30 +186,32 @@ class _AboutPageState extends State<AboutPage> {
             leading: CircleAvatar(
               backgroundImage: AssetImage('assets/images/right_now.jpg'),
             ),
-            title: Text('Right now'),
-            subtitle: Text(I18n.of(context).right_now_message),
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 200.0,
-                    child: Center(
-                      child: Text("这里空空的，这个设计师显然没有什么话要说"),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Contributors'),
-          ),
-          Container(
-            height: 142,
-            padding: EdgeInsets.only(left: 8.0),
-            child: ListView.builder(
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/right_now.jpg'),
+              ),
+              title: Text('Right now'),
+              subtitle: Text(I18n.of(context).right_now_message),
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 200.0,
+                      child: Center(child: Text("这里空空的，这个设计师显然没有什么话要说")),
+                    );
+                  },
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Contributors'),
+            ),
+            Container(
+              height: 142,
+              padding: EdgeInsets.only(left: 8.0),
+              child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: contributors.length,
                 scrollDirection: Axis.horizontal,
@@ -218,13 +232,9 @@ class _AboutPageState extends State<AboutPage> {
                           children: [
                             Column(
                               children: [
-                                Container(
-                                  height: 8,
-                                ),
+                                Container(height: 8),
                                 CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    data.avatar,
-                                  ),
+                                  backgroundImage: NetworkImage(data.avatar),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -241,7 +251,7 @@ class _AboutPageState extends State<AboutPage> {
                                 data.content,
                                 textAlign: TextAlign.center,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -274,8 +284,10 @@ class _AboutPageState extends State<AboutPage> {
                   showModalBottomSheet(
                       context: context,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16.0))),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16.0),
+                        ),
+                      ),
                       builder: (_) {
                         return SafeArea(
                           child: Column(
@@ -284,7 +296,8 @@ class _AboutPageState extends State<AboutPage> {
                               ListTile(
                                 title: Text('Version ${Constants.tagName}'),
                                 subtitle: Text(
-                                    I18n.of(context).go_to_project_address),
+                                  I18n.of(context).go_to_project_address,
+                                ),
                                 onTap: () {
                                   try {
                                     launchUrlString(
@@ -307,11 +320,13 @@ class _AboutPageState extends State<AboutPage> {
                               ListTile(
                                 leading: CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                      'https://avatars1.githubusercontent.com/u/9017470?s=400&v=4'),
+                                    'https://avatars1.githubusercontent.com/u/9017470?s=400&v=4',
+                                  ),
                                 ),
                                 title: Text('Skimige'),
-                                subtitle:
-                                    Text(I18n.of(context).skimige_message),
+                                subtitle: Text(
+                                  I18n.of(context).skimige_message,
+                                ),
                               ),
                             ],
                           ),
@@ -438,12 +453,67 @@ class _AboutPageState extends State<AboutPage> {
                 onTap: () async {},
               ),
             ),
-            Card(
-              child: ListTile(
-                title: Text('Wechat Pay'),
-                subtitle: Text('tap'),
-                onTap: () async {
-                  showDialog(
+            ListTile(
+              leading: Icon(Icons.email),
+              title: Text(I18n.of(context).feedback),
+              subtitle: Text('PxezFeedBack@outlook.com'),
+            ),
+            ListTile(
+              leading: Icon(Icons.stars),
+              title: Text(I18n.of(context).support),
+              subtitle: Text(I18n.of(context).support_message),
+            ),
+            ListTile(
+              leading: Icon(Icons.favorite),
+              title: Text(I18n.of(context).thanks),
+              subtitle: Text('感谢帮助我测试的弹幕委员会群友们\n感谢pixiv cat站主提供的图床'),
+              onTap: () {
+                if (Platform.isAndroid)
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          Scaffold(appBar: AppBar(), body: ThanksList()),
+                    ),
+                  );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.share),
+              title: Text(I18n.of(context).share),
+              subtitle: Text(I18n.of(context).share_this_app_link),
+              onTap: () {
+                if (Platform.isIOS) {
+                  SharePlus.instance.share(
+                    ShareParams(
+                      text: 'https://apps.apple.com/cn/app/pixez/id1494435126',
+                    ),
+                  );
+                }
+              },
+            ),
+            ListTile(
+              leading: Icon(FontAwesomeIcons.telegram),
+              title: Text("Group"),
+              subtitle: Text('t.me/PixEzChannel'),
+            ),
+            if (Platform.isAndroid && !Constants.isGooglePlay) ...[
+              ListTile(
+                title: Text(I18n.of(context).donate_title),
+                subtitle: Text(I18n.of(context).donate_message),
+              ),
+              Card(
+                child: ListTile(
+                  title: Text('AliPay'),
+                  subtitle: Text('912756674@qq.com'),
+                  onTap: () async {},
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  title: Text('Wechat Pay'),
+                  subtitle: Text('tap'),
+                  onTap: () async {
+                    showDialog(
                       context: context,
                       builder: (_) {
                         return AlertDialog(
@@ -453,71 +523,81 @@ class _AboutPageState extends State<AboutPage> {
                             height: 300,
                           ),
                         );
-                      });
-                },
-              ),
-            ),
-          ],
-          if (Platform.isIOS) ...[
-            Card(
-              child: ListTile(
-                subtitle: Text('如果你觉得这个应用还不错，支持一下开发者吧!'),
-                title: Text('支持开发者工作'),
-                trailing: Text('12￥'),
-                onTap: () async {
-                  BotToast.showText(text: 'try to Purchase');
-                  for (var p in products) {
-                    if (p.id == "support") {
-                      final PurchaseParam purchaseParam =
-                          PurchaseParam(productDetails: p);
-                      InAppPurchase.instance
-                          .buyConsumable(purchaseParam: purchaseParam);
-                      break;
-                    }
-                  }
-                },
-              ),
-            ),
-            Card(
-              child: ListTile(
-                subtitle: Text('如果你觉得这个应用非常不错，支持一下开发者吧！'),
-                title: Text('支持开发者工作'),
-                trailing: Text('25￥'),
-                onTap: () async {
-                  BotToast.showText(text: 'try to Purchase');
-                  for (var p in products) {
-                    if (p.id == "support1") {
-                      final PurchaseParam purchaseParam =
-                          PurchaseParam(productDetails: p);
-                      InAppPurchase.instance
-                          .buyConsumable(purchaseParam: purchaseParam);
-                      break;
-                    }
-                  }
-                },
-              ),
-            ),
-          ],
-          if (!Platform.isIOS && products.isNotEmpty && Constants.isGooglePlay)
-            for (var i in products)
-              Card(
-                margin: EdgeInsets.all(8.0),
-                elevation: 1.0,
-                child: ListTile(
-                  leading: Icon(FontAwesomeIcons.mugSaucer),
-                  title: Text(i.description),
-                  subtitle: Text(i.price),
-                  onTap: () {
-                    BotToast.showText(text: 'try to Purchase');
-                    final PurchaseParam purchaseParam =
-                        PurchaseParam(productDetails: i);
-                    InAppPurchase.instance
-                        .buyConsumable(purchaseParam: purchaseParam);
+                      },
+                    );
                   },
                 ),
-              )
-        ],
-      );
-    });
+              ),
+            ],
+            if (Platform.isIOS) ...[
+              Card(
+                child: ListTile(
+                  subtitle: Text('如果你觉得这个应用还不错，支持一下开发者吧!'),
+                  title: Text('支持开发者工作'),
+                  trailing: Text('12￥'),
+                  onTap: () async {
+                    BotToast.showText(text: 'try to Purchase');
+                    for (var p in products) {
+                      if (p.id == "support") {
+                        final PurchaseParam purchaseParam = PurchaseParam(
+                          productDetails: p,
+                        );
+                        InAppPurchase.instance.buyConsumable(
+                          purchaseParam: purchaseParam,
+                        );
+                        break;
+                      }
+                    }
+                  },
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  subtitle: Text('如果你觉得这个应用非常不错，支持一下开发者吧！'),
+                  title: Text('支持开发者工作'),
+                  trailing: Text('25￥'),
+                  onTap: () async {
+                    BotToast.showText(text: 'try to Purchase');
+                    for (var p in products) {
+                      if (p.id == "support1") {
+                        final PurchaseParam purchaseParam = PurchaseParam(
+                          productDetails: p,
+                        );
+                        InAppPurchase.instance.buyConsumable(
+                          purchaseParam: purchaseParam,
+                        );
+                        break;
+                      }
+                    }
+                  },
+                ),
+              ),
+            ],
+            if (!Platform.isIOS &&
+                products.isNotEmpty &&
+                Constants.isGooglePlay)
+              for (var i in products)
+                Card(
+                  margin: EdgeInsets.all(8.0),
+                  elevation: 1.0,
+                  child: ListTile(
+                    leading: Icon(FontAwesomeIcons.mugSaucer),
+                    title: Text(i.description),
+                    subtitle: Text(i.price),
+                    onTap: () {
+                      BotToast.showText(text: 'try to Purchase');
+                      final PurchaseParam purchaseParam = PurchaseParam(
+                        productDetails: i,
+                      );
+                      InAppPurchase.instance.buyConsumable(
+                        purchaseParam: purchaseParam,
+                      );
+                    },
+                  ),
+                ),
+          ],
+        );
+      },
+    );
   }
 }

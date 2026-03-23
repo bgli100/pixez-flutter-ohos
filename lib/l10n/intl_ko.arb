@@ -330,5 +330,9 @@
   "start_follow": "Start follow",
   "news_follow_title": "팔로우 중",
   "user_page_info_title": "유저 정보",
-  "input_regexp_hint": "태그 이름 또는 정규식을 입력하세요"
+  "input_regexp_hint": "태그 이름 또는 정규식을 입력하세요",
+  "ugoira_only": "우고이라만",
+  "ugoira_none": "우고이라 없음",
+  "popular_male_desc": "남성 인기 순",
+  "popular_female_desc": "여성 인기 순"
 }

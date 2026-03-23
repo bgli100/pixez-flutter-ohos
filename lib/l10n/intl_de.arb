@@ -331,5 +331,7 @@
   "start_follow": "Folgen starten",
   "news_follow_title": "Gefolgt",
   "user_page_info_title": "Nutzerinfo",
-  "input_regexp_hint": "Tag-Namen oder regulären Ausdruck eingeben"
+  "input_regexp_hint": "Tag-Namen oder regulären Ausdruck eingeben",
+  "ugoira_only": "Nur Ugoira",
+  "ugoira_none": "Keine Ugoira"
 }
