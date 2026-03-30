@@ -100,7 +100,15 @@ extension TimeExts on String {
         .replaceAll("?", "")
         .replaceAll(">", "")
         .replaceAll("|", "")
-        .replaceAll("<", "");
+        .replaceAll("<", "")
+        .replaceAll("'", "")
+        .replaceAll("`", "")
+        .replaceAll("\"", "")
+        .replaceAll(".", "")
+        .replaceAll("[", "")
+        .replaceAll("]", "")
+        .replaceAll("{", "")
+        .replaceAll("}", "");
   }
 }
 
