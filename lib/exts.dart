@@ -104,7 +104,7 @@ extension TimeExts on String {
         .replaceAll("'", "")
         .replaceAll("`", "")
         .replaceAll("\"", "")
-        .replaceAll(".", "")
+        .replaceAll(RegExp(r'\.(?=.*\.)'), '')
         .replaceAll("[", "")
         .replaceAll("]", "")
         .replaceAll("{", "")
