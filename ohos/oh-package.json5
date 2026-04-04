@@ -34,6 +34,7 @@
     "video_player_ohos": "file:./har/video_player_ohos.har",
     "battery_plus": "file:./har/battery_plus.har",
     "sqflite_ohos": "file:./har/sqflite_ohos.har",
-    "receive_sharing_intent": "file:./har/receive_sharing_intent.har"
+    "receive_sharing_intent": "file:./har/receive_sharing_intent.har",
+    "webview_flutter_ohos": "file:./har/webview_flutter_ohos.har"
   }
 }
