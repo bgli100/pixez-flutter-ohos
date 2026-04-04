@@ -13,7 +13,7 @@ publish_to: none
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.9.86+495
+version: 1.9.89+495
 
 environment:
   sdk: ">=3.6.2"
@@ -23,7 +23,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  dio: ^5.9.0
+  dio: ^5.9.2
   crypto: ^3.0.7
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3
@@ -63,10 +63,11 @@ dependencies:
       ref: br_video_player-v2.10.0_ohos
   intl: any
   quiver: ^3.2.2
-  dio_cache_interceptor: ^4.0.5
+  dio_cache_interceptor: ^4.0.6
   photo_view: ^0.15.0
   image: ^4.7.2
-  easy_refresh: ^3.4.0
+  easy_refresh: ^3.5.0
+  sqflite: ^2.4.2
   dynamic_color:
     git:
       url: https://github.com/hasali19/material-foundation-flutter-packages.git

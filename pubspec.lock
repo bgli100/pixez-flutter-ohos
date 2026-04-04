@@ -1688,7 +1688,7 @@ packages:
     source: hosted
     version: "1.10.0"
   sqflite:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       path: sqflite
       ref: "br_v2.4.1_ohos"
