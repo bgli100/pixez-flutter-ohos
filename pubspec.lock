@@ -1466,7 +1466,7 @@ packages:
   rhttp:
     dependency: "direct main"
     description:
-      path: "../rhttp/rhttp"
+      path: "plugins/rhttp"
       relative: true
     source: path
     version: "0.9.8"
