@@ -1,8 +1,3 @@
-/// This is copied from Cargokit (which is the official way to use it currently)
-/// Details: https://fzyzcjy.github.io/flutter_rust_bridge/manual/integrate/builtin
-
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
@@ -145,7 +140,7 @@ class RustBuilder {
       'rustup',
       [
         'run',
-        _getToolchainVersion(_toolchain),
+        _toolchain,
         'cargo',
         'build',
         ...extraArgs,
@@ -159,10 +154,7 @@ class RustBuilder {
         '--target-dir',
         environment.targetTempDir,
       ],
-      environment: {
-        ...(await _buildEnvironment()),
-        ..._additionalEnv,
-      },
+      environment: await _buildEnvironment(),
     );
     return path.join(
       environment.targetTempDir,
@@ -197,51 +189,7 @@ class RustBuilder {
       if (!env.ndkIsInstalled() && environment.javaHome != null) {
         env.installNdk(javaHome: environment.javaHome!);
       }
-      final map = await env.buildEnvironment();
-      final rustFlags = map['CARGO_ENCODED_RUSTFLAGS'];
-      if (rustFlags != null) {
-        map['CARGO_ENCODED_RUSTFLAGS'] =
-            "$rustFlags\u001f--cfg\u001freqwest_unstable";
-      }
-      return map;
+      return env.buildEnvironment();
     }
   }
-}
-
-// Adjustments: cargokit is copy-pasted.
-// The section below are custom adjustments to fit the requirements of the project.
-
-const _additionalEnv = {
-  'RUSTFLAGS': r'--remap-path-prefix=$HOME/.cargo/=/.cargo/ --cfg reqwest_unstable',
-};
-
-/// Regex for 'channel = "1.82.0"' capturing the version number
-final _toolchainVersionPattern = RegExp(r'^channel\s*=\s*"([^"]+)"$');
-
-/// Returns the toolchain version preferring the one from the project's rust-toolchain.toml file.
-String _getToolchainVersion(String fallback) {
-  final workingDirectory = path.current.replaceAll('\\', '/');
-
-  // Transform C:\Users\user\rhttp\rhttp\example\build\windows\x64\plugins\rhttp\cargokit_build\tool
-  // OR        C:\Users\user\rhttp\rhttp\example\build\rhttp\build\build_tool
-  // to
-  // C:\Users\user\rhttp\rhttp\example
-  // taking the parent of the right most "build" directory to get the project root,
-  // while removing the "rhttp/build/build_tool" suffix
-  final buildIndex = workingDirectory.replaceAll('rhttp/build/build_tool', '').lastIndexOf('/build/');
-  if (buildIndex != -1) {
-    final parent = workingDirectory.substring(0, buildIndex);
-    final toolchainFile = File(path.join(parent, 'rust-toolchain.toml'));
-    if (toolchainFile.existsSync()) {
-      final content = toolchainFile.readAsStringSync();
-      for (final line in content.split('\n')) {
-        final match = _toolchainVersionPattern.firstMatch(line);
-        if (match != null) {
-          return match.group(1)!;
-        }
-      }
-    }
-  }
-
-  return fallback;
 }

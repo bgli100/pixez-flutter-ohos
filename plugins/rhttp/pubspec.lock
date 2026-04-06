@@ -209,11 +209,12 @@ packages:
   flutter_rust_bridge:
     dependency: "direct main"
     description:
-      name: flutter_rust_bridge
-      sha256: e87d6b9ee934dcd24a128ccb2bd91905d2d5fe5c06245d6a8f5477d4907a437a
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.12.0"
+      path: frb_dart
+      ref: master
+      resolved-ref: "1a73c7c730133e674f7b1e4cf2adc6b593ca3108"
+      url: "https://github.com/bgli100/flutter_rust_bridge_ohos.git"
+    source: git
+    version: "2.7.0"
   freezed:
     dependency: "direct dev"
     description:

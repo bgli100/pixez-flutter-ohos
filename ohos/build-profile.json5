@@ -23,6 +23,198 @@
           ]
         }
       ]
+    },
+    {
+      "name": "webview_flutter_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-3ae88cc7e326af84a0b4cc56691fdbeb5c58b128/packages/webview_flutter/webview_flutter_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "video_player_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-a2b12bb363e33f5b1a62e08552f95228fd8201ee/packages/video_player/video_player_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "url_launcher_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-a7dd1d3a77d66233629742a301eaf7ec32e50023/packages/url_launcher/url_launcher_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sqflite_ohos",
+      "srcPath": "../../pub_cache/git/flutter_sqflite-2f2e58292a9b7ed03a802215aa714997a23644d7/sqflite_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "shared_preferences_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-a7dd1d3a77d66233629742a301eaf7ec32e50023/packages/shared_preferences/shared_preferences_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "share_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-935b9b9c056d08bc3c95a28e6b106aa98817bb4f/packages/share_plus/share_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "path_provider_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-4ef399d82d6a9800abaa2e5fc6a1da0db37388cc/packages/path_provider/path_provider_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rhttp",
+      "srcPath": "../plugins/rhttp/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "receive_sharing_intent",
+      "srcPath": "../../pub_cache/git/fluttertpc_receive_sharing_intent-59f4e7c741680a5ce121a7ddc686b89d4fe03182/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "permission_handler_ohos",
+      "srcPath": "../../pub_cache/git/flutter_permission_handler-86eae5711f8c561d2a4ef2a11030ff1330175b1b/permission_handler_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "package_info_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-ccabb7e3fa3ca0c9e4a7ede064a016a69fae6069/packages/package_info_plus/package_info_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "in_app_purchase_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-ba64deb55f29a6acbde3a2757b0d5bf4a7f72dad/packages/in_app_purchase/in_app_purchase_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "image_picker_ohos",
+      "srcPath": "../../pub_cache/git/flutter_packages-b8ea9c65c306012e9f806d062260fc8ab8bed2f6/packages/image_picker/image_picker_ohos/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "image_gallery_saver",
+      "srcPath": "../../pub_cache/git/flutter_image_gallery_saver_ohos-80105a3eb5765449fa12ae49ba3c25ca20fdcc61/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "file_picker_ohos",
+      "srcPath": "../../pub_cache/git/flutter_file_picker_ohos-f6f169220d69f7f5543d83bfab182be551a3243d/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "device_info_plus",
+      "srcPath": "../../pub_cache/git/flutter_plus_plugins-9f92933f2ac78bb3d7ec534f22bc3183a257fbb9/packages/device_info_plus/device_info_plus/ohos",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
     }
   ]
 }

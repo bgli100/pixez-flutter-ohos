@@ -18,7 +18,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_rust_bridge: ^2.12.0
+  flutter_rust_bridge:
+    git: 
+      url: https://github.com/bgli100/flutter_rust_bridge_ohos.git
+      path: frb_dart
+      ref: master
   freezed_annotation: ^3.0.0
   http: ^1.5.0
   http_profile: ^0.1.0
@@ -61,6 +65,8 @@ flutter:
       macos:
         ffiPlugin: true
       windows:
+        ffiPlugin: true
+      ohos:
         ffiPlugin: true
 
   # To add assets to your plugin package, add an assets section, like this:
