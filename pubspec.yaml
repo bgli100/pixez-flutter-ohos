@@ -16,7 +16,7 @@ publish_to: none
 version: 1.9.90+496
 
 environment:
-  sdk: ">=3.6.2"
+  sdk: ">=3.9.0"
 
 dependencies:
   flutter:
@@ -81,10 +81,10 @@ dependencies:
   dio_compatibility_layer: ^0.1.1
   flutter_cache_manager_dio: ^4.0.0
   file_picker: ^11.0.0
-  flutter_riverpod: ^2.5.1
-  riverpod_annotation: ^2.3.5
-  freezed_annotation: ^2.4.4
-  hooks_riverpod: ^2.6.1
+  flutter_riverpod: ^3.0.3
+  riverpod_annotation: ^3.0.3
+  freezed_annotation: ^3.0.0
+  hooks_riverpod: ^3.0.3
   flutter_hooks: ^0.21.2
   webview_flutter: ^4.13.0
   sqflite_common_ffi: ^2.3.4+4
@@ -96,11 +96,11 @@ dev_dependencies:
   json_serializable: ^6.8.0
   msix: ^3.16.9
   analyzer: ^7.0.0
-  build_runner: 2.4.15
-  riverpod_generator: ^2.4.0
-  custom_lint: 0.7.3
-  riverpod_lint: ^2.6.4
-  freezed: ^2.4.4
+  build_runner: ^2.7.1
+  riverpod_generator: ^3.0.3
+  custom_lint: ^0.8.0
+  riverpod_lint: ^3.0.3
+  freezed: ^3.2.3
 
 dependency_overrides:
   analyzer_plugin: ^0.13.1
@@ -220,24 +220,24 @@ dependency_overrides:
       ref: br_v0.16.0_ohos
   sqflite:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_sqflite.git
+      url: https://gitcode.com/bgli100/flutter_sqflite.git
       path: sqflite
-      ref: br_v2.4.1_ohos
+      ref: br_v2.4.2_ohos
   sqflite_common:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_sqflite.git
+      url: https://gitcode.com/bgli100/flutter_sqflite.git
       path: sqflite_common
-      ref: br_v2.4.1_ohos
+      ref: br_v2.4.2_ohos
   sqflite_platform_interface:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_sqflite.git
+      url: https://gitcode.com/bgli100/flutter_sqflite.git
       path: sqflite_platform_interface
-      ref: br_v2.4.1_ohos
+      ref: br_v2.4.2_ohos
   sqflite_ohos:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_sqflite.git
+      url: https://gitcode.com/bgli100/flutter_sqflite.git
       path: sqflite_ohos
-      ref: br_v2.4.1_ohos
+      ref: br_v2.4.2_ohos
   video_player:
     git:
       url: https://gitcode.com/openharmony-tpc/flutter_packages.git
