@@ -9,7 +9,7 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 base64 = "0.22.1"
 chrono = "0.4.44"
-flutter_rust_bridge = { version = "=2.12.0", features = ["chrono"] }
+flutter_rust_bridge = { version = "=2.7.0", features = ["chrono"] }
 futures-util = "0.3.32"
 rustls = "0.23.37"
 rustls-platform-verifier = "0.6.2"

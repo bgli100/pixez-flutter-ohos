@@ -16,7 +16,7 @@ class Rhttp {
     await RustLib.init(
       // Reduce the probably of dependency hell.
       // Projects using rhttp may use frb for other purposes as well.
-      forceSameCodegenVersion: false,
+      // forceSameCodegenVersion: false,
     );
   }
 

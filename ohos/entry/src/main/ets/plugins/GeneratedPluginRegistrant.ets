@@ -1,22 +1,19 @@
 import { FlutterEngine, Log } from '@ohos/flutter_ohos';
-import FilePickerPlugin from 'file_picker_ohos';
-import ImageGallerySaverPlugin from 'image_gallery_saver';
 import WebViewFlutterPlugin from 'webview_flutter_ohos';
-import PathProviderPlugin from 'path_provider_ohos';
 import VideoPlayerPlugin from 'video_player_ohos';
-import FileSelectorOhosPlugin from 'file_selector_ohos';
-import SharedPreferencesPlugin from 'shared_preferences_ohos';
 import UrlLauncherPlugin from 'url_launcher_ohos';
-import ImagePickerPlugin from 'image_picker_ohos';
-import InAppPurchasePlugin from 'in_app_purchase_ohos';
-import PermissionHandlerPlugin from 'permission_handler_ohos';
-import BatteryPlusPlugin from 'battery_plus';
-import ConnectivityPlugin from 'connectivity_plus';
-import SharePlusOhosPlugin from 'share_plus';
-import DeviceInfoPlusPlugin from 'device_info_plus';
-import PackageInfoPlugin from 'package_info_plus';
 import SqflitePlugin from 'sqflite_ohos';
+import SharedPreferencesPlugin from 'shared_preferences_ohos';
+import SharePlusOhosPlugin from 'share_plus';
+import PathProviderPlugin from 'path_provider_ohos';
 import ReceiveSharingIntentOhosPlugin from 'receive_sharing_intent';
+import PermissionHandlerPlugin from 'permission_handler_ohos';
+import PackageInfoPlugin from 'package_info_plus';
+import InAppPurchasePlugin from 'in_app_purchase_ohos';
+import ImagePickerPlugin from 'image_picker_ohos';
+import ImageGallerySaverPlugin from 'image_gallery_saver';
+import FilePickerPlugin from 'file_picker_ohos';
+import DeviceInfoPlusPlugin from 'device_info_plus';
 
 /**
  * Generated file. Do not edit.
@@ -30,24 +27,21 @@ export class GeneratedPluginRegistrant {
 
   static registerWith(flutterEngine: FlutterEngine) {
     try {
-      flutterEngine.getPlugins()?.add(new FilePickerPlugin());
-      flutterEngine.getPlugins()?.add(new ImageGallerySaverPlugin());
       flutterEngine.getPlugins()?.add(new WebViewFlutterPlugin());
-      flutterEngine.getPlugins()?.add(new PathProviderPlugin());
       flutterEngine.getPlugins()?.add(new VideoPlayerPlugin());
-      flutterEngine.getPlugins()?.add(new FileSelectorOhosPlugin());
-      flutterEngine.getPlugins()?.add(new SharedPreferencesPlugin());
       flutterEngine.getPlugins()?.add(new UrlLauncherPlugin());
-      flutterEngine.getPlugins()?.add(new ImagePickerPlugin());
-      flutterEngine.getPlugins()?.add(new InAppPurchasePlugin());
-      flutterEngine.getPlugins()?.add(new PermissionHandlerPlugin());
-      flutterEngine.getPlugins()?.add(new BatteryPlusPlugin());
-      flutterEngine.getPlugins()?.add(new ConnectivityPlugin());
-      flutterEngine.getPlugins()?.add(new SharePlusOhosPlugin());
-      flutterEngine.getPlugins()?.add(new DeviceInfoPlusPlugin());
-      flutterEngine.getPlugins()?.add(new PackageInfoPlugin());
       flutterEngine.getPlugins()?.add(new SqflitePlugin());
+      flutterEngine.getPlugins()?.add(new SharedPreferencesPlugin());
+      flutterEngine.getPlugins()?.add(new SharePlusOhosPlugin());
+      flutterEngine.getPlugins()?.add(new PathProviderPlugin());
       flutterEngine.getPlugins()?.add(new ReceiveSharingIntentOhosPlugin());
+      flutterEngine.getPlugins()?.add(new PermissionHandlerPlugin());
+      flutterEngine.getPlugins()?.add(new PackageInfoPlugin());
+      flutterEngine.getPlugins()?.add(new InAppPurchasePlugin());
+      flutterEngine.getPlugins()?.add(new ImagePickerPlugin());
+      flutterEngine.getPlugins()?.add(new ImageGallerySaverPlugin());
+      flutterEngine.getPlugins()?.add(new FilePickerPlugin());
+      flutterEngine.getPlugins()?.add(new DeviceInfoPlusPlugin());
     } catch (e) {
       Log.e(
         TAG,
