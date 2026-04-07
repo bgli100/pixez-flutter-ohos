@@ -1506,8 +1506,8 @@ packages:
   rhttp:
     dependency: "direct main"
     description:
-      path: "plugins/rhttp"
-      relative: true
+      path: "d:\\r\\"
+      relative: false
     source: path
     version: "0.16.0"
   riverpod:
