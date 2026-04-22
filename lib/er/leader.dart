@@ -42,7 +42,7 @@ class Leader {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) =>
-            Platform.isAndroid ? AndroidHelloPage() : HelloPage(),
+            (Platform.isAndroid || Platform.isOhos)? AndroidHelloPage() : HelloPage(),
       ),
       (route) => false,
     );

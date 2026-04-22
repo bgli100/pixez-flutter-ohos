@@ -14,6 +14,6 @@ dart run build_runner build --delete-conflicting-outputs
 cd $WORK_DIR
 
 dart run build_runner build --delete-conflicting-outputs
-flutter build hap --target-platform ohos-arm64 --release
+flutter build hap --target-platform ohos-arm64 --release --dart-define=ENABLE_FLEX_OVERFLOW=false
 
 cmd /c "rmdir d:\r\"
