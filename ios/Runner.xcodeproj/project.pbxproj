@@ -20,6 +20,7 @@
 		CF18B5682D0EDB4D0096872D /* FMDB in Frameworks */ = {isa = PBXBuildFile; productRef = CF18B5672D0EDB4D0096872D /* FMDB */; };
 		CF725E382ACE7C7600615536 /* DeepLinkPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF725E372ACE7C7600615536 /* DeepLinkPlugin.swift */; };
 		CFB8EE8C28C4437500B8D74E /* AppWidgetDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB8EE8B28C4437500B8D74E /* AppWidgetDBManager.swift */; };
+		CFFFA8242D0F000000800F00 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C8B5968260F680500098D5C /* WidgetKit.framework */; };
 		CFFFA8252C3B75EC00800F00 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C8B5968260F680500098D5C /* WidgetKit.framework */; };
 		CFFFA8262C3B75EC00800F00 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C8B596A260F680500098D5C /* SwiftUI.framework */; };
 		CFFFA8292C3B75EC00800F00 /* TinkerBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFFA8282C3B75EC00800F00 /* TinkerBundle.swift */; };
@@ -121,6 +122,7 @@
 				78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */,
 				D866EE375373955B58348C31 /* Pods_Runner.framework in Frameworks */,
 				CF18B5662D0EDB1A0096872D /* FMDB in Frameworks */,
+				CFFFA8242D0F000000800F00 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,7 +571,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 497;
+				CURRENT_PROJECT_VERSION = 499;
 				DEVELOPMENT_TEAM = L9F8ZWCR8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -577,6 +579,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -585,7 +588,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.9.81;
+				MARKETING_VERSION = 1.9.82;
 				PRODUCT_BUNDLE_IDENTIFIER = com.perol.pixez;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -714,7 +717,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 497;
+				CURRENT_PROJECT_VERSION = 499;
 				DEVELOPMENT_TEAM = L9F8ZWCR8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -722,6 +725,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -730,7 +734,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.9.81;
+				MARKETING_VERSION = 1.9.82;
 				PRODUCT_BUNDLE_IDENTIFIER = com.perol.pixez;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -751,7 +755,7 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 497;
+				CURRENT_PROJECT_VERSION = 499;
 				DEVELOPMENT_TEAM = L9F8ZWCR8Z;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -759,6 +763,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -767,7 +772,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 1.9.81;
+				MARKETING_VERSION = 1.9.82;
 				PRODUCT_BUNDLE_IDENTIFIER = com.perol.pixez;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

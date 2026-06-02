@@ -9,12 +9,14 @@ class SAFPlugin {
     if (Platform.isOhos) {
       return await FilePicker.platform.saveFile(
         fileName: name,
-        type: FileType.any
+        type: FileType.any,
       );
     }
 
-    final result = await platform
-        .invokeMethod("createFile", {'name': name, 'mimeType': type});
+    final result = await platform.invokeMethod("createFile", {
+      'name': name,
+      'mimeType': type,
+    });
     if (result != null) {
       return result;
     }
@@ -23,10 +25,7 @@ class SAFPlugin {
 
   static Future<void> writeUri(String uri, Uint8List data) async {
     if (Platform.isOhos) {
-      return await FilePicker.platform.writeFile(
-        uri: uri,
-        bytes: data
-      );
+      return await FilePicker.platform.writeFile(uri: uri, bytes: data);
     }
     return platform.invokeMethod("writeUri", {'uri': uri, 'data': data});
   }
@@ -36,14 +35,16 @@ class SAFPlugin {
       final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ["json"],
-        withData: true
+        withData: true,
       );
       if (result != null)
         return result.files.first.bytes;
-      else 
+      else
         return null;
     }
 
-    return platform.invokeMethod<Uint8List>("openFile", {'type': "application/json"});
+    return platform.invokeMethod<Uint8List>("openFile", {
+      'type': "application/json",
+    });
   }
 }

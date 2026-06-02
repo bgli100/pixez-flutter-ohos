@@ -13,7 +13,7 @@
  *  this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import 'package:intl/intl.dart';
-import 'package:pixez/component/pixiv_image.dart';
+import 'package:pixez/er/pixiv_image_source.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/ban_tag.dart';
 import 'package:pixez/models/illust.dart';
@@ -21,27 +21,11 @@ import 'package:pixez/models/novel_recom_response.dart';
 
 extension HostExts on Uri {
   Uri toTureUri() {
-    if (userSetting.disableBypassSni) {
-      return this;
-    } else {
-      if (userSetting.pictureSource != ImageHost) {
-        try {
-          if (userSetting.pictureSource!.contains('/')) {
-            final preHost = this.host;
-            return Uri.parse(
-              '${this.toString().replaceAll(preHost, userSetting.pictureSource!)}',
-            );
-          }
-          return this.replace(host: userSetting.pictureSource);
-        } catch (e) {}
-      }
-      if (this.host == ImageHost) {
-        return this.replace(host: splashStore.host);
-      } else if (this.host == ImageSHost) {
-        return this.replace(host: splashStore.host);
-      }
-    }
-    return this;
+    return PixivImageSource.resolveUri(
+      this,
+      networkMode: userSetting.networkMode,
+      pictureSource: userSetting.pictureSource,
+    );
   }
 }
 
@@ -64,32 +48,6 @@ extension TimeExts on String {
         .replaceAll("<p>", "")
         .replaceAll("</p>", "");
   }
-
-   String toTrueUrl() {
-     if (userSetting.disableBypassSni || this.contains("novel")) {
-       return this;
-     } else {
-       if (userSetting.pictureSource != ImageHost) {
-         try {
-           if (userSetting.pictureSource!.contains('/')) {
-             Uri preUri = Uri.parse(this);
-             final preHost = preUri.host;
-             return this.replaceAll(preHost, userSetting.pictureSource!);
-           }
-           return Uri.parse(this)
-               .replace(host: userSetting.pictureSource)
-               .toString();
-         } catch (e) {}
-       }
-       if (this.contains(ImageHost)) {
-         return this.replaceFirst(ImageHost, splashStore.host);
-       }
-       if (this.contains(ImageSHost)) {
-         return this.replaceFirst(ImageSHost, splashStore.host);
-       }
-     }
-     return this;
-   }
 
   String toLegal() {
     return this

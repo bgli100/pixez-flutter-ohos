@@ -20,6 +20,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pixez/constants.dart';
 import 'package:pixez/component/picker/utils.dart';
 import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/er/hoster.dart';
@@ -27,9 +28,11 @@ import 'package:pixez/er/prefer.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/network/api_client.dart';
+import 'package:pixez/network/network_mode.dart';
 import 'package:pixez/network/oauth_client.dart';
 import 'package:pixez/page/about/languages.dart';
 import 'package:pixez/secure_plugin.dart';
+import 'package:pixez/store/welcome_page_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'user_setting.g.dart';
@@ -43,6 +46,10 @@ abstract class _UserSetting with Store {
   static const String SINGLE_FOLDER_KEY = "single_folder";
   static const String SAVE_FORMAT_KEY = "save_format";
   static const String LANGUAGE_NUM_KEY = "language_num";
+  static const String LEGACY_WELCOME_PAGE_NUM_KEY = "welcome_page_num";
+  static const String WELCOME_PAGE_TYPE_KEY = "welcome_page_type";
+  static const String WELCOME_PAGE_NUM_IOS_MIGRATION_KEY =
+      "welcome_page_num_ios_migration_v2";
   static const String CROSS_COUNT_KEY = "cross_count";
   static const String H_CROSS_COUNT_KEY = "h_cross_count";
   static const String PICTURE_QUALITY_KEY = "picture_quality";
@@ -52,6 +59,8 @@ abstract class _UserSetting with Store {
   static const String IS_TOPMODE_KEY = "is_top_mode";
   static const String STORE_PATH_KEY = "save_store";
   static const String PICTURE_SOURCE_KEY = "picture_source";
+  static const String NETWORK_MODE_KEY = "network_mode";
+  static const String LEGACY_DISABLE_BYPASS_SNI_KEY = "disable_bypass_sni";
   static const String ISHELPLESSWAY_KEY = "is_helplessway";
   static const String THEME_MODE_KEY = "theme_mode";
   static const String SAVE_MODE_KEY = "save_mode";
@@ -132,7 +141,7 @@ abstract class _UserSetting with Store {
   @observable
   int languageNum = 0;
   @observable
-  int welcomePageNum = 0;
+  WelcomePageType welcomePageType = WelcomePageType.home;
   @observable
   int crossCount = 2;
   @observable
@@ -140,7 +149,7 @@ abstract class _UserSetting with Store {
   @observable
   int? displayMode;
   @observable
-  bool disableBypassSni = false;
+  NetworkMode networkMode = NetworkMode.standard;
   @observable
   bool singleFolder = false;
   @observable
@@ -373,9 +382,28 @@ abstract class _UserSetting with Store {
     autoTagWhenStar = v;
   }
 
+  List<WelcomePageType> get materialWelcomePages => materialWelcomePageTypes;
+
+  WelcomePageType get materialWelcomePageType =>
+      welcomePageType.normalizeFor(WelcomePagePlatform.material);
+
+  int get materialWelcomePageIndex {
+    return WelcomePagePlatform.material.indexOf(welcomePageType);
+  }
+
+  List<WelcomePageType> get fluentWelcomePages => fluentWelcomePageTypes;
+
+  WelcomePageType get fluentWelcomePageType =>
+      welcomePageType.normalizeFor(WelcomePagePlatform.fluent);
+
+  int get fluentWelcomePageIndex {
+    return WelcomePagePlatform.fluent.indexOf(welcomePageType);
+  }
+
   @action
   askInit() async {
     prefs = await Prefer.getInstance();
+    await _restoreWelcomePageType();
     int themeModeIndex = prefs.getInt(THEME_MODE_KEY) ?? 0;
     for (var i in ThemeMode.values) {
       if (i.index == themeModeIndex) {
@@ -395,11 +423,12 @@ abstract class _UserSetting with Store {
     isAMOLED = prefs.getBool(IS_AMOLED_KEY) ?? false;
     isTopMode = prefs.getBool(IS_TOPMODE_KEY) ?? false;
     languageNum = prefs.getInt(LANGUAGE_NUM_KEY) ?? 0;
-    disableBypassSni = prefs.getBool('disable_bypass_sni') ?? false;
+    await _restoreNetworkMode();
+    pictureSource = networkMode.allowsImageSource
+        ? (prefs.getString(PICTURE_SOURCE_KEY) ?? ImageHost)
+        : ImageHost;
     ApiClient.Accept_Language = languageList[languageNum];
-    await PixivImage.generatePixivCache();
-    await oAuthClient.createDioClient();
-    await apiClient.createDioClient();
+    await _applyNetworkClients();
     apiClient.httpClient.options.headers[HttpHeaders.acceptLanguageHeader] =
         ApiClient.Accept_Language;
     locale = iSupportedLocales[languageNum];
@@ -411,15 +440,65 @@ abstract class _UserSetting with Store {
     hCrossAdapterWidth = min(2160, max(100, hCrossAdapterV));
     crossCount = prefs.getInt(CROSS_COUNT_KEY) ?? 2;
     hCrossCount = prefs.getInt(H_CROSS_COUNT_KEY) ?? 4;
-    welcomePageNum = prefs.getInt('welcome_page_num') ?? 0;
     feedAIBadge = prefs.getBool(FEED_AI_BADGE_KEY) ?? true;
     padMode = prefs.getInt(PAD_MODE_KEY) ?? 0;
-    pictureSource = disableBypassSni
-        ? ImageHost
-        : (prefs.getString(PICTURE_SOURCE_KEY) ?? ImageHost);
     await Hoster.initMap();
     themeInitState = 1;
     fetcher.start(pictureSource!);
+  }
+
+  Future<void> _applyNetworkClients() async {
+    await PixivImage.generatePixivCache();
+    await oAuthClient.createDioClient();
+    await apiClient.createDioClient();
+  }
+
+  Future<void> _restoreNetworkMode() async {
+    final storedMode = prefs.getString(NETWORK_MODE_KEY);
+    if (storedMode != null && storedMode.isNotEmpty) {
+      networkMode = NetworkMode.fromCode(storedMode);
+      await prefs.remove(LEGACY_DISABLE_BYPASS_SNI_KEY);
+      return;
+    }
+
+    final legacyValue = prefs.getBool(LEGACY_DISABLE_BYPASS_SNI_KEY);
+    networkMode = legacyValue == true
+        ? NetworkMode.standard
+        : NetworkMode.compat;
+    await prefs.setString(NETWORK_MODE_KEY, networkMode.code);
+    await prefs.remove(LEGACY_DISABLE_BYPASS_SNI_KEY);
+  }
+
+  Future<void> _restoreWelcomePageType() async {
+    final storedType = prefs.getString(WELCOME_PAGE_TYPE_KEY);
+    if (storedType != null && storedType.isNotEmpty) {
+      welcomePageType = WelcomePageType.fromCode(storedType);
+      return;
+    }
+
+    final legacyValue = prefs.getInt(LEGACY_WELCOME_PAGE_NUM_KEY);
+    welcomePageType = welcomePageTypeFromLegacyIndex(
+      legacyValue,
+      legacyLayout: _legacyWelcomePageLayout(),
+    );
+    await prefs.setString(WELCOME_PAGE_TYPE_KEY, welcomePageType.code);
+    if (legacyValue != null) {
+      await prefs.remove(LEGACY_WELCOME_PAGE_NUM_KEY);
+    }
+    await prefs.remove(WELCOME_PAGE_NUM_IOS_MIGRATION_KEY);
+  }
+
+  WelcomePageLegacyLayout _legacyWelcomePageLayout() {
+    if (Constants.isFluent) {
+      return WelcomePageLegacyLayout.fluent;
+    }
+    if (Platform.isIOS) {
+      final hasMigrated = prefs.getBool(WELCOME_PAGE_NUM_IOS_MIGRATION_KEY);
+      if (!(hasMigrated ?? false)) {
+        return WelcomePageLegacyLayout.iosMaterialBeforeRankFix;
+      }
+    }
+    return WelcomePageLegacyLayout.material;
   }
 
   @action
@@ -444,7 +523,8 @@ abstract class _UserSetting with Store {
     starAfterSave = prefs.getBool(STAR_AFTER_SAVE) ?? false;
     novelFontsize = prefs.getDouble(NOVEL_FONT_SIZE_KEY) ?? 16.0;
     novelTextStyle = novelTextStyle.copyWith(fontSize: novelFontsize);
-    saveMode = prefs.getInt(SAVE_MODE_KEY) ??
+    saveMode =
+        prefs.getInt(SAVE_MODE_KEY) ??
         (isHelplessWay == null ? 0 : (isHelplessWay! ? 2 : 1));
 
     splashStore.setHost(pictureSource!);
@@ -534,9 +614,20 @@ abstract class _UserSetting with Store {
   }
 
   @action
-  setWelcomePageNum(int value) async {
-    await prefs.setInt('welcome_page_num', value);
-    welcomePageNum = value;
+  Future<void> setWelcomePageType(WelcomePageType value) async {
+    await prefs.setString(WELCOME_PAGE_TYPE_KEY, value.code);
+    await prefs.remove(LEGACY_WELCOME_PAGE_NUM_KEY);
+    welcomePageType = value;
+  }
+
+  @action
+  Future<void> setMaterialWelcomePageIndex(int value) async {
+    await setWelcomePageType(WelcomePagePlatform.material.typeAt(value));
+  }
+
+  @action
+  Future<void> setFluentWelcomePageType(WelcomePageType value) async {
+    await setWelcomePageType(value.normalizeFor(WelcomePagePlatform.fluent));
   }
 
   @action
@@ -546,9 +637,18 @@ abstract class _UserSetting with Store {
   }
 
   @action
-  setDisableBypassSni(bool value) async {
-    await prefs.setBool('disable_bypass_sni', value);
-    disableBypassSni = value;
+  setNetworkMode(NetworkMode value) async {
+    await prefs.setString(NETWORK_MODE_KEY, value.code);
+    networkMode = value;
+    if (!value.allowsImageSource) {
+      pictureSource = ImageHost;
+      splashStore.setHost(ImageHost);
+    } else {
+      pictureSource = prefs.getString(PICTURE_SOURCE_KEY) ?? ImageHost;
+      splashStore.setHost(pictureSource!);
+    }
+    await _applyNetworkClients();
+    fetcher.reloadNetwork();
   }
 
   @action

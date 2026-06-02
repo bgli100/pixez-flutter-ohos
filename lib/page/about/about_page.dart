@@ -173,9 +173,7 @@ class _AboutPageState extends State<AboutPage> {
                   builder: (BuildContext context) {
                     return Container(
                       height: 200.0,
-                      child: Center(
-                        child: Text("我...从没觉得玩乐队开心过"),
-                      ),
+                      child: Center(child: Text("我...从没觉得玩乐队开心过")),
                     );
                   },
                 );
@@ -262,7 +260,8 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: Text(I18n.of(context).rate_message),
                 onTap: () async {
                   if (Platform.isIOS) {
-                    var url = 'https://apps.apple.com/cn/app/pixez/id1494435126';
+                    var url =
+                        'https://apps.apple.com/cn/app/pixez/id1494435126';
                     try {
                       await launchUrlString(url);
                     } catch (e) {}
@@ -278,58 +277,60 @@ class _AboutPageState extends State<AboutPage> {
                 onTap: () {
                   if (!Constants.isGooglePlay)
                     showModalBottomSheet(
-                        context: context,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(16.0),
-                          ),
+                      context: context,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16.0),
                         ),
-                        builder: (_) {
-                          return SafeArea(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  title: Text('Version ${Constants.tagName}'),
-                                  subtitle: Text(
-                                    I18n.of(context).go_to_project_address,
-                                  ),
-                                  onTap: () {
+                      ),
+                      builder: (_) {
+                        return SafeArea(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                title: Text('Version ${Constants.tagName}'),
+                                subtitle: Text(
+                                  I18n.of(context).go_to_project_address,
+                                ),
+                                onTap: () {
+                                  try {
+                                    launchUrlString(
+                                      'https://github.com/Notsfsssf/pixez-flutter',
+                                      mode: LaunchMode.externalApplication,
+                                    );
+                                  } catch (e) {}
+                                },
+                                trailing: IconButton(
+                                  icon: Icon(Icons.link),
+                                  onPressed: () {
                                     try {
                                       launchUrlString(
-                                          'https://github.com/Notsfsssf/pixez-flutter',
-                                          mode: LaunchMode.externalApplication
+                                        'https://github.com/Notsfsssf/pixez-flutter',
+                                        mode: LaunchMode.externalApplication,
                                       );
                                     } catch (e) {}
                                   },
-                                  trailing: IconButton(
-                                      icon: Icon(Icons.link),
-                                      onPressed: () {
-                                        try {
-                                          launchUrlString(
-                                              'https://github.com/Notsfsssf/pixez-flutter',
-                                              mode: LaunchMode.externalApplication
-                                          );
-                                        } catch (e) {}
-                                      }),
                                 ),
-                                ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                      'https://avatars1.githubusercontent.com/u/9017470?s=400&v=4',
-                                    ),
-                                  ),
-                                  title: Text('Skimige'),
-                                  subtitle: Text(
-                                    I18n.of(context).skimige_message,
+                              ),
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    'https://avatars1.githubusercontent.com/u/9017470?s=400&v=4',
                                   ),
                                 ),
-                              ],
-                            ),
-                          );
-                        });
+                                title: Text('Skimige'),
+                                subtitle: Text(
+                                  I18n.of(context).skimige_message,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
                 },
-              )
+              ),
             ],
             if (Platform.isOhos) ...[
               ListTile(
@@ -342,61 +343,69 @@ class _AboutPageState extends State<AboutPage> {
                 ),
                 onTap: () {
                   showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(16.0))),
-                      builder: (_) {
-                        return SafeArea(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                title: Text('Version ${Constants.tagName}'),
-                                subtitle: Text(
-                                    I18n.of(context).go_to_project_address),
-                                onTap: () {
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(16.0),
+                      ),
+                    ),
+                    builder: (_) {
+                      return SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text('Version ${Constants.tagName}'),
+                              subtitle: Text(
+                                I18n.of(context).go_to_project_address,
+                              ),
+                              onTap: () {
+                                try {
+                                  launchUrlString(
+                                    'https://github.com/bgli100/pixez-flutter-ohos',
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } catch (e) {}
+                              },
+                              trailing: IconButton(
+                                icon: Icon(Icons.link),
+                                onPressed: () {
                                   try {
                                     launchUrlString(
-                                        'https://github.com/bgli100/pixez-flutter-ohos',
-                                        mode: LaunchMode.externalApplication
+                                      'https://github.com/bgli100/pixez-flutter-ohos',
+                                      mode: LaunchMode.externalApplication,
                                     );
                                   } catch (e) {}
                                 },
-                                trailing: IconButton(
-                                    icon: Icon(Icons.link),
-                                    onPressed: () {
-                                      try {
-                                        launchUrlString(
-                                            'https://github.com/bgli100/pixez-flutter-ohos',
-                                            mode: LaunchMode.externalApplication
-                                        );
-                                      } catch (e) {}
-                                    }),
                               ),
-                              ListTile(
-                                title: Text(I18n.of(context).check_for_updates),
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => UpdatePage()));
-                                },
-                                trailing: Icon(Icons.update),
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                    );
+                            ),
+                            ListTile(
+                              title: Text(I18n.of(context).check_for_updates),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => UpdatePage(),
+                                  ),
+                                );
+                              },
+                              trailing: Icon(Icons.update),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
-              )
+              ),
             ],
             Visibility(
               visible: false,
               child: ListTile(
-                  leading: Icon(Icons.home),
-                  title: Text('GitHub Page'),
-                  subtitle: Text('https://github.com/Notsfsssf'),
-                  onTap: () async {}),
+                leading: Icon(Icons.home),
+                title: Text('GitHub Page'),
+                subtitle: Text('https://github.com/Notsfsssf'),
+                onTap: () async {},
+              ),
             ),
             ListTile(
               leading: Icon(Icons.email),
@@ -414,13 +423,12 @@ class _AboutPageState extends State<AboutPage> {
               subtitle: Text('感谢帮助我测试的弹幕委员会群友们\n感谢pixiv cat站主提供的图床'),
               onTap: () {
                 if (Platform.isAndroid || Platform.isOhos)
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => Scaffold(
-                      appBar: AppBar(),
-                      body: ThanksList(),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          Scaffold(appBar: AppBar(), body: ThanksList()),
                     ),
-                  ),
-                );
+                  );
               },
             ),
             if (Platform.isIOS) ...[
@@ -430,7 +438,9 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: Text(I18n.of(context).share_this_app_link),
                 onTap: () {
                   if (Platform.isIOS) {
-                    Share.share('https://apps.apple.com/cn/app/pixez/id1494435126');
+                    Share.share(
+                      'https://apps.apple.com/cn/app/pixez/id1494435126',
+                    );
                   }
                 },
               ),
@@ -504,7 +514,7 @@ class _AboutPageState extends State<AboutPage> {
                   margin: EdgeInsets.all(8.0),
                   elevation: 1.0,
                   child: ListTile(
-                    leading: Icon(FontAwesomeIcons.mugSaucer),
+                    leading: FaIcon(FontAwesomeIcons.mugSaucer),
                     title: Text(i.description),
                     subtitle: Text(i.price),
                     onTap: () {
