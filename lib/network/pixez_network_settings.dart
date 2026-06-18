@@ -14,7 +14,7 @@ class PixezNetworkSettings {
 
   static r.ClientSettings? forHost(String host, NetworkMode mode) {
     if (mode == NetworkMode.standard) return null;
-    if (host == appApiHost && mode == NetworkMode.ech) {
+    if (mode == NetworkMode.ech) {
       return r.ClientSettings(
         enableEch: true,
         requireEch: true,
@@ -22,6 +22,8 @@ class PixezNetworkSettings {
         dnsSettings: r.DnsSettings.static(
           overrides: {
             appApiHost: ['104.18.10.118', '104.18.11.118'],
+            oauthHost: ['104.18.10.118', '104.18.11.118'],
+            accountHost: ['104.18.10.118', '104.18.11.118'],
           },
         ),
       );
@@ -29,9 +31,9 @@ class PixezNetworkSettings {
     return compatible();
   }
 
-  static r.ClientSettings? forImages(NetworkMode mode) {
+  static r.ClientSettings? forImages(String? host, NetworkMode mode) {
     if (mode == NetworkMode.standard) return null;
-    if (userSetting.pictureSource != imageHost) return null;
+    if (host != imageHost) return null;
     return compatible();
   }
 
