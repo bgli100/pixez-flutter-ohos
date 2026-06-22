@@ -89,9 +89,6 @@ dependencies:
   webview_flutter: ^4.13.0
   sqflite_common_ffi: ^2.3.4+4
 
-dependency_overrides: 
-  permission_handler_apple: 9.4.10
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -106,6 +103,7 @@ dev_dependencies:
   freezed: ^3.2.3
 
 dependency_overrides:
+  permission_handler_apple: 9.4.10
   analyzer_plugin: ^0.13.1
   receive_sharing_intent:
     git:
