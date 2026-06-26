@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
       }
       return;
     }
-    if (userSetting.networkMode.usesCompatibleConnection) {
+    if (userSetting.oauthNetworkMode.usesCompatibleConnection) {
       if (!Platform.isOhos) {
         // await WeissServer.listener();
         await WeissPlugin.start();
