@@ -120,3 +120,4 @@ msic
 # FVM Version Cache
 .fvm/
 /lib/src/generated/
+/plugins/rhttp/rhttp/cargokit/build_tool

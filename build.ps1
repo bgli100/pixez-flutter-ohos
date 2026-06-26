@@ -7,13 +7,14 @@ $env:RUSTFLAGS="--cfg reqwest_unstable"
 $WORK_DIR="$PWD"
 
 # hack to shorten path, otherwise path exceeds CMAKE_OBJECT_PATH_MAX (250)
-cmd /c "mklink /d d:\r\ $PWD\plugins\rhttp"
+cmd /c "mklink /d d:\r\ $PWD\plugins\rhttp\rhttp"
 
 cd d:\r\
-dart run build_runner build --delete-conflicting-outputs
+flutter_rust_bridge_codegen generate
+dart run build_runner build
 cd $WORK_DIR
 
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 flutter build hap --target-platform ohos-arm64 --release --dart-define=ENABLE_FLEX_OVERFLOW=false
 
 cmd /c "rmdir d:\r\"
