@@ -18,6 +18,8 @@ class MockRustLibApi extends Mock implements RustLibApi {
       const ClientSettings(
         httpVersionPref: rust_http.HttpVersionPref.http11,
         throwOnStatusCode: true,
+        enableEch: false,
+        requireEch: false,
       ),
     );
     registerFallbackValue(FakeCancellationToken());

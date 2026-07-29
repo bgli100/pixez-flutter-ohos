@@ -129,9 +129,12 @@ class _IllustCardState extends State<IllustCard> {
     }
     saveStore.saveImage(store.illusts!);
     if (userSetting.starAfterSave && (store.state == 0)) {
-      store.star(
+      bool success = await store.star(
         restrict: userSetting.defaultPrivateLike ? "private" : "public",
       );
+      if (success && userSetting.followAfterStar) {
+        await store.followAfterStar();
+      }
     }
   }
 
@@ -398,15 +401,15 @@ class _IllustCardState extends State<IllustCard> {
                 } else {
                   tags = null;
                 }
-                store.star(
+                bool success = await store.star(
                   restrict: userSetting.defaultPrivateLike
                       ? "private"
                       : "public",
                   tags: tags,
                 );
-                if (userSetting.followAfterStar) {
-                  bool success = await store.followAfterStar();
-                  if (success) {
+                if (success && userSetting.followAfterStar) {
+                  bool followSuccess = await store.followAfterStar();
+                  if (followSuccess) {
                     BotToast.showText(
                       text:
                           "${store.illusts!.user.name} ${I18n.of(context).followed}",

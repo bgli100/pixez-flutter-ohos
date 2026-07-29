@@ -7,6 +7,7 @@ enum Result { yes, no, timeout }
 
 class Updater {
   static Result result = Result.timeout;
+  static String? latestVersion;
 
   static Future<Result> check() async {
     if (Constants.isGooglePlay) return Result.no;
@@ -23,6 +24,7 @@ Future<Result> checkUpdate(String arg) async {
         await Dio(BaseOptions(baseUrl: 'https://api.github.com'))
             .get('/repos/bgli100/pixez-flutter-ohos/releases/latest');
     String tagName = response.data['tag_name'];
+    Updater.latestVersion = tagName;
     LPrinter.d("tagName:$tagName ");
     if (tagName != Constants.tagName) {
       List<String> remoteList = tagName.split(".");

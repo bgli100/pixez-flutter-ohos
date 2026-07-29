@@ -300,15 +300,15 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
                       } else {
                         tags = null;
                       }
-                      _illustStore.star(
+                      bool success = await _illustStore.star(
                         restrict: userSetting.defaultPrivateLike
                             ? "private"
                             : "public",
                         tags: tags,
                       );
-                      if (userSetting.followAfterStar) {
-                        bool success = await _illustStore.followAfterStar();
-                        if (success) {
+                      if (success && userSetting.followAfterStar) {
+                        bool followSuccess = await _illustStore.followAfterStar();
+                        if (followSuccess) {
                           userStore?.isFollow = true;
                           BotToast.showText(
                             text:
@@ -1131,15 +1131,18 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
                     ListTile(
                       leading: Icon(Icons.save),
                       title: Text(I18n.of(context).save),
-                      onTap: () {
+                      onTap: () async {
                         Navigator.of(context).pop("OK");
                         if (userSetting.starAfterSave &&
                             (_illustStore.state == 0)) {
-                          _illustStore.star(
+                          bool success = await _illustStore.star(
                             restrict: userSetting.defaultPrivateLike
                                 ? "private"
                                 : "public",
                           );
+                          if (success && userSetting.followAfterStar) {
+                            await _illustStore.followAfterStar();
+                          }
                         }
                       },
                     ),
@@ -1320,7 +1323,10 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
       if (userSetting.saveAfterStar && (_illustStore.state == 0)) {
         saveStore.saveImage(_illustStore.illusts!);
       }
-      _illustStore.star(restrict: restrict, tags: tags, force: true);
+      bool success = await _illustStore.star(restrict: restrict, tags: tags, force: true);
+      if (success && userSetting.followAfterStar) {
+        await _illustStore.followAfterStar();
+      }
     }
   }
 

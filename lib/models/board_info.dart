@@ -25,9 +25,9 @@ class BoardInfo {
   factory BoardInfo.fromJson(Map<String, dynamic> json) =>
       _$BoardInfoFromJson(json);
   Map<String, dynamic> toJson() => _$BoardInfoToJson(this);
-  
+
   static bool boardDataLoaded = false;
-  
+
   static List<BoardInfo> boardList = [];
 
   static String path() {
@@ -43,6 +43,8 @@ class BoardInfo {
       return "ios.json";
     } else if (Platform.isOhos) {
       return "ohos.json";
+    } else if (Platform.isWindows) {
+      return "windows.json";
     }
     return "";
   }
@@ -50,7 +52,8 @@ class BoardInfo {
   static Future<List<BoardInfo>> load() async {
     print(path());
     final request = await Dio().get(
-        'https://raw.githubusercontent.com/bgli100/pixez-flutter-ohos/refs/heads/master/.github/board/${path()}');
+      'https://raw.githubusercontent.com/bgli100/pixez-flutter-ohos/refs/heads/master/.github/board/${path()}',
+    );
     final list = (jsonDecode(request.data) as List)
         .map((e) => BoardInfo.fromJson(e))
         .toList();

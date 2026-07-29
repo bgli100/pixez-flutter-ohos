@@ -94,6 +94,7 @@ abstract class _UserSetting with Store {
   static const String SWIPE_CHANGE_ARTWORK_KEY = "swipe_change_artwork";
   static const String USE_SAUNCE_NAO_WEBVIEW = "use_sauce_nao_webview";
   static const String FEED_AI_BADGE_KEY = "feed_ai_badge";
+  static const String IGNORE_UPDATE_VERSION_KEY = "ignore_update_version";
   static const String ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY =
       "illust_detail_save_skip_long_press";
   static const String DRAG_START_X_KEY = "drag_start_x";
@@ -208,6 +209,8 @@ abstract class _UserSetting with Store {
   @observable
   bool feedAIBadge = false;
   @observable
+  String? ignoreUpdateVersion;
+  @observable
   bool autoTagWhenStar = false;
   static const String intialFormat = "{illust_id}_p{part}";
 
@@ -215,6 +218,16 @@ abstract class _UserSetting with Store {
   setFeedAIBadge(bool value) async {
     await prefs.setBool(FEED_AI_BADGE_KEY, value);
     feedAIBadge = value;
+  }
+
+  @action
+  setIgnoreUpdateVersion(String? value) async {
+    if (value == null || value.isEmpty) {
+      await prefs.remove(IGNORE_UPDATE_VERSION_KEY);
+    } else {
+      await prefs.setString(IGNORE_UPDATE_VERSION_KEY, value);
+    }
+    ignoreUpdateVersion = value;
   }
 
   @action
@@ -562,6 +575,7 @@ abstract class _UserSetting with Store {
     useSaunceNaoWebview = prefs.getBool(USE_SAUNCE_NAO_WEBVIEW) ?? false;
     dragStartX = prefs.getDouble(DRAG_START_X_KEY) ?? 0;
     autoTagWhenStar = prefs.getBool(AUTO_TAG_WHEN_STAR_KEY) ?? false;
+    ignoreUpdateVersion = prefs.getString(IGNORE_UPDATE_VERSION_KEY);
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;
     if (Platform.isAndroid) {

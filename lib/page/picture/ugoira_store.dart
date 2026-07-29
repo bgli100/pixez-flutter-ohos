@@ -30,6 +30,7 @@ import 'package:pixez/network/api_client.dart';
 import 'package:pixez/document_plugin.dart';
 import 'package:pixez/saf_plugin.dart';
 import 'package:pixez/models/illust.dart';
+import 'package:pixez/page/picture/illust_store.dart';
 import 'package:pixez/store/save_store.dart';
 
 part 'ugoira_store.g.dart';
@@ -119,11 +120,24 @@ abstract class _UgoiraStoreBase with Store {
         final targetName = applySingleFolder(illusts, gifName);
         await DocumentPlugin.saveFromPath(gifPath, targetName);
         BotToast.showText(text: "[GifSaved] $gifName");
+        await _autoBookmarkAfterSave(illusts);
       }
     } on PlatformException catch (e) {
       BotToast.showText(text: "encode failed: ${e.message ?? e.toString()}");
     } finally {
       isEncoding = false;
+    }
+  }
+
+  Future<void> _autoBookmarkAfterSave(Illusts illusts) async {
+    if (!userSetting.starAfterSave) return;
+    final illustStore = IllustStore(illusts.id, illusts);
+    if (illustStore.state != 0) return;
+    final success = await illustStore.star(
+      restrict: userSetting.defaultPrivateLike ? "private" : "public",
+    );
+    if (success && userSetting.followAfterStar) {
+      await illustStore.followAfterStar();
     }
   }
 
