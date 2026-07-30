@@ -9,10 +9,10 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 base64 = "0.22.1"
 chrono = "0.4.44"
-flutter_rust_bridge = { version = "=2.7.0", features = ["chrono"] }
+flutter_rust_bridge = { path = "../../../../../flutter_rust_bridge_ohos/frb_rust", features = ["chrono"] }
 futures-util = "0.3.32"
 log = "0.4.32"
-rustls = "0.23"
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
 rustls-platform-verifier = "0.7"
 serde_json = "1.0"
 webpki-root-certs = "1.0"

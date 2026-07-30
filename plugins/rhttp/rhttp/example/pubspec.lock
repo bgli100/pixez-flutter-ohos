@@ -137,11 +137,9 @@ packages:
   flutter_rust_bridge:
     dependency: transitive
     description:
-      path: frb_dart
-      ref: master
-      resolved-ref: c2d732b2c9c1a7f63d57d99933af4348d8916823
-      url: "https://github.com/bgli100/flutter_rust_bridge_ohos.git"
-    source: git
+      path: "D:\\dev\\flutter_rust_bridge_ohos\\frb_dart"
+      relative: false
+    source: path
     version: "2.11.1"
   flutter_test:
     dependency: "direct dev"

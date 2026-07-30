@@ -62,20 +62,15 @@ final Fetcher fetcher = new Fetcher();
 final FullScreenStore fullScreenStore = FullScreenStore();
 
 main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Rhttp.init();
   await MmapCache.init();
-  WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isWindows || Platform.isLinux) {
-    // sqflite ffi init
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-
     final dbPath = await Paths.getDatabaseFolderPath();
     if (dbPath != null) databaseFactory.setDatabasesPath(dbPath);
-
-    // 确保只有一个实例正在运行
-    // Android 和 iOS 应用本身就是单例程序，无需额外操作
     SingleInstancePlugin.initialize();
   }
 
@@ -263,9 +258,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               ? Container(
                   key: const ValueKey('recent_screen_mask'),
                   color: Theme.of(context).canvasColor,
-                  child: const Center(
-                    child: Icon(Icons.privacy_tip_outlined),
-                  ),
+                  child: const Center(child: Icon(Icons.privacy_tip_outlined)),
                 )
               : const SizedBox.shrink(key: ValueKey('recent_screen_unmask')),
         ),

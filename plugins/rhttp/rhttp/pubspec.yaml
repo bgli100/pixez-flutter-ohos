@@ -19,10 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_rust_bridge:
-    git: 
-      url: https://github.com/bgli100/flutter_rust_bridge_ohos.git
-      path: frb_dart
-      ref: master
+    path: D:\dev\flutter_rust_bridge_ohos\frb_dart
   freezed_annotation: ^3.0.0
   http: ^1.5.0
   http_profile: ^0.1.0
