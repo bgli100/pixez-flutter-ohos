@@ -404,6 +404,10 @@ class _SearchPageState extends State<SearchPage>
             child: Container(
               height: (MediaQuery.of(context).size.width / 3) - 16,
             ),
+          ),
+          // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+          SliverToBoxAdapter(
+            child: SizedBox(height: hdsBottomSpace()),
           )
         ],
       ),

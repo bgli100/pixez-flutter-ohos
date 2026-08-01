@@ -259,6 +259,10 @@ class _NovelSearchPageState extends State<NovelSearchPage> {
                     }, childCount: _tags.length),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3)),
+              ),
+              // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+              SliverToBoxAdapter(
+                child: SizedBox(height: hdsBottomSpace()),
               )
           ],
         ),

@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/models/novel_recom_response.dart';
 import 'package:pixez/network/api_client.dart';
 import 'package:pixez/page/novel/component/novel_bookmark_button.dart';
@@ -95,6 +96,10 @@ class _NovelRecomPageState extends State<NovelRecomPage>
               title: _buildFirstRow(context),
             ),
             if (_store.novels.isNotEmpty) _buildSliverList(),
+            // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+            SliverToBoxAdapter(
+              child: SizedBox(height: hdsBottomSpace()),
+            ),
           ],
         );
       }),

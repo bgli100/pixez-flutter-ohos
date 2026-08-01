@@ -16,7 +16,10 @@ try {
     $FRB_OHOS = "D:\dev\flutter_rust_bridge_ohos"
 
     # hack to shorten path, otherwise path exceeds CMAKE_OBJECT_PATH_MAX (250)
-    cmd /c "mklink /d d:\r\ $PWD\plugins\rhttp\rhttp"
+    # 幂等创建：上次构建若在失败前未能 rmdir，d:\r\ 可能已存在，跳过即可
+    if (-not (Test-Path "d:\r\")) {
+        cmd /c "mklink /d d:\r\ $PWD\plugins\rhttp\rhttp"
+    }
 
     cd d:\r\
     & "$FRB_OHOS\target\release\flutter_rust_bridge_codegen.exe" generate
@@ -54,9 +57,21 @@ try {
     $env:AR="$PWD\buildtool\llvm-ar.cmd"
     $env:CMAKE="$PWD\buildtool\cmake.cmd"
     $env:TARGET="aarch64-unknown-linux-ohos"
-    flutter build hap --target-platform ohos-arm64 --release --dart-define=ENABLE_FLEX_OVERFLOW=false
 
-    cmd /c "rmdir d:\r\"
+    # hvigor 增量编译偶发无法解析 @ohos.flutter_ohos 等本地 HAR 模块
+    # （改动 module.json5/build-profile.json5 或新增 @kit.* 导入后首帧缓存失效，
+    # 报 “Cannot find module '@ohos.flutter_ohos'”），每次构建前清理 hvigor 缓存，
+    # 保证从干净状态编译。该清理不影响已构建好的 rhttp 原生库。
+    Remove-Item -Recurse -Force "$PWD\ohos\entry\build" -ErrorAction SilentlyContinue
+    Remove-Item -Recurse -Force "$PWD\ohos\build" -ErrorAction SilentlyContinue
+    Remove-Item -Recurse -Force "$PWD\ohos\entry\.hvigor" -ErrorAction SilentlyContinue
+    Remove-Item -Recurse -Force "$PWD\ohos\.hvigor" -ErrorAction SilentlyContinue
+
+    flutter build hap --target-platform ohos-arm64 --release --no-codesign --dart-define=ENABLE_FLEX_OVERFLOW=false
+
+    if (Test-Path "d:\r\") {
+        cmd /c "rmdir d:\r\"
+    }
 } finally {
     # Restore original env vars so nothing leaks to the parent shell
     $env:RUSTFLAGS = $_orig_RUSTFLAGS

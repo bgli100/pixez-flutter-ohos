@@ -27,6 +27,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
+import 'package:pixez/harmony_adapt/hds_controller.dart';
+import 'package:pixez/harmony_adapt/shell_bars_observer.dart';
 import 'package:pixez/network/onezero_client.dart';
 import 'package:pixez/er/illust_cacher.dart';
 import 'package:pixez/i18n.dart';
@@ -60,6 +62,18 @@ final BookTagStore bookTagStore = BookTagStore();
 final SplashStore splashStore = SplashStore();
 final Fetcher fetcher = new Fetcher();
 final FullScreenStore fullScreenStore = FullScreenStore();
+
+/// 鸿蒙 HDS 沉浸光感导航栏：全局路由显隐观察者
+final ShellBarsObserver shellBarsObserver = ShellBarsObserver();
+
+/// 鸿蒙 HDS 沉浸光感导航栏：状态控制器
+final HdsController hdsController = HdsController();
+
+/// 鸿蒙 HDS：内容末尾应追加的空白高度（vp）。
+/// 开启 HDS 时返回底栏高度，否则为 0。把该高度追加到滚动内容末尾的空白项，
+/// 使内容可滚动到悬浮底栏之后（沉浸式），且最后一项能拖到底栏之上。
+double hdsBottomSpace() =>
+    hdsController.useNativeTabs ? kHdsBarBottomPadding : 0.0;
 
 main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -177,7 +191,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               );
             }
             return MaterialApp(
-              navigatorObservers: [BotToastNavigatorObserver(), routeObserver],
+              navigatorObservers: [
+                BotToastNavigatorObserver(),
+                routeObserver,
+                shellBarsObserver,
+              ],
               locale: userSetting.locale,
               home: Builder(
                 builder: (context) {

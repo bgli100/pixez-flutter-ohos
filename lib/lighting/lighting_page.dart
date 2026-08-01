@@ -282,6 +282,10 @@ class _LightingListState extends State<LightingList> {
                 delegate: _buildSliverChildBuilderDelegate(context),
               ),
               const FooterLocator.sliver(),
+              // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+              SliverToBoxAdapter(
+                child: SizedBox(height: hdsBottomSpace()),
+              ),
             ],
           );
         }),

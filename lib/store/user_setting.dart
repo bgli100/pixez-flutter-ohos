@@ -99,6 +99,7 @@ abstract class _UserSetting with Store {
       "illust_detail_save_skip_long_press";
   static const String DRAG_START_X_KEY = "drag_start_x";
   static const String AUTO_TAG_WHEN_STAR_KEY = "auto_tag_when_star";
+  static const String ENABLE_HDS_BAR_KEY = "enable_hds_bar";
 
   @observable
   double dragStartX = 0;
@@ -212,6 +213,10 @@ abstract class _UserSetting with Store {
   String? ignoreUpdateVersion;
   @observable
   bool autoTagWhenStar = false;
+
+  /// 鸿蒙沉浸光感导航栏（HDS）开关，重启应用后生效（默认开启）
+  @observable
+  bool enableHdsBar = true;
   static const String intialFormat = "{illust_id}_p{part}";
 
   @action
@@ -402,6 +407,12 @@ abstract class _UserSetting with Store {
     autoTagWhenStar = v;
   }
 
+  @action
+  setEnableHdsBar(bool v) async {
+    await prefs.setBool(ENABLE_HDS_BAR_KEY, v);
+    enableHdsBar = v;
+  }
+
   List<WelcomePageType> get materialWelcomePages => materialWelcomePageTypes;
 
   WelcomePageType get materialWelcomePageType =>
@@ -575,6 +586,7 @@ abstract class _UserSetting with Store {
     useSaunceNaoWebview = prefs.getBool(USE_SAUNCE_NAO_WEBVIEW) ?? false;
     dragStartX = prefs.getDouble(DRAG_START_X_KEY) ?? 0;
     autoTagWhenStar = prefs.getBool(AUTO_TAG_WHEN_STAR_KEY) ?? false;
+    enableHdsBar = prefs.getBool(ENABLE_HDS_BAR_KEY) ?? true;
     ignoreUpdateVersion = prefs.getString(IGNORE_UPDATE_VERSION_KEY);
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;

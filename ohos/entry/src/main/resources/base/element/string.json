@@ -15,6 +15,10 @@
     {
       "name": "write_imagevideo_reason",
       "value": "For image download & save"
+    },
+    {
+      "name": "gesture_reason",
+      "value": "智感握姿需要根据握持手势调整界面布局"
     }
   ]
 }

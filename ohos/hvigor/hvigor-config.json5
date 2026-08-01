@@ -14,7 +14,7 @@
 */
 
 { 
-  "modelVersion": "6.0.2",
+  "modelVersion": "5.1.0",
   "dependencies": {
   }
 }

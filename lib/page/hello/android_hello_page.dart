@@ -23,12 +23,14 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart' show ReactionDisposer, reaction;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pixez/component/painter_avatar.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/deep_link_plugin.dart';
 import 'package:pixez/er/leader.dart';
 import 'package:pixez/er/prefer.dart';
+import 'package:pixez/harmony_adapt/harmony_channel.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/page/Init/guide_page.dart';
@@ -63,7 +65,7 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
   Widget build(BuildContext context) {
     return Observer(
       builder: (context) {
-        if (accountStore.now != null && 
+        if (accountStore.now != null &&
             (Platform.isIOS || Platform.isAndroid || Platform.isOhos)) {
           return _buildScaffold(context);
         }
@@ -82,6 +84,10 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final wide = constraints.maxWidth > constraints.maxHeight;
+        // 鸿蒙 HDS：横屏（侧栏布局）时隐藏原生底栏，导航交给左侧 NavigationRail
+        if (hdsController.useNativeTabs) {
+          shellBarsObserver.onOrientationChanged(!wide);
+        }
         return PopScope(
           onPopInvokedWithResult: (didPop, result) async {
             userSetting.setAnimContainer(!userSetting.animContainer);
@@ -107,6 +113,9 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
               _preTime != null &&
                   DateTime.now().difference(_preTime!) <= Duration(seconds: 2),
           child: Scaffold(
+            // 注意：不做 body 底部整体预留（会露出纯色块）。
+            // HDS 悬浮底栏浮于内容之上，内容可滚动到底栏之后（沉浸式），
+            // 由各页面在滚动内容末尾追加空白（hdsBottomSpace）保证最后一项可拖到底栏之上。
             body: Row(
               children: [
                 if (wide) ..._buildRail(context),
@@ -114,7 +123,10 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
               ],
             ),
             extendBody: true,
-            bottomNavigationBar: wide
+            // 鸿蒙 HDS 启用时 Flutter 底栏返回空组件（底栏由原生 HdsTabs 渲染）。
+            // useNativeTabs 为异步就绪，就绪后由 _onHdsChanged 触发重建移除底栏，
+            // 避免两条底栏重叠显示。
+            bottomNavigationBar: wide || hdsController.useNativeTabs
                 ? null
                 : Observer(
                     builder: (context) {
@@ -189,15 +201,7 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
             ),
           ],
           selectedIndex: index,
-          onDestinationSelected: (index) {
-            if (this.index == index) {
-              topStore.setTop("${index + 1}00");
-            }
-            setState(() {
-              this.index = index;
-            });
-            if (_pageController.hasClients) _pageController.jumpToPage(index);
-          },
+          onDestinationSelected: _onTabSelected,
         ),
       ),
     );
@@ -226,12 +230,7 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
           NavigationRail(
             selectedIndex: index,
             labelType: NavigationRailLabelType.all,
-            onDestinationSelected: (int index) {
-              _pageController.jumpToPage(index);
-              setState(() {
-                index = index;
-              });
-            },
+            onDestinationSelected: _onTabSelected,
             destinations: <NavigationRailDestination>[
               NavigationRailDestination(
                 icon: Icon(Icons.home),
@@ -299,6 +298,34 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
   late StreamSubscription _intentDataStreamSubscription;
   bool hasNewVersion = false;
 
+  /// 鸿蒙 HDS：useNativeTabs 异步就绪后触发重建（移除 Flutter 底栏，避免与
+  /// 原生 HDS 底栏重叠显示）
+  void _onHdsChanged() {
+    if (!mounted) return;
+    setState(() {});
+  }
+
+  /// 鸿蒙 HDS：全屏模式联动隐藏原生底栏
+  void _onFullscreenChanged(bool fullscreen) {
+    shellBarsObserver.setFullscreen(fullscreen);
+  }
+
+  /// 鸿蒙 HDS：监听全屏状态（mobx reaction）
+  ReactionDisposer? _fullscreenReaction;
+
+  /// 页签点击统一处理：Flutter 底栏与原生 HDS 底栏共用。
+  /// 重复点击当前页签触发"回顶部"（topStore）。
+  void _onTabSelected(int value) {
+    if (index == value) {
+      topStore.setTop("${value + 1}00");
+    }
+    setState(() {
+      index = value;
+    });
+    if (_pageController.hasClients) _pageController.jumpToPage(value);
+    hdsController.syncTabIndex(value);
+  }
+
   @override
   void initState() {
     fetcher.context = context;
@@ -313,6 +340,21 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     index = userSetting.materialWelcomePageIndex;
     _pageController = PageController(initialPage: index);
     super.initState();
+    // 鸿蒙 HDS 沉浸光感导航栏：初始化 + 监听状态变化
+    hdsController.addListener(_onHdsChanged);
+    hdsController.onShellTabSwitch = _onTabSelected;
+    hdsController.syncTabIndex(index);
+    hdsController.init(enableHdsBar: userSetting.enableHdsBar);
+    // 主界面使用主界面底栏页签文案/图标（从小说模式返回时恢复）
+    HarmonyChannel.setShellTabMode('main');
+    // 主界面不显示迷你胶囊（安全兜底：清空所有胶囊所有者，确保回到
+    // 主界面后胶囊一定隐藏——嵌套详情页可能残留未注销的所有者）
+    HarmonyChannel.resetMiniBar();
+    _fullscreenReaction = reaction(
+      (_) => fullScreenStore.fullscreen,
+      _onFullscreenChanged,
+      fireImmediately: true,
+    );
     saveStore.ctx = this.context;
     saveStore.saveStream.listen((stream) {
       saveStore.listenBehavior(stream);
@@ -361,6 +403,15 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
   }
 
   VoidCallback? _LinkCloser = null;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 鸿蒙 HDS：同步主题主色到原生 HdsTabs 选中态
+    hdsController.syncThemeColor(
+      Theme.of(context).colorScheme.primary.toARGB32(),
+    );
+  }
 
   _showChromeLink(String link) {
     final numId = int.tryParse(link);
@@ -485,6 +536,12 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
 
   @override
   void dispose() {
+    // 鸿蒙 HDS：解除监听与回调（仅当回调仍指向本页面时才清空，
+    // 避免路由替换时误伤新页面已注册的回调）
+    hdsController.removeListener(_onHdsChanged);
+    _fullscreenReaction?.call();
+    _fullscreenReaction = null;
+    hdsController.unregisterPage(_onTabSelected);
     _intentDataStreamSubscription.cancel();
     _pageController.dispose();
     _sub.cancel();

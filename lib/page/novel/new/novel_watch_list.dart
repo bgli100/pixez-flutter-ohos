@@ -7,6 +7,7 @@ import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/er/leader.dart';
 import 'package:pixez/exts.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/models/novel_watch_list_model.dart';
 import 'package:pixez/page/novel/new/novel_watch_list_notifier.dart';
 import 'package:pixez/page/novel/series/novel_series_page.dart';
@@ -52,6 +53,10 @@ class _State extends ConsumerState<NovelWatchList> {
               delegate: SliverChildBuilderDelegate((context, index) {
                 return NovelSeriesItem(data: series[index]);
               }, childCount: series.length),
+            ),
+            // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+            SliverToBoxAdapter(
+              child: SizedBox(height: hdsBottomSpace()),
             ),
           ],
         );

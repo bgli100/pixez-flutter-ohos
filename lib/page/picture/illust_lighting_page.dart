@@ -39,6 +39,7 @@ import 'package:pixez/models/ban_tag.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/page/picture/illust_about_store.dart';
 import 'package:pixez/page/picture/illust_detail_content.dart';
+import 'package:pixez/page/picture/illust_favorite_action.dart';
 import 'package:pixez/page/picture/illust_row_page.dart';
 import 'package:pixez/page/picture/illust_store.dart';
 import 'package:pixez/page/picture/picture_list_page.dart';
@@ -266,67 +267,39 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
         child: Scaffold(
           extendBody: true,
           extendBodyBehindAppBar: true,
-          floatingActionButton: GestureDetector(
-            onLongPress: () {
-              _showBookMarkTag();
-            },
-            onHorizontalDragEnd: (DragEndDetails detail) {
-              if (widget.onHorizontalDragEnd != null) {
-                widget.onHorizontalDragEnd!(detail);
-              }
-            },
-            child: Observer(
-              builder: (context) {
-                return Visibility(
-                  visible: _illustStore.errorMessage == null,
-                  child: FloatingActionButton(
-                    heroTag: widget.id,
-                    onPressed: () async {
-                      if (userSetting.saveAfterStar &&
-                          (_illustStore.state == 0)) {
-                        saveStore.saveImage(_illustStore.illusts!);
-                      }
-                      // TODO: 添加配置项 开关和过滤器
-                      final List<String>? tags;
-                      if (userSetting.autoTagWhenStar) {
-                        final filters = [RegExp(r"\d+users入り")];
-                        tags = _illustStore.illusts!.tags
-                            .map((tag) => tag.name)
-                            .where(
-                              (tag) =>
-                                  !filters.any((regex) => regex.hasMatch(tag)),
-                            )
-                            .toList();
-                      } else {
-                        tags = null;
-                      }
-                      bool success = await _illustStore.star(
-                        restrict: userSetting.defaultPrivateLike
-                            ? "private"
-                            : "public",
-                        tags: tags,
-                      );
-                      if (success && userSetting.followAfterStar) {
-                        bool followSuccess = await _illustStore.followAfterStar();
-                        if (followSuccess) {
-                          userStore?.isFollow = true;
-                          BotToast.showText(
-                            text:
-                                "${_illustStore.illusts!.user.name} ${I18n.of(context).followed}",
-                          );
-                        }
+          // 鸿蒙 HDS：迷你收藏栏激活时隐藏 Flutter 收藏钮（新旧不共存）
+          floatingActionButton: hdsController.useNativeTabs
+              ? null
+              : Padding(
+                  padding: EdgeInsets.only(bottom: hdsBottomSpace()),
+                  child: GestureDetector(
+                    onLongPress: () {
+                      _showBookMarkTag();
+                    },
+                    onHorizontalDragEnd: (DragEndDetails detail) {
+                      if (widget.onHorizontalDragEnd != null) {
+                        widget.onHorizontalDragEnd!(detail);
                       }
                     },
                     child: Observer(
-                      builder: (_) {
-                        return StarIcon(state: _illustStore.state);
+                      builder: (context) {
+                        return Visibility(
+                          visible: _illustStore.errorMessage == null,
+                          child: FloatingActionButton(
+                            heroTag: widget.id,
+                            onPressed: () => toggleIllustFavorite(
+                                context, _illustStore, userStore: userStore),
+                            child: Observer(
+                              builder: (_) {
+                                return StarIcon(state: _illustStore.state);
+                              },
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
-                );
-              },
-            ),
-          ),
+                ),
           body: Observer(
             builder: (_) {
               final banWidget = banLogic(context);
@@ -1357,3 +1330,4 @@ class TextSelectionFix {
     return controls;
   }
 }
+

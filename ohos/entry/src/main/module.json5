@@ -60,6 +60,15 @@
           ]
         }
       },
+      {
+        "name": "ohos.permission.DETECT_GESTURE",
+        "reason": "$string:gesture_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ]
+        }
+      },
     ]
   }
 }

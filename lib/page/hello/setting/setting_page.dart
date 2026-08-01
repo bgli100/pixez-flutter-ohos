@@ -78,7 +78,13 @@ class _SettingPageState extends State<SettingPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            // 底部追加 HDS 底栏高度空白，保证最后一项（退出按钮）能滚动到底栏之上
+            padding: EdgeInsets.only(
+              left: 8.0,
+              top: 8.0,
+              right: 8.0,
+              bottom: 8.0 + hdsBottomSpace(),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[

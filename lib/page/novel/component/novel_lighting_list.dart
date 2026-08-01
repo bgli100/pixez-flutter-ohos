@@ -21,6 +21,7 @@ import 'package:pixez/component/pixez_default_header.dart';
 import 'package:pixez/component/pixiv_image.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/lighting/lighting_store.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/models/novel_recom_response.dart';
 import 'package:pixez/page/novel/component/novel_bookmark_button.dart';
 import 'package:pixez/page/novel/component/novel_lighting_store.dart';
@@ -100,7 +101,8 @@ class _NovelLightingListState extends State<NovelLightingList> {
   ListView _buildListBody() {
     _store.novels.removeWhere((element) => element.novel?.hateByUser() == true);
     return ListView.builder(
-      padding: EdgeInsets.all(0),
+      // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+      padding: EdgeInsets.only(bottom: hdsBottomSpace()),
       itemBuilder: (context, index) {
         Novel novel = _store.novels[index].novel!;
         return Padding(

@@ -181,33 +181,39 @@ class _IllustRowPageState extends State<IllustRowPage>
       //   ],
       // ),
       extendBodyBehindAppBar: true,
-      floatingActionButton: GestureDetector(
-        onLongPress: () {
-          _showBookMarkTag();
-        },
-        onHorizontalDragEnd: (details) {
-          if (widget.onHorizontalDragEnd != null) {
-            widget.onHorizontalDragEnd!(details);
-          }
-        },
-        child: Observer(
-          builder: (context) {
-            return Visibility(
-              visible: _illustStore.errorMessage == null,
-              child: FloatingActionButton(
-                heroTag: widget.id,
-                backgroundColor: Colors.white,
-                onPressed: () => _illustStore.star(),
+      // 鸿蒙 HDS：迷你收藏栏激活时隐藏 Flutter 收藏钮（新旧不共存）
+      floatingActionButton: hdsController.useNativeTabs
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(bottom: hdsBottomSpace()),
+              child: GestureDetector(
+                onLongPress: () {
+                  _showBookMarkTag();
+                },
+                onHorizontalDragEnd: (details) {
+                  if (widget.onHorizontalDragEnd != null) {
+                    widget.onHorizontalDragEnd!(details);
+                  }
+                },
                 child: Observer(
-                  builder: (_) {
-                    return StarIcon(state: _illustStore.state);
+                  builder: (context) {
+                    return Visibility(
+                      visible: _illustStore.errorMessage == null,
+                      child: FloatingActionButton(
+                        heroTag: widget.id,
+                        backgroundColor: Colors.white,
+                        onPressed: () => _illustStore.star(),
+                        child: Observer(
+                          builder: (_) {
+                            return StarIcon(state: _illustStore.state);
+                          },
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
-            );
-          },
-        ),
-      ),
+            ),
       body: Observer(
         builder: (_) {
           if (!tempView)
@@ -1115,3 +1121,4 @@ class _IllustRowPageState extends State<IllustRowPage>
   @override
   bool get wantKeepAlive => false;
 }
+

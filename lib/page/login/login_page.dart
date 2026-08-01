@@ -41,11 +41,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    // 登录页自带 BottomAppBar，隐藏原生 HDS 底栏，避免新旧导航栏同时出现
+    shellBarsObserver.setForceHidden(true);
     super.initState();
   }
 
   @override
   void dispose() {
+    // 离开登录页后恢复原生 HDS 底栏
+    shellBarsObserver.setForceHidden(false);
     userNameController.dispose();
     passWordController.dispose();
     super.dispose();

@@ -157,7 +157,11 @@ class _RecomSpolightPageState extends State<RecomSpolightPage>
           SliverToBoxAdapter(
             child: _buildSecondRow(context, I18n.of(context).recommend_for_you),
           ),
-          _buildWaterfall(context, MediaQuery.of(context).orientation)
+          _buildWaterfall(context, MediaQuery.of(context).orientation),
+          // 鸿蒙 HDS：末尾空白，让最后一项能滚动到底栏之上
+          SliverToBoxAdapter(
+            child: SizedBox(height: hdsBottomSpace()),
+          )
         ],
       ),
     );
