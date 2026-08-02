@@ -100,6 +100,7 @@ abstract class _UserSetting with Store {
   static const String DRAG_START_X_KEY = "drag_start_x";
   static const String AUTO_TAG_WHEN_STAR_KEY = "auto_tag_when_star";
   static const String ENABLE_HDS_BAR_KEY = "enable_hds_bar";
+  static const String USE_BUNDLED_FONT_KEY = "use_bundled_font";
 
   @observable
   double dragStartX = 0;
@@ -217,6 +218,10 @@ abstract class _UserSetting with Store {
   /// 鸿蒙沉浸光感导航栏（HDS）开关，重启应用后生效（默认开启）
   @observable
   bool enableHdsBar = true;
+
+  /// 使用内置 HarmonyOS Sans 字体（默认开启），关闭后回退系统默认字体
+  @observable
+  bool useBundledFont = true;
   static const String intialFormat = "{illust_id}_p{part}";
 
   @action
@@ -413,6 +418,12 @@ abstract class _UserSetting with Store {
     enableHdsBar = v;
   }
 
+  @action
+  setUseBundledFont(bool v) async {
+    await prefs.setBool(USE_BUNDLED_FONT_KEY, v);
+    useBundledFont = v;
+  }
+
   List<WelcomePageType> get materialWelcomePages => materialWelcomePageTypes;
 
   WelcomePageType get materialWelcomePageType =>
@@ -587,6 +598,7 @@ abstract class _UserSetting with Store {
     dragStartX = prefs.getDouble(DRAG_START_X_KEY) ?? 0;
     autoTagWhenStar = prefs.getBool(AUTO_TAG_WHEN_STAR_KEY) ?? false;
     enableHdsBar = prefs.getBool(ENABLE_HDS_BAR_KEY) ?? true;
+    useBundledFont = prefs.getBool(USE_BUNDLED_FONT_KEY) ?? true;
     ignoreUpdateVersion = prefs.getString(IGNORE_UPDATE_VERSION_KEY);
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;

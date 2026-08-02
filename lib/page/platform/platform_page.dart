@@ -352,6 +352,21 @@ class _PlatformPageState extends State<PlatformPage> {
                       );
                     },
                   ),
+                  Observer(
+                    builder: (context) {
+                      return SwitchListTile(
+                        secondary: Icon(Icons.font_download_outlined),
+                        onChanged: (bool value) async {
+                          await userSetting.setUseBundledFont(value);
+                        },
+                        title: Text("内置 HarmonyOS Sans 字体"),
+                        subtitle: Text(
+                          "使用内置HarmonyOS Sans字体，与系统默认字体相同\n关闭后用系统字体，可能卡顿，未修改系统字体不建议关闭",
+                        ),
+                        value: userSetting.useBundledFont,
+                      );
+                    },
+                  ),
                   Container(height: 20),
                 ],
               ],

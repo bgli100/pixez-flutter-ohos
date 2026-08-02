@@ -221,6 +221,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               theme: ThemeData(
                 brightness: Brightness.light,
                 useMaterial3: true,
+                fontFamily: userSetting.useBundledFont
+                    ? 'HarmonyOS_Sans'
+                    : null,
                 primaryColor: lightColorScheme.primary,
                 colorScheme: lightColorScheme,
                 scaffoldBackgroundColor: lightColorScheme.surface,
@@ -242,6 +245,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               darkTheme: ThemeData(
                 brightness: Brightness.dark,
                 useMaterial3: true,
+                fontFamily: userSetting.useBundledFont
+                    ? 'HarmonyOS_Sans'
+                    : null,
                 scaffoldBackgroundColor: userSetting.isAMOLED
                     ? Colors.black
                     : null,

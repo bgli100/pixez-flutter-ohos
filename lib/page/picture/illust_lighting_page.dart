@@ -288,7 +288,10 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
                           child: FloatingActionButton(
                             heroTag: widget.id,
                             onPressed: () => toggleIllustFavorite(
-                                context, _illustStore, userStore: userStore),
+                              context,
+                              _illustStore,
+                              userStore: userStore,
+                            ),
                             child: Observer(
                               builder: (_) {
                                 return StarIcon(state: _illustStore.state);
@@ -1195,9 +1198,12 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
                                 ? box.localToGlobal(Offset.zero) & box.size
                                 : null;
                             Navigator.of(context).pop();
-                            Share.share(
-                              "https://www.pixiv.net/artworks/${widget.id}",
-                              sharePositionOrigin: pos,
+                            SharePlus.instance.share(
+                              ShareParams(
+                                text:
+                                    "https://www.pixiv.net/artworks/${widget.id}",
+                                sharePositionOrigin: pos,
+                              ),
                             );
                           },
                         );
@@ -1296,7 +1302,11 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
       if (userSetting.saveAfterStar && (_illustStore.state == 0)) {
         saveStore.saveImage(_illustStore.illusts!);
       }
-      bool success = await _illustStore.star(restrict: restrict, tags: tags, force: true);
+      bool success = await _illustStore.star(
+        restrict: restrict,
+        tags: tags,
+        force: true,
+      );
       if (success && userSetting.followAfterStar) {
         await _illustStore.followAfterStar();
       }
@@ -1330,4 +1340,3 @@ class TextSelectionFix {
     return controls;
   }
 }
-

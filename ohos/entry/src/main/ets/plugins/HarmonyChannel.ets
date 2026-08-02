@@ -34,8 +34,6 @@ import common from '@ohos.app.ability.common';import {
  */
 export default class HarmonyChannel implements FlutterPlugin {
   private channel: MethodChannel | null = null;
-  // 跨设备接续（保留给 EntryAbility 编译所需，pixez 未启用接续功能）
-  private pendingContinuation: string | null = null;
 
   getUniqueClassName(): string {
     return "HarmonyChannel";
@@ -52,23 +50,6 @@ export default class HarmonyChannel implements FlutterPlugin {
 
   public getChannel(): MethodChannel | null {
     return this.channel;
-  }
-
-  /// 跨设备接续暂存（EntryAbility.handleContinuation 调用）
-  public setPendingContinuation(data: string): void {
-    this.pendingContinuation = data;
-  }
-
-  /// 跨设备接续状态（EntryAbility.onContinue 调用），取出后清空
-  public getContinuationState(): Promise<string | null> {
-    const state = this.pendingContinuation;
-    this.pendingContinuation = null;
-    return Promise.resolve(state);
-  }
-
-  /// 悬浮窗状态变化（EntryAbility.onWindowStageCreate 调用）
-  public onFloatingWindowChange(isFloatingWindow: boolean): void {
-    console.log(`HarmonyChannel: floating window = ${isFloatingWindow}`);
   }
 
   async onMethodCall(call: MethodCall, result: MethodResult): Promise<void> {

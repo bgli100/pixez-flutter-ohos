@@ -18,8 +18,8 @@ import 'package:share_plus/share_plus.dart';
 
 final novelSeriesProvider =
     NotifierProvider<NovelSeriesNotifier, NovelSeriesState?>(() {
-  return NovelSeriesNotifier();
-});
+      return NovelSeriesNotifier();
+    });
 
 class NovelSeriesState {
   final NovelSeriesDetail novelSeriesDetail;
@@ -28,7 +28,11 @@ class NovelSeriesState {
   final String? nextUrl;
 
   NovelSeriesState(
-      this.novelSeriesDetail, this.novels, this.novelStores, this.nextUrl);
+    this.novelSeriesDetail,
+    this.novels,
+    this.novelStores,
+    this.nextUrl,
+  );
 }
 
 class NovelSeriesNotifier extends Notifier<NovelSeriesState?> {
@@ -43,7 +47,11 @@ class NovelSeriesNotifier extends Notifier<NovelSeriesState?> {
       final detail = NovelSeriesResponse.fromJson(response.data);
       final list = detail.novels.map((e) => NovelStore(e.id, e)).toList();
       final result = NovelSeriesState(
-          detail.novelSeriesDetail, detail.novels, list, detail.nextUrl);
+        detail.novelSeriesDetail,
+        detail.novels,
+        list,
+        detail.nextUrl,
+      );
       state = result;
       refreshController.finishRefresh();
     } catch (e) {
@@ -59,13 +67,16 @@ class NovelSeriesNotifier extends Notifier<NovelSeriesState?> {
         final detail = NovelSeriesResponse.fromJson(response.data);
         final list = detail.novels.map((e) => NovelStore(e.id, e)).toList();
         final result = NovelSeriesState(
-            detail.novelSeriesDetail,
-            state!.novels + detail.novels,
-            state!.novelStores + list,
-            detail.nextUrl);
+          detail.novelSeriesDetail,
+          state!.novels + detail.novels,
+          state!.novelStores + list,
+          detail.nextUrl,
+        );
         state = result;
         refreshController.finishLoad(
-            IndicatorResult.success, detail.nextUrl == null);
+          IndicatorResult.success,
+          detail.nextUrl == null,
+        );
       } catch (e) {
         print(e);
         refreshController.finishLoad(IndicatorResult.fail);
@@ -81,7 +92,11 @@ class NovelSeriesNotifier extends Notifier<NovelSeriesState?> {
       final updatedDetail = state!.novelSeriesDetail;
       updatedDetail.watchlistAdded = true;
       final result = NovelSeriesState(
-          updatedDetail, state!.novels, state!.novelStores, state!.nextUrl);
+        updatedDetail,
+        state!.novels,
+        state!.novelStores,
+        state!.nextUrl,
+      );
       state = result;
     } catch (e) {
       print(e);
@@ -90,12 +105,17 @@ class NovelSeriesNotifier extends Notifier<NovelSeriesState?> {
 
   Future<void> removeWatchlist() async {
     try {
-      await apiClient
-          .watchListNovelDelete(state!.novelSeriesDetail.id.toString());
+      await apiClient.watchListNovelDelete(
+        state!.novelSeriesDetail.id.toString(),
+      );
       final updatedDetail = state!.novelSeriesDetail;
       updatedDetail.watchlistAdded = false;
       final result = NovelSeriesState(
-          updatedDetail, state!.novels, state!.novelStores, state!.nextUrl);
+        updatedDetail,
+        state!.novels,
+        state!.novelStores,
+        state!.nextUrl,
+      );
       state = result;
     } catch (e) {
       print(e);
@@ -117,39 +137,48 @@ class NovelSeriesPage extends HookConsumerWidget {
     final refreshState = useState(0);
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [
-          if (data != null) ...[
-            PainterAvatar(
-              url: data.novelSeriesDetail.user.profileImageUrls.medium,
-              id: data.novelSeriesDetail.user.id,
-              size: Size(30, 30),
-              onTap: () {
-                Leader.push(context,
-                    NovelUsersPage(id: data.novelSeriesDetail.user.id));
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                "${data.novelSeriesDetail.user.name}",
-                style: Theme.of(context).textTheme.titleSmall,
+        title: Row(
+          children: [
+            if (data != null) ...[
+              PainterAvatar(
+                url: data.novelSeriesDetail.user.profileImageUrls.medium,
+                id: data.novelSeriesDetail.user.id,
+                size: Size(30, 30),
+                onTap: () {
+                  Leader.push(
+                    context,
+                    NovelUsersPage(id: data.novelSeriesDetail.user.id),
+                  );
+                },
               ),
-            )
-          ]
-        ]),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  "${data.novelSeriesDetail.user.name}",
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+            ],
+          ],
+        ),
         actions: [
-          Builder(builder: (context) {
-            return IconButton(
+          Builder(
+            builder: (context) {
+              return IconButton(
                 onPressed: () {
                   final box = context.findRenderObject() as RenderBox?;
                   final pos = box != null
                       ? box.localToGlobal(Offset.zero) & box.size
                       : null;
-                  Share.share("https://www.pixiv.net/novel/series/$id",
-                      sharePositionOrigin: pos);
+                  final link = "https://www.pixiv.net/novel/series/$id";
+                  SharePlus.instance.share(
+                    ShareParams(text: link, sharePositionOrigin: pos),
+                  );
                 },
-                icon: Icon(Icons.share));
-          })
+                icon: Icon(Icons.share),
+              );
+            },
+          ),
         ],
       ),
       body: EasyRefresh(
@@ -158,118 +187,135 @@ class NovelSeriesPage extends HookConsumerWidget {
         onLoad: () async {
           await ref.read(novelSeriesProvider.notifier).onLoadNext();
         },
-        child: Builder(builder: (context) {
-          if (data != null)
-            return Container(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 60,
-                        ),
-                        SelectionArea(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Text(
-                              "${data.novelSeriesDetail.title}",
-                              style: Theme.of(context).textTheme.titleMedium,
+        child: Builder(
+          builder: (context) {
+            if (data != null)
+              return Container(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Container(height: 60),
+                          SelectionArea(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Text(
+                                "${data.novelSeriesDetail.title}",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
                             ),
                           ),
-                        ),
-                        SelectionArea(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              "${data.novelSeriesDetail.caption ?? ""}",
-                              style: Theme.of(context).textTheme.bodySmall,
+                          SelectionArea(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                "${data.novelSeriesDetail.caption ?? ""}",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 12),
-                        GestureDetector(
-                          onTap: () {
-                            if (data.novelSeriesDetail.watchlistAdded == true) {
-                              ref
-                                  .read(novelSeriesProvider.notifier)
-                                  .removeWatchlist();
-                              ref
-                                  .read(novelWatchListStoreProvider.notifier)
-                                  .fetch();
-                            } else {
-                              ref
-                                  .read(novelSeriesProvider.notifier)
-                                  .addWatchlist();
-                              ref
-                                  .read(novelWatchListStoreProvider.notifier)
-                                  .fetch();
-                            }
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Container(
-                            decoration: data.novelSeriesDetail.watchlistAdded ==
-                                    true
-                                ? BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black, width: 1),
-                                    borderRadius: BorderRadius.circular(21),
-                                  )
-                                : BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(21)),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            child: Text(
+                          SizedBox(height: 12),
+                          GestureDetector(
+                            onTap: () {
+                              if (data.novelSeriesDetail.watchlistAdded ==
+                                  true) {
+                                ref
+                                    .read(novelSeriesProvider.notifier)
+                                    .removeWatchlist();
+                                ref
+                                    .read(novelWatchListStoreProvider.notifier)
+                                    .fetch();
+                              } else {
+                                ref
+                                    .read(novelSeriesProvider.notifier)
+                                    .addWatchlist();
+                                ref
+                                    .read(novelWatchListStoreProvider.notifier)
+                                    .fetch();
+                              }
+                            },
+                            behavior: HitTestBehavior.opaque,
+                            child: Container(
+                              decoration:
+                                  data.novelSeriesDetail.watchlistAdded == true
+                                  ? BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(21),
+                                    )
+                                  : BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(21),
+                                    ),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 12,
+                              ),
+                              child: Text(
                                 data.novelSeriesDetail.watchlistAdded == true
                                     ? I18n.of(context).watchlist_added
                                     : I18n.of(context).add_to_watchlist,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge
+                                style: Theme.of(context).textTheme.labelLarge
                                     ?.copyWith(
-                                        color: data.novelSeriesDetail
-                                                    .watchlistAdded ==
-                                                true
-                                            ? Colors.black
-                                            : Colors.white)),
+                                      color:
+                                          data
+                                                  .novelSeriesDetail
+                                                  .watchlistAdded ==
+                                              true
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 12),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Column(children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: FilledButton.tonal(
-                              onPressed: () {
-                                Leader.push(context,
-                                    NovelViewerPage(id: data.novels.last.id));
-                              },
-                              child: Text(I18n.of(context).view_the_latest)),
-                        ),
+                          SizedBox(height: 12),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.center,
                       ),
-                      Divider()
-                    ]),
-                  ),
-                  SliverList(
+                    ),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: FilledButton.tonal(
+                                onPressed: () {
+                                  Leader.push(
+                                    context,
+                                    NovelViewerPage(id: data.novels.last.id),
+                                  );
+                                },
+                                child: Text(I18n.of(context).view_the_latest),
+                              ),
+                            ),
+                          ),
+                          Divider(),
+                        ],
+                      ),
+                    ),
+                    SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                    final novel = data.novels[index];
-                    return _buildItem(context, novel, data.novelStores[index],
-                        index, refreshState);
-                  }, childCount: data.novels.length))
-                ],
-              ),
-            );
-          return CustomScrollView(
-            slivers: [],
-          );
-        }),
+                        final novel = data.novels[index];
+                        return _buildItem(
+                          context,
+                          novel,
+                          data.novelStores[index],
+                          index,
+                          refreshState,
+                        );
+                      }, childCount: data.novels.length),
+                    ),
+                  ],
+                ),
+              );
+            return CustomScrollView(slivers: []);
+          },
+        ),
         onRefresh: () async {
           await ref.read(novelSeriesProvider.notifier).fetch(id);
         },
@@ -277,19 +323,24 @@ class NovelSeriesPage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildItem(BuildContext context, Novel novel, NovelStore novelStore,
-      int index, ValueNotifier<int> refreshState) {
+  Widget _buildItem(
+    BuildContext context,
+    Novel novel,
+    NovelStore novelStore,
+    int index,
+    ValueNotifier<int> refreshState,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Card(
         child: InkWell(
           onTap: () async {
-            await Navigator.of(context, rootNavigator: true)
-                .push(MaterialPageRoute(
-                    builder: (BuildContext context) => NovelViewerPage(
-                          id: novel.id,
-                          novelStore: novelStore,
-                        )));
+            await Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    NovelViewerPage(id: novel.id, novelStore: novelStore),
+              ),
+            );
             refreshState.value = refreshState.value + 1;
           },
           child: Row(
@@ -303,10 +354,7 @@ class NovelSeriesPage extends HookConsumerWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: PixivImage(
-                        novel.imageUrls.medium,
-                        width: 80,
-                      ),
+                      child: PixivImage(novel.imageUrls.medium, width: 80),
                     ),
                     Expanded(
                       child: Column(
@@ -322,23 +370,24 @@ class NovelSeriesPage extends HookConsumerWidget {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
                             child: Text(
                               novel.user.name,
                               maxLines: 1,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
+                              style: Theme.of(context).textTheme.bodySmall!
                                   .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.secondary,
+                                  ),
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
                             child: Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
                               spacing: 2, // gap between adjacent chips
@@ -347,15 +396,14 @@ class NovelSeriesPage extends HookConsumerWidget {
                                 for (var f in novel.tags)
                                   Text(
                                     f.name,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  )
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
+                                  ),
                               ],
                             ),
                           ),
-                          Container(
-                            height: 8.0,
-                          )
+                          Container(height: 8.0),
                         ],
                       ),
                     ),
@@ -368,11 +416,13 @@ class NovelSeriesPage extends HookConsumerWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     NovelBookmarkButton(novel: novelStore.novel!),
-                    Text('${novel.totalBookmarks}',
-                        style: Theme.of(context).textTheme.bodySmall)
+                    Text(
+                      '${novel.totalBookmarks}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

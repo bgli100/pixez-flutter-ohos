@@ -421,7 +421,9 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
               final pos = box != null
                   ? box.localToGlobal(Offset.zero) & box.size
                   : null;
-              Share.share(selectionText, sharePositionOrigin: pos);
+              SharePlus.instance.share(
+                ShareParams(text: selectionText, sharePositionOrigin: pos),
+              );
               return;
             }
             await SupportorPlugin.start(selectionText);
@@ -657,14 +659,24 @@ class _NovelViewerPageState extends State<NovelViewerPage> {
                   _showSettings(context);
                 },
               ),
-              ListTile(
-                title: Text(I18n.of(context).share),
-                leading: Icon(Icons.share),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  final link =
-                      "https://www.pixiv.net/novel/show.php?id=${widget.id}";
-                  Share.share(link);
+              Builder(
+                builder: (context) {
+                  return ListTile(
+                    title: Text(I18n.of(context).share),
+                    leading: Icon(Icons.share),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      final box = context.findRenderObject() as RenderBox?;
+                      final pos = box != null
+                          ? box.localToGlobal(Offset.zero) & box.size
+                          : null;
+                      final link =
+                          "https://www.pixiv.net/novel/show.php?id=${widget.id}";
+                      SharePlus.instance.share(
+                        ShareParams(text: link, sharePositionOrigin: pos),
+                      );
+                    },
+                  );
                 },
               ),
             ],

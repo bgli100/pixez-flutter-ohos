@@ -16,38 +16,38 @@ publish_to: none
 version: 0.9.105+503
 
 environment:
-  sdk: ">=3.9.0"
+  sdk: ">=3.11.5"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  dio: ^5.10.0
+  dio: ^5.11.0
   crypto: ^3.0.7
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3
-  share_plus: ^10.1.1
-  permission_handler: ^11.3.1
-  archive: ^4.0.7
+  share_plus: ^12.0.1
+  permission_handler: ^12.0.1
+  archive: ^4.0.9
   url_launcher: ^6.3.3
   bot_toast: ^4.1.3
-  package_info_plus: ^8.1.0
-  mobx: ^2.3.3+2
-  flutter_mobx: ^2.2.1+1
-  in_app_purchase: ^3.1.11
-  flutter_widget_from_html: ^0.16.0
-  device_info_plus: ^11.1.0
+  package_info_plus: ^9.0.0
+  mobx: ^2.6.0
+  flutter_mobx: ^2.3.0
+  in_app_purchase: ^3.2.3
+  flutter_widget_from_html: ^0.17.1
+  device_info_plus: ^12.3.0
   flutter_displaymode: ^0.7.0
   receive_sharing_intent: ^1.8.1
   cached_network_image: ^3.4.1
-  flutter_cache_manager: ^3.4.1
+  flutter_cache_manager: ^3.4.2
   waterfall_flow: ^3.1.1
   animations: ^2.0.11
-  font_awesome_flutter: ^10.6.0
+  font_awesome_flutter: ^11.0.0
   json_annotation: ^4.9.0
-  badges: ^3.1.2
-  image_picker: ^1.1.2
+  badges: ^3.2.0
+  image_picker: ^1.2.1
   image_gallery_saver:
     git:
       url: https://github.com/bgli100/flutter_image_gallery_saver_ohos.git
@@ -58,15 +58,15 @@ dependencies:
       ref: master
   video_player:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/video_player/video_player
-      ref: br_video_player-v2.10.0_ohos
+      ref: br_video_player-v2.11.1_ohos
   intl: any
   quiver: ^3.2.2
-  dio_cache_interceptor: ^4.0.6
+  dio_cache_interceptor: ^4.0.7
   photo_view: ^0.15.0
-  image: ^4.7.2
-  easy_refresh: ^3.5.0
+  image: ^4.9.1
+  easy_refresh: ^3.5.1
   sqflite: ^2.4.2+1
   dynamic_color:
     git:
@@ -75,157 +75,149 @@ dependencies:
       ref: main
   # Desktop Support
   flutter_acrylic: ^1.1.4
-  window_manager: ^0.5.1
+  window_manager: ^0.5.2
   rhttp:
     path: plugins/rhttp/rhttp
   dio_compatibility_layer: ^0.1.1
   flutter_cache_manager_dio: ^4.0.0
-  file_picker: ^11.0.0
+  file_picker: ^11.0.3
   flutter_riverpod: ^3.0.3
   riverpod_annotation: ^3.0.3
-  freezed_annotation: ^3.0.0
+  freezed_annotation: ^3.1.0
   hooks_riverpod: ^3.0.3
-  flutter_hooks: ^0.21.2
-  webview_flutter: ^4.13.0
-  sqflite_common_ffi: ^2.3.4+4
+  flutter_hooks: ^0.21.3+1
+  webview_flutter: ^4.13.1
+  sqflite_common_ffi: ^2.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mobx_codegen: ^2.6.1
-  json_serializable: ^6.8.0
-  msix: ^3.16.9
-  analyzer: ^7.0.0
-  build_runner: ^2.7.1
+  mobx_codegen: ^2.7.5
+  json_serializable: ^6.11.0
+  msix: ^3.18.0
+  analyzer: ^8.0.0
+  build_runner: ^2.15.1
   riverpod_generator: ^3.0.3
-  custom_lint: ^0.8.0
+  custom_lint: ^0.8.1
   riverpod_lint: ^3.0.3
   freezed: ^3.2.3
 
 dependency_overrides:
-  # 新版 flutter_test 固定 matcher 0.12.19 / test_api 0.7.10，会强制拉取需要
-  # analyzer >=8 的新版 test，而 video_player(ohos) 的 pigeon 要求 analyzer <8。
-  # test 仅是 riverpod_generator 的传递依赖（代码生成工具，不影响构建），
-  # 这里锁回旧版组合以保持 analyzer 7 可解析。
-  test: 1.26.2
-  test_api: 0.7.6
-  matcher: 0.12.17
   permission_handler_apple: 9.4.10
-  analyzer_plugin: ^0.13.1
   receive_sharing_intent:
     git:
-      url: https://gitcode.com/openharmony-sig/fluttertpc_receive_sharing_intent.git
+      url: https://gitcode.com/CPF-Flutter/fluttertpc_receive_sharing_intent.git
       ref: br_v1.8.1_ohos
   animations:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/animations
       ref: br_animations-v2.0.11_ohos
   in_app_purchase:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/in_app_purchase/in_app_purchase
       ref: br_in_app_purchase-v3.2.3_ohos
   path_provider:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/path_provider/path_provider
       ref: br_path_provider-v2.1.5_ohos
   webview_flutter:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/webview_flutter/webview_flutter
-      ref: br_webview_flutter-v4.13.0_ohos_dev
+      ref: br_webview_flutter-v4.13.1_ohos_dev
   webview_flutter_wkwebview:
     git: 
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/webview_flutter/webview_flutter_wkwebview
-      ref: br_webview_flutter-v4.13.0_ohos_dev
+      ref: br_webview_flutter-v4.13.1_ohos_dev
   webview_flutter_platform_interface:
     git: 
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/webview_flutter/webview_flutter_platform_interface
-      ref: br_webview_flutter-v4.13.0_ohos_dev
+      ref: br_webview_flutter-v4.13.1_ohos_dev
   webview_flutter_ohos:
     git: 
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/webview_flutter/webview_flutter_ohos
-      ref: br_webview_flutter-v4.13.0_ohos_dev
+      ref: br_webview_flutter-v4.13.1_ohos_dev
   webview_flutter_android:
     git: 
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/webview_flutter/webview_flutter_android
-      ref: br_webview_flutter-v4.13.0_ohos_dev
+      ref: br_webview_flutter-v4.13.1_ohos_dev
   permission_handler:
     git: 
-      url: https://gitcode.com/openharmony-sig/flutter_permission_handler.git
+      url: https://gitcode.com/CPF-Flutter/flutter_permission_handler.git
       path: permission_handler
-      ref: br_permission_handler_v11.3.1_ohos
+      ref: br_v12.0.1_ohos
   share_plus:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/CPF-Flutter/flutter_plus_plugins.git
       path: packages/share_plus/share_plus
       ref: br_share_plus-v12.0.1_ohos
   battery_plus:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/CPF-Flutter/flutter_plus_plugins.git
       path: packages/battery_plus/battery_plus
       ref: br_battery_plus-v7.0.0_ohos
   url_launcher:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/url_launcher/url_launcher
-      ref: br_url_launcher_v6.3.1_ohos
+      ref: br_url_launcher-v6.3.2_ohos
   shared_preferences:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/shared_preferences/shared_preferences
-      ref: br_shared_preferences-v2.5.3_ohos
+      ref: br_shared_preferences-v2.5.4_ohos
   device_info_plus:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/CPF-Flutter/flutter_plus_plugins.git
       path: packages/device_info_plus/device_info_plus
-      ref: br_device_info_plus-v11.1.0_ohos
+      ref: br_device_info_plus-v12.3.0_ohos_dev
   package_info_plus:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/CPF-Flutter/flutter_plus_plugins.git
       path: packages/package_info_plus/package_info_plus
       ref: br_package_info_plus-v9.0.0_ohos
   connectivity_plus:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/CPF-Flutter/flutter_plus_plugins.git
       path: packages/connectivity_plus/connectivity_plus
       ref: br_connectivity_plus-v7.0.0_ohos
   network_info_plus:
     git:
-      url: https://gitcode.com/openharmony-sig/flutter_plus_plugins.git
+      url: https://gitcode.com/CPF-Flutter/flutter_plus_plugins.git
       path: packages/network_info_plus/network_info_plus
       ref: br_network_info_plus_v7.0.0_ohos
   file_selector:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/file_selector/file_selector
-      ref: br_file_selector-v1.0.3_ohos
+      ref: br_file_selector-v1.1.0_ohos
   image_picker:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/image_picker/image_picker
-      ref: br_image_picker-v1.1.2_ohos
+      ref: br_image_picker-v1.2.1_ohos
   flutter_widget_from_html:
     git: 
-      url: https://gitcode.com/openharmony-sig/flutter_widget_from_html.git
+      url: https://gitcode.com/CPF-Flutter/flutter_widget_from_html.git
       path: packages/enhanced
-      ref: br_v0.16.0_ohos
+      ref: br_v0.17.1_ohos
   fwfh_chewie:
     git: 
-      url: https://gitcode.com/openharmony-sig/flutter_widget_from_html.git
+      url: https://gitcode.com/CPF-Flutter/flutter_widget_from_html.git
       path: packages/fwfh_chewie
-      ref: br_v0.16.0_ohos
+      ref: br_v0.17.1_ohos
   fwfh_webview:
     git: 
-      url: https://gitcode.com/openharmony-sig/flutter_widget_from_html.git
+      url: https://gitcode.com/CPF-Flutter/flutter_widget_from_html.git
       path: packages/fwfh_webview
-      ref: br_v0.16.0_ohos
+      ref: br_v0.17.1_ohos
   sqflite:
     git:
       url: https://gitcode.com/bgli100/flutter_sqflite.git
@@ -248,9 +240,9 @@ dependency_overrides:
       ref: br_v2.4.2_ohos
   video_player:
     git:
-      url: https://gitcode.com/openharmony-tpc/flutter_packages.git
+      url: https://gitcode.com/CPF-Flutter/flutter_packages.git
       path: packages/video_player/video_player
-      ref: br_video_player-v2.10.0_ohos
+      ref: br_video_player-v2.11.1_ohos
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -285,6 +277,20 @@ flutter:
     - family: iconfont
       fonts:
         - asset: assets/fonts/iconfont.ttf
+    - family: HarmonyOS_Sans
+      fonts:
+        - asset: assets/fonts/HarmonyOS_Sans_SC_w300.ttf
+          weight: 300
+        - asset: assets/fonts/HarmonyOS_Sans_SC_w400.ttf
+          weight: 400
+        - asset: assets/fonts/HarmonyOS_Sans_SC_w500.ttf
+          weight: 500
+        - asset: assets/fonts/HarmonyOS_Sans_SC_w600.ttf
+          weight: 600
+        - asset: assets/fonts/HarmonyOS_Sans_SC_w700.ttf
+          weight: 700
+        - asset: assets/fonts/HarmonyOS_Sans_SC_w800.ttf
+          weight: 800
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
