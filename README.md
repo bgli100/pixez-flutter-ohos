@@ -11,7 +11,7 @@
 # 编译
 ```
 # get flutter
-git clone -b oh-3.35.7-dev https://gitcode.com/openharmony-tpc/flutter_flutter.git
+git clone -b oh-3.41.9-dev https://gitcode.com/CPF-Flutter/flutter_flutter.git
 
 # setup rust environment for rhttp plugin
 copy buildtools/* ~/.cargo/
