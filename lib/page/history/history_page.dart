@@ -20,7 +20,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pixez/component/pixiv_image.dart';
+import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/models/illust_persist.dart';
 import 'package:pixez/page/history/history_store.dart';
 import 'package:pixez/page/picture/illust_lighting_page.dart';
@@ -30,71 +32,80 @@ class HistoryPage extends HookConsumerWidget {
   const HistoryPage({super.key});
 
   Widget buildAppBarUI(context) => Container(
-        child: Padding(
-          child: Text(
-            I18n.of(context).history,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
-          ),
-          padding: EdgeInsets.only(left: 20.0, top: 30.0, bottom: 30.0),
-        ),
-      );
+    child: Padding(
+      child: Text(
+        I18n.of(context).history,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
+      ),
+      padding: EdgeInsets.only(left: 20.0, top: 30.0, bottom: 30.0),
+    ),
+  );
 
   Widget buildBody(List<IllustPersist> data, WidgetRef ref) {
     final reIllust = data.reversed.toList();
     if (reIllust.isNotEmpty) {
-      return LayoutBuilder(builder: (context, snapshot) {
-        final rowCount = max(2, (snapshot.maxWidth / 200).floor());
-        return GridView.builder(
+      return LayoutBuilder(
+        builder: (context, snapshot) {
+          final rowCount = max(2, (snapshot.maxWidth / 200).floor());
+          return GridView.builder(
             itemCount: reIllust.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: rowCount),
+              crossAxisCount: rowCount,
+            ),
             itemBuilder: (context, index) {
               return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return IllustLightingPage(
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return IllustLightingPage(
                           id: reIllust[index].illustId,
-                          store: IllustStore(reIllust[index].illustId, null));
-                    }));
-                  },
-                  onLongPress: () async {
-                    final result = await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("${I18n.of(context).delete}?"),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text(I18n.of(context).cancel),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: Text(I18n.of(context).ok),
-                                onPressed: () {
-                                  Navigator.of(context).pop("OK");
-                                },
-                              ),
-                            ],
-                          );
-                        });
-                    if (result == "OK") {
-                      ref
-                          .read(historyProvider.notifier)
-                          .delete(reIllust[index].illustId);
-                    }
-                  },
-                  child: Card(
-                      margin: EdgeInsets.all(8),
-                      child: PixivImage(reIllust[index].pictureUrl)));
-            });
-      });
+                          store: IllustStore(reIllust[index].illustId, null),
+                        );
+                      },
+                    ),
+                  );
+                },
+                onLongPress: () async {
+                  final result = await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("${I18n.of(context).delete}?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text(I18n.of(context).cancel),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text(I18n.of(context).ok),
+                            onPressed: () {
+                              Navigator.of(context).pop("OK");
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  if (result == "OK") {
+                    ref
+                        .read(historyProvider.notifier)
+                        .delete(reIllust[index].illustId);
+                  }
+                },
+                child: Card(
+                  margin: EdgeInsets.all(8),
+                  child: PixivImage(reIllust[index].pictureUrl),
+                ),
+              );
+            },
+          );
+        },
+      );
     }
-    return Center(
-      child: Container(),
-    );
+    return Center(child: Container());
   }
 
   @override
@@ -107,21 +118,22 @@ class HistoryPage extends HookConsumerWidget {
       });
       return null;
     }, []);
-    return Scaffold(
+    final Widget scaffold = Scaffold(
       appBar: AppBar(
         title: TextField(
-            controller: _textEditingController,
-            onChanged: (word) {
-              if (word.trim().isNotEmpty) {
-                ref.read(historyProvider.notifier).search(word.trim());
-              } else {
-                ref.read(historyProvider.notifier).fetch();
-              }
-            },
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: I18n.of(context).search_word_hint,
-            )),
+          controller: _textEditingController,
+          onChanged: (word) {
+            if (word.trim().isNotEmpty) {
+              ref.read(historyProvider.notifier).search(word.trim());
+            } else {
+              ref.read(historyProvider.notifier).fetch();
+            }
+          },
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: I18n.of(context).search_word_hint,
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.close),
@@ -129,41 +141,50 @@ class HistoryPage extends HookConsumerWidget {
               _textEditingController.clear();
               ref.read(historyProvider.notifier).fetch();
             },
-          )
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: () {
-          _cleanAll(context, ref);
-        },
-      ),
+      // 鸿蒙 HDS：启用时隐藏 Flutter 清空钮（由原生迷你胶囊替代）
+      floatingActionButton: hdsController.useNativeTabs
+          ? null
+          : FloatingActionButton(
+              child: Icon(Icons.delete),
+              onPressed: () {
+                _cleanAll(context, ref);
+              },
+            ),
       body: buildBody(dataFuture.data, ref),
+    );
+    return HdsMiniBarScope(
+      icon: 'delete',
+      onTap: () => _cleanAll(context, ref),
+      child: scaffold,
     );
   }
 
   Future<void> _cleanAll(BuildContext context, WidgetRef ref) async {
     final result = await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("${I18n.of(context).delete} ${I18n.of(context).all}?"),
-            actions: <Widget>[
-              TextButton(
-                child: Text(I18n.of(context).cancel),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text(I18n.of(context).ok),
-                onPressed: () {
-                  Navigator.of(context).pop("OK");
-                },
-              ),
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("${I18n.of(context).delete} ${I18n.of(context).all}?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text(I18n.of(context).cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(I18n.of(context).ok),
+              onPressed: () {
+                Navigator.of(context).pop("OK");
+              },
+            ),
+          ],
+        );
+      },
+    );
     if (result == "OK") {
       ref.read(historyProvider.notifier).deleteAll();
     }

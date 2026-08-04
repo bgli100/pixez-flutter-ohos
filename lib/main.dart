@@ -238,6 +238,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 pageTransitionsTheme: PageTransitionsTheme(
                   builders: {
                     TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                    TargetPlatform.ohos: ZoomPageTransitionsBuilder(),
                     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
                   },
                 ),
@@ -254,6 +255,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 pageTransitionsTheme: PageTransitionsTheme(
                   builders: {
                     TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                    TargetPlatform.ohos: ZoomPageTransitionsBuilder(),
                     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
                   },
                 ),

@@ -16,7 +16,9 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/page/about/last_release.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -40,7 +42,8 @@ class _UpdatePageState extends State<UpdatePage> {
   initData() async {
     try {
       Response response = await _dio.get(
-          'https://api.github.com/repos/bgli100/pixez-flutter-ohos/releases/latest');
+        'https://api.github.com/repos/bgli100/pixez-flutter-ohos/releases/latest',
+      );
       final result = LastRelease.fromJson(response.data);
       setState(() {
         lastRelease = result;
@@ -52,52 +55,67 @@ class _UpdatePageState extends State<UpdatePage> {
     }
   }
 
+  /// 刷新检查更新（原悬浮按钮逻辑，供 HDS 迷你胶囊复用）
+  void _refresh() {
+    setState(() {
+      error = null;
+      lastRelease = null;
+    });
+    initData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(I18n.of(context).update)),
-      body: lastRelease == null
-          ? Builder(
-              builder: (_) {
-                return error == null
-                    ? Container(
-                        child: Center(child: CircularProgressIndicator()),
-                      )
-                    : Container(child: Center(child: Text(error.toString())));
-              },
-            )
-          : ListView(
-              children: <Widget>[
-                ListTile(
-                  title: Text(I18n.of(context).latest_version),
-                  subtitle: Text(lastRelease!.tagName ?? ''),
-                ),
-                ListTile(
-                  title: Text(I18n.of(context).download_address),
-                  subtitle: SelectableText(
-                    lastRelease!.assets?.first.browserDownloadUrl ?? '',
+    return HdsMiniBarScope(
+      icon: 'refresh',
+      onTap: _refresh,
+      child: Scaffold(
+        appBar: AppBar(title: Text(I18n.of(context).update)),
+        body: lastRelease == null
+            ? Builder(
+                builder: (_) {
+                  return error == null
+                      ? Container(
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : Container(child: Center(child: Text(error.toString())));
+                },
+              )
+            : ListView(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(I18n.of(context).latest_version),
+                    subtitle: Text(lastRelease!.tagName ?? ''),
                   ),
-                  onTap: () {
-                    try {
-                      launchUrlString(lastRelease!.assets?.first.browserDownloadUrl ?? '', mode: LaunchMode.externalApplication);
-                    } catch (e) {}
-                  },
-                ),
-                ListTile(
-                  title: Text(I18n.of(context).new_version_update_information),
-                  subtitle: Text(lastRelease!.body ?? ''),
-                ),
-              ],
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            error = null;
-            lastRelease = null;
-          });
-          initData();
-        },
-        child: Icon(Icons.refresh),
+                  ListTile(
+                    title: Text(I18n.of(context).download_address),
+                    subtitle: SelectableText(
+                      lastRelease!.assets?.first.browserDownloadUrl ?? '',
+                    ),
+                    onTap: () {
+                      try {
+                        launchUrlString(
+                          lastRelease!.assets?.first.browserDownloadUrl ?? '',
+                          mode: LaunchMode.externalApplication,
+                        );
+                      } catch (e) {}
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      I18n.of(context).new_version_update_information,
+                    ),
+                    subtitle: Text(lastRelease!.body ?? ''),
+                  ),
+                ],
+              ),
+        // 鸿蒙 HDS：启用时隐藏 Flutter 刷新钮（由原生迷你胶囊替代）
+        floatingActionButton: hdsController.useNativeTabs
+            ? null
+            : FloatingActionButton(
+                onPressed: _refresh,
+                child: Icon(Icons.refresh),
+              ),
       ),
     );
   }

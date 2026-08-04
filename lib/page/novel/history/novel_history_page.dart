@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pixez/er/leader.dart';
+import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/page/novel/viewer/novel_viewer.dart';
@@ -31,63 +32,77 @@ class _NovelHistoryState extends State<NovelHistory> {
     super.initState();
   }
 
+  /// 清空全部小说历史（原悬浮按钮逻辑，供 HDS 迷你胶囊复用）
+  Future<void> _cleanAll() async {
+    final result = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("${I18n.of(context).delete} ${I18n.of(context).all}?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text(I18n.of(context).cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(I18n.of(context).ok),
+              onPressed: () {
+                Navigator.of(context).pop("OK");
+              },
+            ),
+          ],
+        );
+      },
+    );
+    if (result == "OK") {
+      novelHistoryStore.deleteAll();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(I18n.of(context).history),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.delete_forever),
-          onPressed: () async {
-            final result = await showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text(
-                        "${I18n.of(context).delete} ${I18n.of(context).all}?"),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text(I18n.of(context).cancel),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+    return Observer(
+      builder: (_) {
+        final Widget scaffold = Scaffold(
+          appBar: AppBar(title: Text(I18n.of(context).history)),
+          // 鸿蒙 HDS：启用时隐藏 Flutter 清空钮（由原生迷你胶囊替代）
+          floatingActionButton: hdsController.useNativeTabs
+              ? null
+              : FloatingActionButton(
+                  child: Icon(Icons.delete_forever),
+                  onPressed: _cleanAll,
+                ),
+          body: novelHistoryStore.data.isNotEmpty
+              ? ListView.builder(
+                  itemBuilder: (context, index) {
+                    final novel = novelHistoryStore.data[index];
+                    return ListTile(
+                      title: Text(novel.title),
+                      subtitle: Text(novel.userName),
+                      onTap: () => Leader.push(
+                        context,
+                        NovelViewerPage(id: novel.novelId),
                       ),
-                      TextButton(
-                        child: Text(I18n.of(context).ok),
-                        onPressed: () {
-                          Navigator.of(context).pop("OK");
-                        },
-                      ),
-                    ],
-                  );
-                });
-            if (result == "OK") {
-              novelHistoryStore.deleteAll();
-            }
-          },
-        ),
-        body: novelHistoryStore.data.isNotEmpty
-            ? ListView.builder(
-                itemBuilder: (context, index) {
-                  final novel = novelHistoryStore.data[index];
-                  return ListTile(
-                    title: Text(novel.title),
-                    subtitle: Text(novel.userName),
-                    onTap: () => Leader.push(
-                        context, NovelViewerPage(id: novel.novelId)),
-                    trailing: IconButton(
+                      trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           novelHistoryStore.delete(novel.novelId);
-                        }),
-                  );
-                },
-                itemCount: novelHistoryStore.data.length,
-              )
-            : Container(),
-      );
-    });
+                        },
+                      ),
+                    );
+                  },
+                  itemCount: novelHistoryStore.data.length,
+                )
+              : Container(),
+        );
+        return HdsMiniBarScope(
+          icon: 'delete',
+          onTap: _cleanAll,
+          child: scaffold,
+        );
+      },
+    );
   }
 }

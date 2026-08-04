@@ -16,7 +16,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/page/picture/illust_lighting_page.dart';
 import 'package:pixez/page/saucenao/sauce_store.dart';
 
@@ -43,12 +45,15 @@ class _SauceNaoPageState extends State<SauceNaoPage> {
     super.initState();
     _store.observableStream.listen((event) {
       if (event != null && _store.results.isNotEmpty) {
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).push(
+          MaterialPageRoute(
             builder: (context) => PageView(
-                  children: _store.results
-                      .map((element) => IllustLightingPage(id: element))
-                      .toList(),
-                )));
+              children: _store.results
+                  .map((element) => IllustLightingPage(id: element))
+                  .toList(),
+            ),
+          ),
+        );
       }
     });
     if (widget.path != null) {
@@ -58,17 +63,18 @@ class _SauceNaoPageState extends State<SauceNaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add_photo_alternate),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        onPressed: () {
-          _store.findImage(context: context);
-        },
-      ),
-      appBar: AppBar(
-        title: Icon(Icons.dashboard),
-      ),
+    final Widget scaffold = Scaffold(
+      // 鸿蒙 HDS：启用时隐藏 Flutter 选图钮（由原生迷你胶囊替代）
+      floatingActionButton: hdsController.useNativeTabs
+          ? null
+          : FloatingActionButton(
+              child: Icon(Icons.add_photo_alternate),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              onPressed: () {
+                _store.findImage(context: context);
+              },
+            ),
+      appBar: AppBar(title: Icon(Icons.dashboard)),
       body: Container(
         child: ListView(
           children: <Widget>[
@@ -78,45 +84,57 @@ class _SauceNaoPageState extends State<SauceNaoPage> {
                 child: Center(child: Text('SauceNao')),
               ),
             ),
-            Observer(builder: (_) {
-              if (_store.notStart) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(widget.path ?? ""),
+            Observer(
+              builder: (_) {
+                if (_store.notStart) {
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(widget.path ?? ""),
+                    ),
+                  );
+                }
+                return InkWell(
+                  child: Card(
+                    child: _store.results.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              I18n.of(context).tap_to_show_results(
+                                _store.results.length.toString(),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            child: Image.asset('assets/images/nine.jpg'),
+                          ),
                   ),
-                );
-              }
-              return InkWell(
-                child: Card(
-                  child: _store.results.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(I18n.of(context).tap_to_show_results(
-                              _store.results.length.toString())),
-                        )
-                      : Container(
-                          child: Image.asset(
-                            'assets/images/nine.jpg',
+                  onTap: () {
+                    if (_store.results.isNotEmpty) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PageView(
+                            children: _store.results
+                                .map(
+                                  (element) => IllustLightingPage(id: element),
+                                )
+                                .toList(),
                           ),
                         ),
-                ),
-                onTap: () {
-                  if (_store.results.isNotEmpty) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PageView(
-                              children: _store.results
-                                  .map((element) =>
-                                      IllustLightingPage(id: element))
-                                  .toList(),
-                            )));
-                  }
-                },
-              );
-            }),
+                      );
+                    }
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
+    );
+    return HdsMiniBarScope(
+      icon: 'photo',
+      onTap: () => _store.findImage(context: context),
+      child: scaffold,
     );
   }
 }

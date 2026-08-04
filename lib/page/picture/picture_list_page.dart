@@ -31,13 +31,13 @@ class PictureListPage extends StatefulWidget {
   final String? heroString;
   final LightingStore? lightingStore;
 
-  const PictureListPage(
-      {Key? key,
-      required this.lightingStore,
-      required this.store,
-      required this.iStores,
-      this.heroString})
-      : super(key: key);
+  const PictureListPage({
+    Key? key,
+    required this.lightingStore,
+    required this.store,
+    required this.iStores,
+    this.heroString,
+  }) : super(key: key);
 
   @override
   _PictureListPageState createState() => _PictureListPageState();
@@ -50,10 +50,13 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
   late List<IllustStore> _iStores;
   late IllustStore _store;
   double screenWidth = 0;
+
   /// 迷你胶囊是否已显示（去重，防止 onPageChanged 反复 +1 引用计数）
   bool _miniBarShown = false;
+
   /// 是否正在退出（返回开始即隐藏胶囊，避免返回过渡中胶囊上移闪烁）
   bool _popping = false;
+
   /// 当前插画收藏状态监听：收藏状态变化时同步迷你栏图标（实心/空心）
   ReactionDisposer? _stateReaction;
 
@@ -92,6 +95,15 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
     _syncMiniBar();
   }
 
+  /// 上层页面（大图页、评论、用户页等）覆盖本页时隐藏迷你胶囊，
+  /// 避免遮挡上层内容（与非 HDS 模式一致：收藏钮只在详情页自身显示）。
+  @override
+  void didPushNext() {
+    if (!mounted || !hdsController.useNativeTabs || !_miniBarShown) return;
+    _miniBarShown = false;
+    HarmonyChannel.unregisterMiniBar(_onMiniBarTap);
+  }
+
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
@@ -113,10 +125,7 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
   void _bindStateReaction() {
     _stateReaction?.call();
     final store = _iStores[_currentIndex];
-    _stateReaction = reaction(
-      (_) => store.state,
-      (_) => _syncMiniBar(),
-    );
+    _stateReaction = reaction((_) => store.state, (_) => _syncMiniBar());
   }
 
   /// 将当前收藏状态同步到原生迷你胶囊（激活态：已收藏）
@@ -133,10 +142,7 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
     } else {
       // 非顶层页面（被嵌套详情页覆盖）不推送内容，避免覆盖上层页面的状态
       if (!HarmonyChannel.isMiniBarOwner(_onMiniBarTap)) return;
-      HarmonyChannel.updateMiniBar(
-        icon: 'favorite',
-        active: store.state != 0,
-      );
+      HarmonyChannel.updateMiniBar(icon: 'favorite', active: store.state != 0);
     }
   }
 
@@ -167,46 +173,49 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
           HarmonyChannel.unregisterMiniBar(_onMiniBarTap);
         }
       },
-      child: Observer(builder: (_) {
-        return MediaQuery(
-          data: MediaQuery.of(context)
-              .copyWith(gestureSettings: DeviceGestureSettings(touchSlop: 50)),
-          child: PageView.builder(
-            controller: _pageController,
-            physics: userSetting.swipeChangeArtwork
-                ? null
-                : NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              nowPosition = index;
-              _syncMiniBar();
-              _bindStateReaction();
-            },
-            itemBuilder: (BuildContext context, int index) {
-            if (index == _iStores.length && _lightingStore != null) {
-              return PictureListNextPage(
-                lightingStore: _lightingStore!,
-              );
-            }
-            final f = _iStores[index];
-            String? tag = nowPosition == index ? widget.heroString : null;
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                  gestureSettings:
-                      DeviceGestureSettings(touchSlop: kTouchSlop)),
-              child: IllustLightingPage(
-                id: f.id,
-                heroString: tag,
-                store: f,
-                onHorizontalDragEnd: (details) {
-                  _onDrag(details);
-                },
-              ),
-            );
-          },
-          itemCount: _iStores.length + 1,
-        ),
-      );
-      }),
+      child: Observer(
+        builder: (_) {
+          return MediaQuery(
+            data: MediaQuery.of(
+              context,
+            ).copyWith(gestureSettings: DeviceGestureSettings(touchSlop: 50)),
+            child: PageView.builder(
+              controller: _pageController,
+              physics: userSetting.swipeChangeArtwork
+                  ? null
+                  : NeverScrollableScrollPhysics(),
+              onPageChanged: (index) {
+                nowPosition = index;
+                _syncMiniBar();
+                _bindStateReaction();
+              },
+              itemBuilder: (BuildContext context, int index) {
+                if (index == _iStores.length && _lightingStore != null) {
+                  return PictureListNextPage(lightingStore: _lightingStore!);
+                }
+                final f = _iStores[index];
+                String? tag = nowPosition == index ? widget.heroString : null;
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    gestureSettings: DeviceGestureSettings(
+                      touchSlop: kTouchSlop,
+                    ),
+                  ),
+                  child: IllustLightingPage(
+                    id: f.id,
+                    heroString: tag,
+                    store: f,
+                    onHorizontalDragEnd: (details) {
+                      _onDrag(details);
+                    },
+                  ),
+                );
+              },
+              itemCount: _iStores.length + 1,
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -219,8 +228,11 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
         result++;
       else
         result--;
-      _pageController.animateToPage(result,
-          duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+      _pageController.animateToPage(
+        result,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
       if (result >= _iStores.length) result = _iStores.length - 1;
       if (result < 0) result = 0;
       setState(() {
@@ -277,22 +289,22 @@ class _PictureListNextPageState extends State<PictureListNextPage> {
       return Scaffold(
         appBar: AppBar(),
         body: Container(
-            child: Center(
-          child: Column(children: [
-            Text("Load Failed"),
-            TextButton(
-                onPressed: () {
-                  _maybeFetch(false);
-                },
-                child: Text("Retry"))
-          ]),
-        )),
+          child: Center(
+            child: Column(
+              children: [
+                Text("Load Failed"),
+                TextButton(
+                  onPressed: () {
+                    _maybeFetch(false);
+                  },
+                  child: Text("Retry"),
+                ),
+              ],
+            ),
+          ),
+        ),
       );
     }
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

@@ -231,14 +231,26 @@ struct Index {
   }
 
 
-  /// 迷你栏图标（favorite：心形/实心心形；back：返回箭头）
+  /// 迷你胶囊图标（favorite：心形/实心心形；back：返回箭头；
+  /// refresh：刷新；close：关闭；delete：删除；photo：选图；fullscreen：退出全屏）
   miniIcon(): Resource {
-    if (this.miniBarIcon === 'back') {
-      return $r('sys.symbol.arrow_left');
+    switch (this.miniBarIcon) {
+      case 'back':
+        return $r('sys.symbol.arrow_left');
+      case 'refresh':
+        return $r('sys.symbol.arrow_clockwise');
+      case 'close':
+        return $r('sys.symbol.xmark');
+      case 'delete':
+        return $r('sys.symbol.trash');
+      case 'photo':
+        return $r('sys.symbol.camera');
+      case 'fullscreen':
+        return $r('sys.symbol.arrow_down_right_and_arrow_up_left');
+      default:
+        return this.miniBarActive ? $r('sys.symbol.heart_fill') : $r('sys.symbol.heart');
     }
-    return this.miniBarActive ? $r('sys.symbol.heart_fill') : $r('sys.symbol.heart');
   }
-
   /// 迷你栏图标颜色（收藏激活时红色）
   miniColor(): ResourceColor {
     if (this.miniBarIcon === 'favorite' && this.miniBarActive) {
@@ -316,7 +328,10 @@ struct Index {
       }
       // 迷你栏：独立悬浮胶囊（详情页收藏钮 / 小说模式返回钮），浮于右下。
       // 容器始终渲染（预热 HdsTabs，避免首次创建时单页签 onTabBarClick 未就绪导致点无反应），
-      // 由 miniBarVisible 控制显隐与命中；小容器命中区域不穿透到 Flutter 层。
+      // 由 miniBarVisible 控制显隐与命中。
+      // 隐藏时必须用 Visibility.None 彻底移出命中测试：仅 hitTestBehavior(None) + opacity(0)
+      // 不够——HdsTabs 自带的 onClick/onTabBarClick 触摸区域仍会拦截右下角触摸，
+      // 挡住大图页（PhotoZoomPage）底栏最右侧的 HD 钮（而左侧分享钮正常）。
       if (this.useNativeTabs) {
         Stack() {
           this.miniBarCapsule()
@@ -327,6 +342,7 @@ struct Index {
           right: 20,
           bottom: this.bottomAvoidAreaHeight + (this.shellBarsHidden ? 24 : 80)
         })
+        .visibility(this.miniBarVisible ? Visibility.Visible : Visibility.None)
         .hitTestBehavior(this.miniBarVisible ? HitTestMode.Default : HitTestMode.None)
         .opacity(this.miniBarVisible ? 1 : 0)
       }

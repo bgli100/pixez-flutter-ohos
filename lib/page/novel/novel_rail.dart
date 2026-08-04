@@ -33,7 +33,7 @@ class NovelRail extends StatefulWidget {
   _NovelRailState createState() => _NovelRailState();
 }
 
-class _NovelRailState extends State<NovelRail> {
+class _NovelRailState extends State<NovelRail> with RouteAware {
   int selectedIndex = 0;
   DateTime? _preTime;
   final _pageList = [
@@ -41,7 +41,7 @@ class _NovelRailState extends State<NovelRail> {
     NovelRankPage(),
     NovelNewPage(),
     NovelSearchPage(),
-    SettingPage()
+    SettingPage(),
   ];
   late PageController _pageController;
 
@@ -62,12 +62,15 @@ class _NovelRailState extends State<NovelRail> {
       HarmonyChannel.registerMiniBar(_onMiniBarTap, icon: 'back');
     }
     super.initState();
+    // 订阅路由可见性：小说子页面覆盖时隐藏返回胶囊（避免遮挡），返回时恢复
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   @override
   void dispose() {
     // 解除小说模式页签回调（仅当回调仍指向本页面时才清空，避免误伤
     // 路由替换后新页面已注册的回调），并恢复主界面底栏页签文案/图标
+    routeObserver.unsubscribe(this);
     HarmonyChannel.setShellTabMode('main');
     HarmonyChannel.unregisterMiniBar(_onMiniBarTap);
     hdsController.unregisterPage(_onTabSelected);
@@ -78,11 +81,29 @@ class _NovelRailState extends State<NovelRail> {
   /// 迷你胶囊点击：返回图片模式（清空整个小说栈，确保 NovelRail 被销毁、胶囊隐藏）
   void _onMiniBarTap() {
     Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (context) => Platform.isIOS || Platform.isMacOS
-                ? HelloPage()
-                : AndroidHelloPage()),
-        (route) => false);
+      MaterialPageRoute(
+        builder: (context) => Platform.isIOS || Platform.isMacOS
+            ? HelloPage()
+            : AndroidHelloPage(),
+      ),
+      (route) => false,
+    );
+  }
+
+  /// 小说子页面覆盖本页时隐藏返回胶囊，避免遮挡上层内容
+  @override
+  void didPushNext() {
+    if (mounted && hdsController.useNativeTabs) {
+      HarmonyChannel.unregisterMiniBar(_onMiniBarTap);
+    }
+  }
+
+  /// 返回小说根页面时恢复返回胶囊
+  @override
+  void didPopNext() {
+    if (mounted && hdsController.useNativeTabs) {
+      HarmonyChannel.registerMiniBar(_onMiniBarTap, icon: 'back');
+    }
   }
 
   /// 页签切换统一处理：Flutter 底栏与原生 HDS 底栏共用。
@@ -121,13 +142,16 @@ class _NovelRailState extends State<NovelRail> {
               setState(() {
                 _preTime = DateTime.now();
               });
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                duration: Duration(seconds: 1),
-                content: Text(I18n.of(context).return_again_to_exit),
-              ));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: Text(I18n.of(context).return_again_to_exit),
+                ),
+              );
             }
           },
-          canPop: !userSetting.isReturnAgainToExit ||
+          canPop:
+              !userSetting.isReturnAgainToExit ||
               _preTime != null &&
                   DateTime.now().difference(_preTime!) <= Duration(seconds: 2),
           child: Scaffold(
@@ -136,19 +160,24 @@ class _NovelRailState extends State<NovelRail> {
                 ? null
                 : FloatingActionButton(
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => Platform.isIOS ||
-                                          Platform.isMacOS
-                                      ? HelloPage()
-                                      : AndroidHelloPage()),
-                              (route) => false);
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Platform.isIOS || Platform.isMacOS
+                              ? HelloPage()
+                              : AndroidHelloPage(),
+                        ),
+                        (route) => false,
+                      );
                     },
                     child: Icon(Icons.picture_in_picture),
                   ),
-            bottomNavigationBar:
-                useNative ? null : _buildNavigationBar(context),
+            bottomNavigationBar: useNative
+                ? null
+                : _buildNavigationBar(context),
             body: PageView.builder(
               itemCount: _pageList.length,
               controller: _pageController,
@@ -168,25 +197,41 @@ class _NovelRailState extends State<NovelRail> {
     );
   }
 
-  NavigationBar _buildNavigationBar(BuildContext context) {
-    return NavigationBar(
-      destinations: [
-        NavigationDestination(
-            icon: Icon(Icons.home), label: I18n.of(context).home),
-        NavigationDestination(
-            icon: Icon(
-              Icons.leaderboard,
-            ),
-            label: I18n.of(context).rank),
-        NavigationDestination(
-            icon: Icon(Icons.favorite), label: I18n.of(context).news),
-        NavigationDestination(
-            icon: Icon(Icons.search), label: I18n.of(context).search),
-        NavigationDestination(
-            icon: Icon(Icons.settings), label: I18n.of(context).setting)
-      ],
-      selectedIndex: selectedIndex,
-      onDestinationSelected: _onTabSelected,
+  Widget _buildNavigationBar(BuildContext context) {
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        // 与主页一致：补一小段底部安全区（对齐卓易通 Android 版），并固定高度 68。
+        // 注意 top 必须归零：本 context 位于 Scaffold 之上，MediaQuery 带有状态栏
+        // 顶距，而 NavigationBar 内部的 SafeArea 会把它加进去导致顶部一大段空白。
+        padding: MediaQuery.of(context).padding.copyWith(top: 0, bottom: 16),
+      ),
+      child: NavigationBar(
+        height: 68,
+        destinations: [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: I18n.of(context).home,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.leaderboard),
+            label: I18n.of(context).rank,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.favorite),
+            label: I18n.of(context).news,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.search),
+            label: I18n.of(context).search,
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: I18n.of(context).setting,
+          ),
+        ],
+        selectedIndex: selectedIndex,
+        onDestinationSelected: _onTabSelected,
+      ),
     );
   }
 }

@@ -153,18 +153,20 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     return Stack(
       children: [
         _buildPageContent(context),
-        Positioned(
-          bottom: MediaQuery.of(context).padding.bottom + 16,
-          right: 16,
-          child: Observer(
-            builder: (context) {
-              return AnimatedToggleFullscreenFAB(
-                isFullscreen: fullScreenStore.fullscreen,
-                toggleFullscreen: toggleFullscreen,
-              );
-            },
+        // 鸿蒙 HDS：启用时隐藏 Flutter 退出全屏钮（由原生迷你胶囊替代）
+        if (!hdsController.useNativeTabs)
+          Positioned(
+            bottom: MediaQuery.of(context).padding.bottom + 16,
+            right: 16,
+            child: Observer(
+              builder: (context) {
+                return AnimatedToggleFullscreenFAB(
+                  isFullscreen: fullScreenStore.fullscreen,
+                  toggleFullscreen: toggleFullscreen,
+                );
+              },
+            ),
           ),
-        ),
       ],
     );
   }
@@ -173,35 +175,41 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: NavigationBar(
-          height: 68,
-          backgroundColor: Theme.of(
-            context,
-          ).colorScheme.surface.withValues(alpha: 0.9),
-          destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              label: I18n.of(context).home,
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.leaderboard),
-              label: I18n.of(context).rank,
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.favorite),
-              label: I18n.of(context).quick_view,
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.search),
-              label: I18n.of(context).search,
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.more_horiz),
-              label: I18n.of(context).more,
-            ),
-          ],
-          selectedIndex: index,
-          onDestinationSelected: _onTabSelected,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            // 补一小段底部安全区：介于 0（太矮）与系统值 28（太高）之间，对齐卓易通 Android 版
+            padding: MediaQuery.of(context).padding.copyWith(bottom: 16),
+          ),
+          child: NavigationBar(
+            height: 68,
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.surface.withValues(alpha: 0.9),
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.home),
+                label: I18n.of(context).home,
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.leaderboard),
+                label: I18n.of(context).rank,
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.favorite),
+                label: I18n.of(context).quick_view,
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.search),
+                label: I18n.of(context).search,
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.more_horiz),
+                label: I18n.of(context).more,
+              ),
+            ],
+            selectedIndex: index,
+            onDestinationSelected: _onTabSelected,
+          ),
         ),
       ),
     );
@@ -305,9 +313,20 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     setState(() {});
   }
 
-  /// 鸿蒙 HDS：全屏模式联动隐藏原生底栏
+  /// 鸿蒙 HDS：全屏模式联动隐藏原生底栏，并用原生迷你胶囊替代退出全屏钮
   void _onFullscreenChanged(bool fullscreen) {
     shellBarsObserver.setFullscreen(fullscreen);
+    if (!hdsController.useNativeTabs) return;
+    if (fullscreen) {
+      HarmonyChannel.registerMiniBar(_exitFullscreen, icon: 'fullscreen');
+    } else {
+      HarmonyChannel.unregisterMiniBar(_exitFullscreen);
+    }
+  }
+
+  /// 退出全屏（原生迷你胶囊回调）
+  void _exitFullscreen() {
+    toggleFullscreen();
   }
 
   /// 鸿蒙 HDS：监听全屏状态（mobx reaction）
@@ -541,6 +560,7 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     hdsController.removeListener(_onHdsChanged);
     _fullscreenReaction?.call();
     _fullscreenReaction = null;
+    HarmonyChannel.unregisterMiniBar(_exitFullscreen);
     hdsController.unregisterPage(_onTabSelected);
     _intentDataStreamSubscription.cancel();
     _pageController.dispose();
