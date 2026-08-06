@@ -39,6 +39,7 @@ class HdsController extends ChangeNotifier {
 
   int _selectedIndex = 0;
   int _primaryColorValue = 0;
+  String _colorMode = 'system';
   bool _fromNative = false;
   bool _disposed = false;
 
@@ -59,12 +60,22 @@ class HdsController extends ChangeNotifier {
     HarmonyChannel.setShellBars(useNativeTabs: useNative);
     if (_disposed) return;
     notifyListeners();
-    // useNativeTabs 异步就绪后补发：主题色与当前页签，避免首帧状态缺失
+    // useNativeTabs 异步就绪后补发：主题色、明暗模式与当前页签，避免首帧状态缺失
     if (useNative) {
       if (_primaryColorValue != 0) {
         HarmonyChannel.setTabSelectedColor(_toHex(_primaryColorValue));
       }
+      HarmonyChannel.setColorMode(_colorMode);
       HarmonyChannel.changeTabIndex(_selectedIndex);
+    }
+  }
+
+  /// 同步应用明暗模式到 ArkTS HdsTabs（HDS 底栏材质跟随应用主题而非系统主题）。
+  /// 缓存模式值，供 init 异步就绪后补发。
+  void syncColorMode(String mode) {
+    _colorMode = mode;
+    if (_useNativeTabs) {
+      HarmonyChannel.setColorMode(mode);
     }
   }
 

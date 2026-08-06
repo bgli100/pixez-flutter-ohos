@@ -24,6 +24,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mobx/mobx.dart' show ReactionDisposer, reaction;
 import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
@@ -117,11 +118,37 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     topStore.dispose();
     fetcher.stop();
     subscription.cancel();
+    _colorModeReaction?.call();
+    _colorModeReaction = null;
+    _platformBrightnessReaction?.call();
+    _platformBrightnessReaction = null;
     if (Platform.isIOS) WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   late StreamSubscription<String> subscription;
+  ReactionDisposer? _colorModeReaction;
+  ReactionDisposer? _platformBrightnessReaction;
+
+  /// 鸿蒙 HDS：计算应用当前生效的明暗模式（'dark'/'light'/'system'），
+  /// 供原生 HDS 底栏材质跟随应用主题而非系统主题。
+  String _effectiveColorMode() {
+    switch (userSetting.themeMode) {
+      case ThemeMode.dark:
+        return 'dark';
+      case ThemeMode.light:
+        return 'light';
+      case ThemeMode.system:
+      default:
+        // 跟随系统：原生侧用 COLOR_MODE_NOT_SET 让底栏自动跟随系统
+        return 'system';
+    }
+  }
+
+  /// 同步应用明暗模式到原生 HDS 底栏（跟随应用主题而非系统主题）
+  void _syncColorModeToNative() {
+    hdsController.syncColorMode(_effectiveColorMode());
+  }
 
   @override
   void initState() {
@@ -138,6 +165,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     super.initState();
     if (Platform.isIOS) WidgetsBinding.instance.addObserver(this);
+    // 鸿蒙 HDS：监听应用主题模式变化，同步到原生底栏明暗材质
+    if (Platform.isOhos) {
+      _colorModeReaction = reaction(
+        (_) => userSetting.themeMode,
+        (_) => _syncColorModeToNative(),
+        fireImmediately: true,
+      );
+      // ThemeMode.system 时跟随系统明暗切换，也需同步
+      _platformBrightnessReaction = reaction(
+        (_) => SchedulerBinding.instance.platformDispatcher.platformBrightness,
+        (_) {
+          if (userSetting.themeMode == ThemeMode.system) {
+            _syncColorModeToNative();
+          }
+        },
+      );
+    }
     Future.delayed(Duration.zero, () {
       SingleInstancePlugin.argsParser(widget.arguments);
     });

@@ -13,7 +13,8 @@
 * limitations under the License.
 */
 
-import common from '@ohos.app.ability.common';import {
+import common from '@ohos.app.ability.common';
+import ConfigurationConstant from '@ohos.app.ability.ConfigurationConstant';import {
   FlutterPlugin,
   FlutterPluginBinding,
   MethodCall,
@@ -87,6 +88,27 @@ export default class HarmonyChannel implements FlutterPlugin {
       case "setTabSelectedColor": {
         const color: string = call.argument('color') ?? '#3367D6';
         AppStorage.setOrCreate('tabSelectedColor', color);
+        result.success(true);
+        break;
+      }
+      case "setColorMode": {
+        // 同步应用明暗模式：HDS 底栏材质跟随应用主题而非系统主题。
+        // 原生 HdsTabs 的 systemMaterialEffect 与 $r('sys.color.comp_focused_primary')
+        // 默认跟随系统色模式，这里用 setColorMode 强制 UIAbility 的暗/亮模式与
+        // 应用 ThemeMode 一致（system 时恢复 NOT_SET 跟随系统）。
+        const mode: string = call.argument('mode') ?? 'system';
+        try {
+          const abilityContext = getContext() as common.UIAbilityContext;
+          if (mode === 'dark') {
+            abilityContext.setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_DARK);
+          } else if (mode === 'light') {
+            abilityContext.setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT);
+          } else {
+            abilityContext.setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+          }
+        } catch (err) {
+          console.error(`HarmonyChannel: setColorMode failed: ${JSON.stringify(err)}`);
+        }
         result.success(true);
         break;
       }
