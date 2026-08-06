@@ -121,6 +121,15 @@ abstract class HarmonyChannel {
     } on PlatformException catch (_) {}
   }
 
+  /// 同步应用明暗模式到 ArkTS（HDS 底栏材质跟随应用主题而非系统主题）。
+  /// mode: 'dark' / 'light' / 'system'（跟随系统）。
+  static Future<void> setColorMode(String mode) async {
+    if (!Platform.isOhos) return;
+    try {
+      _channel.invokeMethod('setColorMode', {'mode': mode});
+    } on PlatformException catch (_) {}
+  }
+
   /// 同步 Flutter 页签切换到 ArkTS HdsTabs
   static Future<void> changeTabIndex(int index) async {
     if (!Platform.isOhos) return;
