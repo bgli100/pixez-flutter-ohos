@@ -122,3 +122,6 @@ msic
 /lib/src/generated/
 /plugins/rhttp/rhttp/cargokit/build_tool
 ohos/entry/libs/arm64-v8a/libsqlite3.so
+
+# Local merge guide (never commit)
+/MERGE_GUIDE.md
