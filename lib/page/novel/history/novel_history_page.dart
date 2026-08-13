@@ -19,6 +19,7 @@ import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/page/novel/viewer/novel_viewer.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 class NovelHistory extends StatefulWidget {
   @override
@@ -34,6 +35,7 @@ class _NovelHistoryState extends State<NovelHistory> {
 
   /// 清空全部小说历史（原悬浮按钮逻辑，供 HDS 迷你胶囊复用）
   Future<void> _cleanAll() async {
+    HapticUtil.selectionClick();
     final result = await showDialog(
       context: context,
       builder: (context) {
@@ -81,13 +83,17 @@ class _NovelHistoryState extends State<NovelHistory> {
                     return ListTile(
                       title: Text(novel.title),
                       subtitle: Text(novel.userName),
-                      onTap: () => Leader.push(
-                        context,
-                        NovelViewerPage(id: novel.novelId),
-                      ),
+                      onTap: () {
+                        HapticUtil.selectionClick();
+                        Leader.push(
+                          context,
+                          NovelViewerPage(id: novel.novelId),
+                        );
+                      },
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
+                          HapticUtil.selectionClick();
                           novelHistoryStore.delete(novel.novelId);
                         },
                       ),

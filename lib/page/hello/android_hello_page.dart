@@ -43,6 +43,7 @@ import 'package:pixez/page/saucenao/saucenao_page.dart';
 import 'package:pixez/page/search/search_page.dart';
 import 'package:pixez/page/search/suggest/search_suggestion_page.dart';
 import 'package:pixez/page/webview/saucenao_webview_page.dart';
+import 'package:pixez/utils/haptic_util.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 class AndroidHelloPage extends StatefulWidget {
@@ -335,6 +336,7 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
   /// 页签点击统一处理：Flutter 底栏与原生 HDS 底栏共用。
   /// 重复点击当前页签触发"回顶部"（topStore）。
   void _onTabSelected(int value) {
+    HapticUtil.selectionClick();
     if (index == value) {
       topStore.setTop("${value + 1}00");
     }

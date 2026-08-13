@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,10 +9,10 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:pixez/clipboard_plugin.dart';
 import 'package:pixez/component/pixiv_image.dart';
-import 'package:pixez/er/pixiv_image_source.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/page/picture/illust_store.dart';
+import 'package:pixez/utils/haptic_util.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path/path.dart';
 
@@ -64,7 +65,7 @@ class _PhotoZoomPageState extends State<PhotoZoomPage> {
 
   initCache() async {
     var fileInfo = await pixivCacheManager!.getFileFromCache(
-      _sourceUrl(nowUrl),
+      nowUrl,
     );
     if (mounted)
       setState(() {
@@ -101,7 +102,17 @@ class _PhotoZoomPageState extends State<PhotoZoomPage> {
             bottomNavigationBar: _buildBottom(context),
             extendBodyBehindAppBar: true,
             backgroundColor: Colors.black,
-            body: Container(
+            body: ScrollConfiguration(
+              // Flutter excludes mouse from dragDevices by default (#1308).
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.stylus,
+                  PointerDeviceKind.invertedStylus,
+                  PointerDeviceKind.trackpad,
+                  PointerDeviceKind.mouse,
+                },
+              ),
               child: PhotoViewGallery.builder(
                 scrollPhysics: const BouncingScrollPhysics(),
                 pageController: PageController(initialPage: _index),
@@ -126,7 +137,7 @@ class _PhotoZoomPageState extends State<PhotoZoomPage> {
                     shareShow = false;
                   });
                   var file = await pixivCacheManager!.getFileFromCache(
-                    _sourceUrl(nowUrl),
+                    nowUrl,
                   );
                   if (file != null && mounted)
                     setState(() {
@@ -143,12 +154,6 @@ class _PhotoZoomPageState extends State<PhotoZoomPage> {
   }
 
   String nowUrl = "";
-
-  String _sourceUrl(String url) => PixivImageSource.resolve(
-    url,
-    networkMode: userSetting.networkMode,
-    pictureSource: userSetting.pictureSource,
-  );
 
   bool show = false;
   bool shareShow = false;
@@ -249,6 +254,7 @@ class _PhotoZoomPageState extends State<PhotoZoomPage> {
                     },
                   ),
                   onLongPress: () async {
+                    HapticUtil.heavy();
                     if (_illusts.metaPages.isNotEmpty)
                       saveStore.saveImage(widget.illusts, index: _index);
                     else
@@ -264,7 +270,7 @@ class _PhotoZoomPageState extends State<PhotoZoomPage> {
                         icon: Icon(Icons.share, color: Colors.white),
                         onPressed: () async {
                           var file = await pixivCacheManager!.getFileFromCache(
-                            _sourceUrl(nowUrl),
+                            nowUrl,
                           );
                           if (file != null) {
                             String targetPath = join(

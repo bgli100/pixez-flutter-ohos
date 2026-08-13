@@ -13,7 +13,7 @@ publish_to: none
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.9.105+503
+version: 0.9.106+508
 
 environment:
   sdk: ">=3.11.5"
@@ -104,6 +104,8 @@ dev_dependencies:
 
 dependency_overrides:
   permission_handler_apple: 9.4.10
+  wakelock_plus:
+    path: ./plugins/wakelock_plus_stub
   receive_sharing_intent:
     git:
       url: https://gitcode.com/CPF-Flutter/fluttertpc_receive_sharing_intent.git

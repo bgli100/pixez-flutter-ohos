@@ -101,6 +101,7 @@ abstract class _UserSetting with Store {
   static const String AUTO_TAG_WHEN_STAR_KEY = "auto_tag_when_star";
   static const String ENABLE_HDS_BAR_KEY = "enable_hds_bar";
   static const String USE_BUNDLED_FONT_KEY = "use_bundled_font";
+  static const String HAPTIC_FEEDBACK_KEY = "haptic_feedback";
 
   @observable
   double dragStartX = 0;
@@ -222,7 +223,15 @@ abstract class _UserSetting with Store {
   /// 使用内置 HarmonyOS Sans 字体（默认开启），关闭后回退系统默认字体
   @observable
   bool useBundledFont = true;
+  @observable
+  bool hapticFeedback = true;
   static const String intialFormat = "{illust_id}_p{part}";
+
+  @action
+  setHapticFeedback(bool value) async {
+    await prefs.setBool(HAPTIC_FEEDBACK_KEY, value);
+    hapticFeedback = value;
+  }
 
   @action
   setFeedAIBadge(bool value) async {
@@ -599,6 +608,7 @@ abstract class _UserSetting with Store {
     autoTagWhenStar = prefs.getBool(AUTO_TAG_WHEN_STAR_KEY) ?? false;
     enableHdsBar = prefs.getBool(ENABLE_HDS_BAR_KEY) ?? true;
     useBundledFont = prefs.getBool(USE_BUNDLED_FONT_KEY) ?? true;
+    hapticFeedback = prefs.getBool(HAPTIC_FEEDBACK_KEY) ?? true;
     ignoreUpdateVersion = prefs.getString(IGNORE_UPDATE_VERSION_KEY);
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;

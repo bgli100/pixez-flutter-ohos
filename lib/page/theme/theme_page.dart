@@ -21,6 +21,7 @@ import 'package:pixez/component/picker/colorpicker.dart';
 import 'package:pixez/component/picker/utils.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 class ColorPickPage extends StatefulWidget {
   final Color initialColor;
@@ -211,6 +212,7 @@ class _ThemePageState extends State<ThemePage> with TickerProviderStateMixin {
                   vsync: this,
                 ),
                 onTap: (i) {
+                  HapticUtil.selectionClick();
                   userSetting.setThemeMode(i);
                 },
                 tabs: [
@@ -229,7 +231,10 @@ class _ThemePageState extends State<ThemePage> with TickerProviderStateMixin {
                 child: Card(
                     child: SwitchListTile(
                   value: userSetting.isAMOLED,
-                  onChanged: (v) => userSetting.setIsAMOLED(v),
+                  onChanged: (v) {
+                    HapticUtil.light();
+                    userSetting.setIsAMOLED(v);
+                  },
                   title: Text("AMOLED"),
                 )),
               ),
@@ -238,6 +243,7 @@ class _ThemePageState extends State<ThemePage> with TickerProviderStateMixin {
                     child: SwitchListTile(
                   value: userSetting.useDynamicColor,
                   onChanged: (v) async {
+                    HapticUtil.light();
                     await userSetting.setUseDynamicColor(v);
                     topStore.setTop("main");
                   },

@@ -30,6 +30,7 @@ import 'package:pixez/page/search/search_bar.dart';
 import 'package:pixez/page/search/suggest/search_suggestion_page.dart';
 import 'package:pixez/page/search/trend_tags_store.dart';
 import 'package:pixez/page/webview/saucenao_webview_page.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -266,6 +267,7 @@ class _SearchPageState extends State<SearchPage>
                   .isNotEmpty)
                 return InkWell(
                   onTap: () {
+                    HapticUtil.heavy();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -417,6 +419,7 @@ class _SearchPageState extends State<SearchPage>
   Widget buildActionChip(TagsPersist f, BuildContext context) {
     return GestureDetector(
       onLongPress: () {
+        HapticUtil.heavy();
         showDialog(
             context: context,
             builder: (context) {

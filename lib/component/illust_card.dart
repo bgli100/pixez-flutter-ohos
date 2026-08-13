@@ -34,6 +34,7 @@ import 'package:pixez/page/picture/illust_store.dart';
 import 'package:pixez/page/picture/picture_list_page.dart';
 import 'package:pixez/page/picture/tag_for_illust_page.dart';
 import 'package:pixez/page/series/illust_series_page.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 class IllustCard extends StatefulWidget {
   final IllustStore store;
@@ -99,6 +100,7 @@ class _IllustCardState extends State<IllustCard> {
   }
 
   _onLongPressSave() async {
+    HapticUtil.heavy();
     if (userSetting.longPressSaveConfirm) {
       final result = await showDialog(
         context: context,
@@ -324,6 +326,7 @@ class _IllustCardState extends State<IllustCard> {
   }
 
   Future<void> _buildInkTap(BuildContext context, String heroTag) async {
+    HapticUtil.selectionClick();
     await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (_) {
@@ -418,6 +421,7 @@ class _IllustCardState extends State<IllustCard> {
                 }
               },
               onLongPress: () async {
+                HapticUtil.heavy();
                 final result = await showModalBottomSheet(
                   context: context,
                   clipBehavior: Clip.hardEdge,

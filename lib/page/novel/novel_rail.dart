@@ -25,6 +25,7 @@ import 'package:pixez/page/hello/hello_page.dart';
 import 'package:pixez/page/hello/setting/setting_page.dart';
 import 'package:pixez/page/novel/new/novel_new_page.dart';
 import 'package:pixez/page/novel/rank/novel_rank_page.dart';
+import 'package:pixez/utils/haptic_util.dart';
 import 'package:pixez/page/novel/recom/novel_recom_page.dart';
 import 'package:pixez/page/novel/search/novel_search_page.dart';
 
@@ -109,6 +110,7 @@ class _NovelRailState extends State<NovelRail> with RouteAware {
   /// 页签切换统一处理：Flutter 底栏与原生 HDS 底栏共用。
   /// 重复点击当前页签触发"回顶部"（topStore）。
   void _onTabSelected(int index) {
+    HapticUtil.selectionClick();
     if (selectedIndex == index) {
       topStore.setTop("${index + 1}00");
     }

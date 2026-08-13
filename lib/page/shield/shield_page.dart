@@ -28,6 +28,7 @@ import 'package:pixez/models/ban_user_id.dart';
 import 'package:pixez/models/show_ai_response.dart';
 import 'package:pixez/network/api_client.dart';
 import 'package:pixez/page/shield/user_show_ai_setting.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 class ShieldPage extends StatefulWidget {
   @override
@@ -98,6 +99,7 @@ class _ShieldPageState extends State<ShieldPage> {
                     trailing: Switch(
                       value: muteStore.banAIIllust,
                       onChanged: (v) {
+                        HapticUtil.light();
                         muteStore.changeBanAI(v);
                       },
                     ),
@@ -124,6 +126,7 @@ class _ShieldPageState extends State<ShieldPage> {
                             .map(
                               (f) => GestureDetector(
                                 onLongPress: () {
+                                  HapticUtil.heavy();
                                   Clipboard.setData(
                                     ClipboardData(text: f.name),
                                   );

@@ -33,6 +33,7 @@ import 'package:pixez/models/illust.dart';
 import 'package:pixez/models/task_persist.dart';
 import 'package:pixez/page/task/job_page.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 part 'save_store.g.dart';
 
@@ -127,11 +128,13 @@ abstract class _SaveStoreBase with Store {
   void listenBehavior(SaveStream stream) {
     switch (stream.state) {
       case SaveState.SUCCESS:
+        HapticUtil.light();
         Toaster.downloadOk(
           "${stream.data.title} (p${stream.index ?? 0}) ${I18n.of(ctx!).saved}",
         );
         break;
       case SaveState.JOIN:
+        HapticUtil.light(minIntervalMs: 200);
         BotToast.showCustomText(
           onlyOne: true,
           duration: Duration(seconds: 1),
@@ -167,6 +170,7 @@ abstract class _SaveStoreBase with Store {
         );
         break;
       case SaveState.INQUEUE:
+        HapticUtil.selectionClick();
         BotToast.showCustomText(
           onlyOne: true,
           duration: Duration(seconds: 2),
@@ -220,6 +224,7 @@ abstract class _SaveStoreBase with Store {
         );
         break;
       case SaveState.ALREADY:
+        HapticUtil.selectionClick();
         BotToast.showCustomText(
           onlyOne: true,
           duration: Duration(seconds: 1),
@@ -350,7 +355,11 @@ abstract class _SaveStoreBase with Store {
       return;
     } else if (Platform.isOhos) {
       if (userSetting.overSanityLevelFolder && sanityLevel > 2)
-        await ImageGallerySaver.saveImageToDownload(uint8list, 'sanity/', fileName);
+        await ImageGallerySaver.saveImageToDownload(
+          uint8list,
+          'sanity/',
+          fileName,
+        );
       else
         await ImageGallerySaver.saveImage(uint8list, name: fileName);
     } else {
@@ -427,7 +436,6 @@ abstract class _SaveStoreBase with Store {
     final result = await JSEvalPlugin.eval(illust, func, index, memType);
     return result ?? "";
   }
-
 
   Future<String> _handleFileName(
     Illusts illust,

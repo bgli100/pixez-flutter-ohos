@@ -19,6 +19,7 @@ import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/page/search/result_illust_list.dart';
+import 'package:pixez/utils/haptic_util.dart';
 
 class BookTagPage extends StatefulWidget {
   @override
@@ -95,6 +96,9 @@ class _BookTagPageState extends State<BookTagPage>
           appBar: AppBar(
             elevation: 0.0,
             title: TabBar(
+              onTap: (i) {
+                HapticUtil.selectionClick();
+              },
               isScrollable: true,
               controller: _tabController,
               indicatorSize: TabBarIndicatorSize.label,
