@@ -13,7 +13,7 @@ publish_to: none
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.9.106+508
+version: 0.9.108+508
 
 environment:
   sdk: ">=3.11.5"
@@ -88,6 +88,12 @@ dependencies:
   flutter_hooks: ^0.21.3+1
   webview_flutter: ^4.13.1
   sqflite_common_ffi: ^2.4.0
+  # material_ui/cupertino_ui: OHOS Flutter (3.41.10, Dart 3.11.5) cannot resolve the
+  # decoupled 1.x packages (they require Flutter >=3.44 / Dart ^3.12). 0.0.1 is a pure
+  # re-export of package:flutter/material.dart / cupertino.dart, which keeps upstream's
+  # package:material_ui / package:cupertino_ui imports compiling on this fork.
+  material_ui: 0.0.1
+  cupertino_ui: 0.0.1
 
 dev_dependencies:
   flutter_test:

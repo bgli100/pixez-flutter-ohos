@@ -14,7 +14,7 @@
  *
  */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';

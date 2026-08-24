@@ -19,7 +19,7 @@ import 'dart:isolate';
 
 import 'package:dio/dio.dart';
 import 'package:dio_compatibility_layer/dio_compatibility_layer.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_cache_manager_dio/flutter_cache_manager_dio.dart';
@@ -232,7 +232,6 @@ class Fetcher {
     File file = File(savePath + Platform.pathSeparator + fileName);
     final uint8list = await file.readAsBytes();
     await saveStore.saveToGallery(uint8list, illusts, fileName);
-    HapticUtil.success(minIntervalMs: 300);
     Toaster.downloadOk("${illusts.title} ${I18n.of(context!).saved}");
     var job = jobMaps[url];
     if (job != null) {

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/material.dart' as material;
+import 'package:material_ui/material_ui.dart' as material;
 import 'package:flutter/widgets.dart';
 import 'package:pixez/component/pixiv_image.dart' as material;
 import 'package:pixez/constants.dart';
@@ -14,7 +14,7 @@ import 'package:pixez/network/api_client.dart';
 final bool _safeMode = Platform.isIOS || Constants.isGooglePlay;
 
 get _showBottomSheet {
-    return material.showBottomSheet;
+  return material.showBottomSheet;
 }
 
 List<Contributor> contributors = [
@@ -28,14 +28,15 @@ List<Contributor> contributors = [
       if (accountStore.now == null) return;
       if (Platform.isIOS) return;
 
-      final response =
-          await apiClient.getSearchIllust("キャル(プリコネ) 10000users入り");
+      final response = await apiClient.getSearchIllust(
+        "キャル(プリコネ) 10000users入り",
+      );
       Recommend recommend = Recommend.fromJson(response.data);
       if (recommend.illusts.isEmpty) return;
       final targetIllusts = _safeMode || userSetting.hIsNotAllow
           ? recommend.illusts
-              .where((element) => !element.tags.any((i) => i.name == "R-18"))
-              .toList()
+                .where((element) => !element.tags.any((i) => i.name == "R-18"))
+                .toList()
           : recommend.illusts;
       if (targetIllusts.isEmpty) return;
       final url = targetIllusts[Random().nextInt(targetIllusts.length)]
@@ -45,9 +46,7 @@ List<Contributor> contributors = [
       _showBottomSheet(
         context: context,
         builder: (context) {
-          return SafeArea(
-            child: material.PixivImage(url),
-          );
+          return SafeArea(child: material.PixivImage(url));
         },
       );
     },
@@ -74,12 +73,11 @@ List<Contributor> contributors = [
       if (_safeMode) return;
       if (userSetting.hIsNotAllow) {
         _showBottomSheet(
-            context: context,
-            builder: (context) {
-              return SafeArea(
-                child: Image.asset(Constants.no_h),
-              );
-            });
+          context: context,
+          builder: (context) {
+            return SafeArea(child: Image.asset(Constants.no_h));
+          },
+        );
         return;
       }
       final response = await apiClient.getIllustRanking('day_r18', null);
@@ -88,9 +86,7 @@ List<Contributor> contributors = [
         context: context,
         builder: (context) {
           final url = recommend.illusts[Random().nextInt(10)].imageUrls.medium;
-          return SafeArea(
-            child: material.PixivImage(url),
-          );
+          return SafeArea(child: material.PixivImage(url));
         },
       );
     },
@@ -124,10 +120,7 @@ List<Contributor> contributors = [
           context: context,
           builder: (context) {
             return SafeArea(
-              child: Image.asset(
-                'assets/images/fish.gif',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/images/fish.gif', fit: BoxFit.cover),
             );
           },
         );
@@ -185,11 +178,5 @@ class Contributor {
   final String content;
   final Function(BuildContext context)? onPressed;
 
-  Contributor(
-    this.name,
-    this.avatar,
-    this.url,
-    this.content, {
-    this.onPressed,
-  });
+  Contributor(this.name, this.avatar, this.url, this.content, {this.onPressed});
 }

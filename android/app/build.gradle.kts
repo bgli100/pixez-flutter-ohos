@@ -80,13 +80,20 @@ android {
         applicationId = packageName
         minSdk = flutter.minSdkVersion
         targetSdk = 37
-        versionCode = 10010060
-        versionName = "0.9.106 rr"
+        versionCode = 10010080
+        versionName = "0.9.108 strip"
         buildConfigField("boolean", "IS_GOOGLEPLAY", isGooglePlay.toString())
         ndk {
             abiFilters.addAll(arrayOf("armeabi-v7a", "arm64-v8a", "x86_64"))
         }
     }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     splits {
         abi {
             val isBuildingBundle = gradle.startParameter.taskNames.any { it.lowercase().contains("bundle") }
@@ -109,6 +116,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
+
         if (keystorePropertiesFile.exists()) {
             getByName("release") {
                 signingConfig = signingConfigs.getByName("release")
