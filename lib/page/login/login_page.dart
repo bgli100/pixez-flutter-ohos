@@ -20,6 +20,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:pixez/custom_tab_plugin.dart';
 import 'package:pixez/er/leader.dart';
+import 'package:pixez/harmony_adapt/harmony_channel.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/network/oauth_client.dart';
@@ -41,14 +42,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    // 登录页自带 BottomAppBar，隐藏原生 HDS 底栏，避免新旧导航栏同时出现
+    // 登录页自带 BottomAppBar，隐藏原生 HDS 底栏，避免新旧导航栏同时出现。
+    // 锁定隐藏（引用计数）：登录页常作为 AndroidHelloPage 的 body 与引导页
+    // 同时存在，dispose 解锁不会误释放其他页面的锁。
+    HarmonyChannel.setShellBarsLockHidden(true);
     shellBarsObserver.setForceHidden(true);
     super.initState();
   }
 
   @override
   void dispose() {
-    // 离开登录页后恢复原生 HDS 底栏
+    // 离开登录页后解锁并恢复原生 HDS 底栏
+    HarmonyChannel.setShellBarsLockHidden(false);
     shellBarsObserver.setForceHidden(false);
     userNameController.dispose();
     passWordController.dispose();

@@ -80,6 +80,12 @@ double hdsBottomSpace() =>
 
 main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  // useNativeTabs 异步就绪（hdsController.init 完成、原生底栏首次启用）后
+  // 重新同步底栏显隐：启动早期（如首次启动引导页）的隐藏指令可能早于底栏
+  // 创建而丢失，就绪后按当前页面状态补发，避免底栏先出现后隐藏。
+  // （注：不能在 main.dart 顶层直接 addListener，会让导入方把 hdsController
+  // 误解析为 Function 类型。）
+  hdsController.addListener(shellBarsObserver.resync);
   await Rhttp.init();
   await MmapCache.init();
 

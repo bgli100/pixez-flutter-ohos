@@ -75,6 +75,13 @@ class ShellBarsObserver extends NavigatorObserver {
     _sync();
   }
 
+  /// useNativeTabs 状态变化（原生底栏启用/停用）后重新同步一次显隐。
+  /// 启动早期 hdsController.init 异步就绪时，隐藏指令可能早于底栏创建而
+  /// 丢失，就绪后按当前 forceHidden/路由深度重新计算并补发。
+  void resync() {
+    _sync();
+  }
+
   void _sync() {
     HarmonyChannel.setShellBarsHidden(
       _forceHidden ||

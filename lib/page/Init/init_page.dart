@@ -30,6 +30,24 @@ class _InitPageState extends State<InitPage> {
   var currentIndex = 0;
 
   @override
+  void initState() {
+    // HDS useNativeTabs 异步就绪后，语言列表末尾追加底栏避让高度
+    // （hdsBottomSpace），保证最后一项能滚到悬浮 HDS 底栏之上。
+    hdsController.addListener(_onHdsChanged);
+    super.initState();
+  }
+
+  void _onHdsChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    hdsController.removeListener(_onHdsChanged);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -62,6 +80,8 @@ class _InitPageState extends State<InitPage> {
                     child: Container(
                       width: MediaQuery.of(context).size.width / 2,
                       child: ListView.builder(
+                        // 鸿蒙 HDS：末尾预留底栏高度，让最后一项能滚到悬浮底栏之上
+                        padding: EdgeInsets.only(bottom: hdsBottomSpace()),
                         itemBuilder: (context, index) {
                           final title = languageList[index];
                           return AnimatedOpacity(
@@ -78,12 +98,11 @@ class _InitPageState extends State<InitPage> {
                               },
                               trailing: Icon(
                                 Icons.check,
-                                color:
-                                    userSetting.languageNum == index
-                                        ? Theme.of(
-                                          context,
-                                        ).textTheme.bodyLarge!.color
-                                        : Colors.transparent,
+                                color: userSetting.languageNum == index
+                                    ? Theme.of(
+                                        context,
+                                      ).textTheme.bodyLarge!.color
+                                    : Colors.transparent,
                               ),
                             ),
                           );

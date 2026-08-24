@@ -94,17 +94,43 @@ abstract class HarmonyChannel {
   static bool _hiddenByPage = false;
   static bool get hdsBarVisible => !_hiddenByPage;
 
+  /// 引导页/登录页等整页流程锁定底栏隐藏的【引用计数】。
+  ///
+  /// 多页面可同时持有锁（例如首次启动时 AndroidHelloPage 的 body 直接是
+  /// LoginPage，随后引导页又叠加上来——两个页面都请求隐藏底栏）。若用单一
+  /// bool，任一页面 dispose 解锁都会误释放其他页面的锁，导致底栏在引导页/
+  /// 登录页上闪现。用计数：任一持有者释放后仍保持锁定，直到全部释放才解锁。
+  static int _lockHiddenCount = 0;
+
+  /// 锁定/解锁底栏隐藏（引用计数）。锁定后 setShellBarsHidden(false) 一律改为 true。
+  static void setShellBarsLockHidden(bool lock) {
+    if (lock) {
+      _lockHiddenCount++;
+      if (_lockHiddenCount == 1) {
+        setShellBarsHidden(true);
+      }
+    } else {
+      if (_lockHiddenCount > 0) {
+        _lockHiddenCount--;
+      }
+    }
+  }
+
   /// 控制原生 HDS 底栏的即时显隐（弹窗、全屏、子页面等场景，无动画）
   static Future<void> setShellBarsHidden(
     bool hidden, {
     bool retry = false,
   }) async {
     if (!Platform.isOhos) return;
+    // 锁定期间强制隐藏：任何来源的显示请求都不会到达原生侧。
+    if (_lockHiddenCount > 0) hidden = true;
     _hiddenByPage = hidden;
     final int total = retry ? 8 : 1;
     for (int i = 0; i < total; i++) {
       try {
-        _channel.invokeMethod('setShellBarsHidden', {'hidden': hidden});
+        // 必须 await：invokeMethod 异步失败（如启动早期通道未就绪）才会被
+        // catch 捕获并进入重试；此前未 await 导致 retry 形同虚设。
+        await _channel.invokeMethod('setShellBarsHidden', {'hidden': hidden});
         return;
       } catch (_) {
         if (i == total - 1) return;

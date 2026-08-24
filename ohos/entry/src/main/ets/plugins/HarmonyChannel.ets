@@ -36,6 +36,12 @@ import ConfigurationConstant from '@ohos.app.ability.ConfigurationConstant';impo
 export default class HarmonyChannel implements FlutterPlugin {
   private channel: MethodChannel | null = null;
 
+  /// 最近一次请求的底栏隐藏状态（setShellBarsHidden 写入）。
+  /// setShellBars 启用底栏时重新应用，避免启动早期隐藏请求早于底栏创建而丢失
+  /// （如首次启动引导页：useNativeTabs 就绪后底栏才渲染，若此时未保持隐藏会
+  /// "先出现后隐藏"）。
+  private shellHidden: boolean = false;
+
   getUniqueClassName(): string {
     return "HarmonyChannel";
   }
@@ -61,13 +67,17 @@ export default class HarmonyChannel implements FlutterPlugin {
       }
       case "setShellBars": {
         const useNativeTabs: boolean = call.argument('useNativeTabs') ?? false;
-        console.log(`HarmonyChannel: use native tabs = ${useNativeTabs}`);
         AppStorage.setOrCreate('useNativeTabs', useNativeTabs);
+        // 启用底栏时重新应用最近请求的隐藏状态：若此前已请求隐藏（如首次
+        // 启动引导页），保持隐藏，防止底栏在 useNativeTabs 就绪后才渲染导致
+        // "先出现后隐藏"。
+        AppStorage.setOrCreate('shellBarsHidden', this.shellHidden);
         result.success(true);
         break;
       }
       case "setShellBarsHidden": {
         const hidden: boolean = call.argument('hidden') ?? false;
+        this.shellHidden = hidden;
         AppStorage.setOrCreate('shellBarsHidden', hidden);
         result.success(true);
         break;
