@@ -3,7 +3,7 @@
     "bundleName": "com.example.pixez_flutter",
     "vendor": "example",
     "versionCode": 508,
-    "versionName": "0.9.108",
+    "versionName": "0.9.108.1",
     "icon": "$media:app_icon",
     "label": "$string:app_name"
   }

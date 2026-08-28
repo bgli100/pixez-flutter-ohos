@@ -567,6 +567,37 @@ abstract class _UserSetting with Store {
     return WelcomePageLegacyLayout.material;
   }
 
+  /// 兼容旧版 shared_preferences_ohos(2.2.0) 遗留的 double 数据。
+  ///
+  /// 旧插件把 double 存成带前缀的字符串（前缀 + 数值），升级到 2.5.4 后
+  /// 这些值会被原样以 String 返回，此时 prefs.getDouble 会抛类型错误并中断
+  /// init()，导致其后的设置（如 save_format）停留在默认值——表现为启动后
+  /// 保存格式空白、图片保存失败。这里识别旧前缀并迁移回原生 double。
+  Future<double> _restoreDouble(String key, double fallback) async {
+    // 新插件正常路径：原生 double 或不存在
+    try {
+      final value = prefs.getDouble(key);
+      if (value != null) return value;
+      return fallback;
+    } catch (_) {
+      // 类型不匹配：命中旧插件遗留的带前缀字符串
+    }
+    // 旧插件 double 前缀：base64("This is the prefix for a double.")
+    const legacyDoublePrefix = 'VGhpcyBpcyB0aGUgcHJlZml4IGZvciBhIGRvdWJsZS4';
+    try {
+      final raw = prefs.getString(key);
+      if (raw != null && raw.startsWith(legacyDoublePrefix)) {
+        final value = double.tryParse(raw.substring(legacyDoublePrefix.length));
+        if (value != null) {
+          // 迁移为原生 double（缓存同步更新，后续 getDouble 不再抛错）
+          await prefs.setDouble(key, value);
+          return value;
+        }
+      }
+    } catch (_) {}
+    return fallback;
+  }
+
   @action
   Future<void> init() async {
     prefs = await Prefer.getInstance();
@@ -587,7 +618,7 @@ abstract class _UserSetting with Store {
     nsfwMask = prefs.getBool(NSFW_MASK_KEY) ?? false;
     saveAfterStar = prefs.getBool(SAVE_AFTER_STAR) ?? false;
     starAfterSave = prefs.getBool(STAR_AFTER_SAVE) ?? false;
-    novelFontsize = prefs.getDouble(NOVEL_FONT_SIZE_KEY) ?? 16.0;
+    novelFontsize = await _restoreDouble(NOVEL_FONT_SIZE_KEY, 16.0);
     novelTextStyle = novelTextStyle.copyWith(fontSize: novelFontsize);
     saveMode =
         prefs.getInt(SAVE_MODE_KEY) ??
@@ -604,7 +635,7 @@ abstract class _UserSetting with Store {
     imagePickerType = prefs.getInt(IMAGE_PICKER_TYPE_KEY) ?? 0;
     swipeChangeArtwork = prefs.getBool(SWIPE_CHANGE_ARTWORK_KEY) ?? true;
     useSaunceNaoWebview = prefs.getBool(USE_SAUNCE_NAO_WEBVIEW) ?? false;
-    dragStartX = prefs.getDouble(DRAG_START_X_KEY) ?? 0;
+    dragStartX = await _restoreDouble(DRAG_START_X_KEY, 0);
     autoTagWhenStar = prefs.getBool(AUTO_TAG_WHEN_STAR_KEY) ?? false;
     enableHdsBar = prefs.getBool(ENABLE_HDS_BAR_KEY) ?? true;
     useBundledFont = prefs.getBool(USE_BUNDLED_FONT_KEY) ?? true;
