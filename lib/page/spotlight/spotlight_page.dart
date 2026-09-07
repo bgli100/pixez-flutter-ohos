@@ -68,7 +68,9 @@ class SpotLightPage extends StatelessWidget {
 
   SliverWaterfallFlowDelegate _buildGridDelegate(BuildContext context) {
     var count = 2;
-    if (userSetting.crossAdapt) {
+    if (MediaQuery.of(context).orientation == Orientation.portrait
+        ? userSetting.crossAdapt
+        : userSetting.hCrossAdapt) {
       count = _buildSliderValue(context);
     } else {
       count = (MediaQuery.of(context).orientation == Orientation.portrait)

@@ -13,7 +13,7 @@ publish_to: none
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.9.108+508
+version: 0.9.109+509
 
 environment:
   sdk: ">=3.11.5"
@@ -323,6 +323,7 @@ msix_config:
   install_certificate: false
   store: false
   publisher: CN=Notsfsssf, C=CN
+
 
 hooks:
   user_defines:

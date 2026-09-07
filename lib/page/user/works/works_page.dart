@@ -186,7 +186,9 @@ class _WorksPageState extends State<WorksPage> {
 
   SliverWaterfallFlowDelegate _buildGridDelegate() {
     var count = 2;
-    if (userSetting.crossAdapt) {
+    if (MediaQuery.of(context).orientation == Orientation.portrait
+        ? userSetting.crossAdapt
+        : userSetting.hCrossAdapt) {
       count = _buildSliderValue();
     } else {
       count = (MediaQuery.of(context).orientation == Orientation.portrait)

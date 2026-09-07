@@ -30,13 +30,15 @@ enum _SauceNaoPhase { idle, loading, done, error }
 class SauceNaoModal extends StatefulWidget {
   const SauceNaoModal({super.key});
 
-  static Future<void> show(BuildContext context) {
-    return showModalBottomSheet(
+  static Future<void> show(BuildContext context) async {
+    final result = await showModalBottomSheet<SauceNaoResult>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       builder: (context) => const SauceNaoModal(),
     );
+    if (result == null || !context.mounted) return;
+    Leader.push(context, IllustLightingPage(id: result.illustId));
   }
 
   @override
@@ -588,7 +590,7 @@ class _SauceNaoModalState extends State<SauceNaoModal> {
                 ),
                 trailing: Icon(Icons.chevron_right),
                 onTap: () {
-                  Leader.push(context, IllustLightingPage(id: item.illustId));
+                  Navigator.of(context).pop(item);
                 },
               );
             },

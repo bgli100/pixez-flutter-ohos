@@ -180,7 +180,9 @@ class _RecomSpolightPageState extends State<RecomSpolightPage>
 
   Widget _buildWaterfall(BuildContext context, Orientation orientation) {
     var count = 2;
-    if (userSetting.crossAdapt) {
+    if (orientation == Orientation.portrait
+        ? userSetting.crossAdapt
+        : userSetting.hCrossAdapt) {
       count = _buildSliderValue(context, orientation);
     } else {
       count = (orientation == Orientation.portrait)

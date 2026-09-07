@@ -15,6 +15,7 @@
  */
 
 import 'package:material_ui/material_ui.dart';
+import 'package:pixez/main.dart';
 import 'package:pixez/models/novel_recom_response.dart';
 import 'package:pixez/network/api_client.dart';
 import 'package:pixez/utils/haptic_util.dart';
@@ -60,7 +61,8 @@ class _NovelBookmarkButtonState extends State<NovelBookmarkButton> {
         onPressed: () async {
           if (!widget.novel.isBookmarked) {
             try {
-              await apiClient.postNovelBookmarkAdd(widget.novel.id, "public");
+              await apiClient.postNovelBookmarkAdd(widget.novel.id,
+                  userSetting.defaultPrivateLike ? "private" : "public");
               HapticUtil.medium();
               setState(() {
                 widget.novel.isBookmarked = true;

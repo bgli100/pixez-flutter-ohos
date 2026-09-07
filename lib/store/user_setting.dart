@@ -84,8 +84,8 @@ abstract class _UserSetting with Store {
   static const String NAME_EVAL_KEY = "name_eval";
   static const String CROSS_ADAPT_KEY = "cross_adapt";
   static const String CROSS_ADAPT_WIDTH_KEY = "cross_adapt_width";
-  static const String H_CROSS_ADAPT_KEY = "cross_adapt";
-  static const String H_CROSS_ADAPT_WIDTH_KEY = "cross_adapt_width";
+  static const String H_CROSS_ADAPT_KEY = "h_cross_adapt";
+  static const String H_CROSS_ADAPT_WIDTH_KEY = "h_cross_adapt_width";
   static const String DEFAULT_PRIVATE_LIKE_KEY = "default_private_like";
   static const String IMAGE_PICKER_TYPE_KEY = "image_picker_type_renew";
   static const String LONG_PRESS_SAVE_CONFIRM_KEY = "long_press_save_confirm";
@@ -484,11 +484,11 @@ abstract class _UserSetting with Store {
         ApiClient.Accept_Language;
     locale = iSupportedLocales[languageNum];
     crossAdapt = prefs.getBool(CROSS_ADAPT_KEY) ?? false;
-    hCrossAdapt = prefs.getBool(CROSS_ADAPT_KEY) ?? false;
+    hCrossAdapt = prefs.getBool(H_CROSS_ADAPT_KEY) ?? false;
     final crossAdapterV = prefs.getInt(CROSS_ADAPT_WIDTH_KEY) ?? 100;
     final hCrossAdapterV = prefs.getInt(H_CROSS_ADAPT_WIDTH_KEY) ?? 100;
-    crossAdapterWidth = min(2160, max(100, crossAdapterV));
-    hCrossAdapterWidth = min(2160, max(100, hCrossAdapterV));
+    crossAdapterWidth = min(2160, max(50, crossAdapterV));
+    hCrossAdapterWidth = min(2160, max(50, hCrossAdapterV));
     crossCount = prefs.getInt(CROSS_COUNT_KEY) ?? 2;
     hCrossCount = prefs.getInt(H_CROSS_COUNT_KEY) ?? 4;
     feedAIBadge = prefs.getBool(FEED_AI_BADGE_KEY) ?? true;

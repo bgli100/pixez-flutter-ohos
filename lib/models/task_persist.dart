@@ -240,7 +240,7 @@ create table $tableAccount (
       ],
       orderBy: "${columnId} ${asc ? "ASC" : "DESC"}",
       limit: LIMIT,
-      offset: (page - 1) * LIMIT,
+      offset: page * LIMIT,
       where: status == 10 ? null : '$columnStatus = ?',
       whereArgs: status == 10 ? null : [status],
     );
