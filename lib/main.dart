@@ -27,6 +27,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobx/mobx.dart' show ReactionDisposer, reaction;
+import 'package:path_provider/path_provider.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
@@ -49,6 +50,7 @@ import 'package:pixez/store/save_store.dart';
 import 'package:pixez/store/tag_history_store.dart';
 import 'package:pixez/store/top_store.dart';
 import 'package:pixez/store/user_setting.dart';
+import 'package:pixez/win32_plugin.dart';
 import 'package:rhttp/rhttp.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -92,8 +94,15 @@ main(List<String> args) async {
   if (Platform.isWindows || Platform.isLinux) {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-    final dbPath = await Paths.getDatabaseFolderPath();
-    if (dbPath != null) databaseFactory.setDatabasesPath(dbPath);
+    final dbPath = await getApplicationSupportDirectory();
+    await Paths.setApplicationSupportDirectory(dbPath.path);
+    if (Platform.isWindows) {
+      await Win32.migrationAppData();
+    }
+    databaseFactory.setDatabasesPath(dbPath.path);
+
+    // 确保只有一个实例正在运行
+    // Android 和 iOS 应用本身就是单例程序，无需额外操作
     SingleInstancePlugin.initialize();
   }
 

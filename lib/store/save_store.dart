@@ -301,7 +301,7 @@ abstract class _SaveStoreBase with Store {
     int index, {
     bool redo = false,
   }) async {
-    if (Platform.isAndroid || Platform.isWindows) {
+    if (Platform.isAndroid || Platform.isWindows || Platform.isLinux) {
       try {
         String targetFileName = applySingleFolder(illusts, fileName);
         final isExist = await DocumentPlugin.exist(targetFileName);
@@ -324,7 +324,10 @@ abstract class _SaveStoreBase with Store {
     int sanityLevel,
     String fileName,
   ) async {
-    if (Platform.isAndroid || Platform.isIOS || Platform.isWindows) {
+    if (Platform.isAndroid ||
+        Platform.isIOS ||
+        Platform.isWindows ||
+        Platform.isLinux) {
       try {
         String overFileName = fileName;
         if (userSetting.singleFolder) {

@@ -280,7 +280,7 @@ class _IllustCardState extends State<IllustCard> {
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0),
+        padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 4.0),
         child: Text("AI", style: TextStyle(color: Colors.white)),
       ),
     );
@@ -462,8 +462,8 @@ class _IllustCardState extends State<IllustCard> {
           child: Container(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 2.0,
-                horizontal: 2.0,
+                vertical: 0.0,
+                horizontal: 4.0,
               ),
               child: cardText(),
             ),
