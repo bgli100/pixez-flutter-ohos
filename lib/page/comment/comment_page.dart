@@ -395,7 +395,9 @@ class _CommentPageState extends State<CommentPage> {
                 child: Column(
                   children: [
                     Container(
-                      color: Theme.of(context).colorScheme.surfaceContainer, // TODO: edge to edge
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainer, // TODO: edge to edge
                       child: Row(
                         children: <Widget>[
                           IconButton(
