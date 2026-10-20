@@ -334,9 +334,7 @@ class _IllustDetailContentState extends State<IllustDetailContent> {
                   return _buildSelectionMenu(selectableRegionState, context);
                 },
                 child: SelectionHorizontalScroll(
-                  child: SelectableHtml(
-                    data: caption.isEmpty ? "~" : caption,
-                  ),
+                  child: SelectableHtml(data: caption.isEmpty ? "~" : caption),
                 ),
               ),
             ),
