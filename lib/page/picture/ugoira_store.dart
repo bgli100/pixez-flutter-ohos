@@ -19,6 +19,7 @@ import 'package:archive/archive.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pixez/er/hoster.dart';
@@ -31,6 +32,7 @@ import 'package:pixez/document_plugin.dart';
 import 'package:pixez/saf_plugin.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/page/picture/illust_store.dart';
+import 'package:pixez/page/picture/ugoira_gif_encoder.dart';
 import 'package:pixez/store/save_store.dart';
 
 part 'ugoira_store.g.dart';
@@ -108,6 +110,10 @@ abstract class _UgoiraStoreBase with Store {
     try {
       isEncoding = true;
       final gifName = await buildSaveFileName(illusts, 0, ".gif");
+      if (Platform.isOhos) {
+        await _encodeGifOnOhos(illusts, gifName);
+        return;
+      }
       BotToast.showText(text: "[Encoding] $gifName");
       final gifPath = await _platform.invokeMethod('getBatteryLevel', {
         "path": drawPool.first.parent.path, // guarded by isEmpty check above
@@ -122,11 +128,63 @@ abstract class _UgoiraStoreBase with Store {
         BotToast.showText(text: "[GifSaved] $gifName");
         await _autoBookmarkAfterSave(illusts);
       }
-    } on PlatformException catch (e) {
-      BotToast.showText(text: "encode failed: ${e.message ?? e.toString()}");
+    } catch (e) {
+      LPrinter.d(e);
+      BotToast.showText(
+        text: "encode failed: ${e is PlatformException ? e.message : e}",
+      );
     } finally {
       isEncoding = false;
     }
+  }
+
+  /// 鸿蒙端兜底：原生编码通道 `samples.flutter.dev/battery` 与
+  /// `DocumentPlugin`（`com.perol.dev/save`）都只在 Android/iOS 实现，
+  /// 因此改为纯 Dart 合成 GIF 后写入相册。
+  Future<void> _encodeGifOnOhos(Illusts illusts, String gifName) async {
+    final frames = _framePaths();
+    if (frames.isEmpty) {
+      BotToast.showText(text: "not ready");
+      return;
+    }
+    BotToast.showLoading();
+    try {
+      final bytes = await encodeUgoiraGif(
+        framePaths: frames,
+        delays: ugoiraMetadataResponse!.ugoiraMetadata.frames
+            .map((e) => e.delay)
+            .toList(),
+      );
+      // 相册插件用 name.split('.') 拆分扩展名与标题，标题里的点会让扩展名解析失败，
+      // 这里只保留扩展名前的那一个点。
+      final dot = gifName.lastIndexOf(".");
+      final galleryName = dot < 0
+          ? "$gifName.gif"
+          : "${gifName.substring(0, dot).replaceAll(".", "_")}"
+                "${gifName.substring(dot)}";
+      final result = await ImageGallerySaver.saveImage(
+        bytes,
+        name: galleryName,
+      );
+      if (result is Map && result["isSuccess"] == true) {
+        BotToast.showText(text: "[GifSaved] $gifName");
+        await _autoBookmarkAfterSave(illusts);
+      } else {
+        final message = result is Map ? result["message"] : result;
+        BotToast.showText(text: "encode failed: $message");
+      }
+    } finally {
+      BotToast.closeAllLoading();
+    }
+  }
+
+  List<String> _framePaths() {
+    return drawPool.whereType<File>().map((e) => e.path).where((path) {
+      final lower = path.toLowerCase();
+      return lower.endsWith(".jpg") ||
+          lower.endsWith(".jpeg") ||
+          lower.endsWith(".png");
+    }).toList()..sort();
   }
 
   Future<void> _autoBookmarkAfterSave(Illusts illusts) async {
