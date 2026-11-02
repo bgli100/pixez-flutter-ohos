@@ -4,6 +4,7 @@ import window from "@ohos.window";
 import { FlutterAbility, FlutterEngine, MethodChannel } from "@ohos/flutter_ohos";
 import { GeneratedPluginRegistrant } from "../plugins/GeneratedPluginRegistrant";
 import HarmonyChannel from "../plugins/HarmonyChannel";
+import UgoiraGifEncoder from "../plugins/UgoiraGifEncoder";
 
 /// 底栏相关事件，与 Index.ets 保持一致
 const EVENT_TAB_HOME = 'EVENT_TAB_HOME';
@@ -16,6 +17,7 @@ const EVENT_MINI_BAR_TAP = 'EVENT_MINI_BAR_TAP';
 
 export default class EntryAbility extends FlutterAbility {
   harmonyChannel: HarmonyChannel = new HarmonyChannel();
+  ugoiraGifEncoder: UgoiraGifEncoder = new UgoiraGifEncoder();
   private flutterChannel: MethodChannel | null = null;
   private envChangeListener: number | null = null;
 
@@ -23,6 +25,7 @@ export default class EntryAbility extends FlutterAbility {
     super.configureFlutterEngine(flutterEngine);
     GeneratedPluginRegistrant.registerWith(flutterEngine);
     flutterEngine.getPlugins()?.add(this.harmonyChannel);
+    flutterEngine.getPlugins()?.add(this.ugoiraGifEncoder);
     this.flutterChannel = this.harmonyChannel.getChannel();
     this.initFontWeightListener();
     this.initShellEventListeners();

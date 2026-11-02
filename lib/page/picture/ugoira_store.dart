@@ -138,33 +138,36 @@ abstract class _UgoiraStoreBase with Store {
     }
   }
 
-  /// 鸿蒙端兜底：原生编码通道 `samples.flutter.dev/battery` 与
-  /// `DocumentPlugin`（`com.perol.dev/save`）都只在 Android/iOS 实现，
-  /// 因此改为纯 Dart 合成 GIF 后写入相册。
+  /// 鸿蒙端的 GIF 导出：编码交给原生 `libugoiragif.so`（`pixez/ugoira_gif`
+  /// 通道，与安卓端同一套 GCTGifEncoder），只在开始/结束时各弹一条 toast，
+  /// 编码期间不阻塞界面（与 Android 端一致）。
   Future<void> _encodeGifOnOhos(Illusts illusts, String gifName) async {
     final frames = _framePaths();
     if (frames.isEmpty) {
       BotToast.showText(text: "not ready");
       return;
     }
-    BotToast.showLoading();
+    BotToast.showText(text: "[Encoding] $gifName");
+    final tempDir = await getTemporaryDirectory();
+    final outputPath =
+        "${tempDir.path}/ugoira_${id}_"
+        "${DateTime.now().millisecondsSinceEpoch}.gif";
+    File? encoded;
     try {
-      final bytes = await encodeUgoiraGif(
+      final gifPath = await encodeUgoiraGifFile(
         framePaths: frames,
         delays: ugoiraMetadataResponse!.ugoiraMetadata.frames
             .map((e) => e.delay)
             .toList(),
+        outputPath: outputPath,
       );
+      encoded = File(gifPath);
+      final bytes = await encoded.readAsBytes();
       // 相册插件用 name.split('.') 拆分扩展名与标题，标题里的点会让扩展名解析失败，
       // 这里只保留扩展名前的那一个点。
-      final dot = gifName.lastIndexOf(".");
-      final galleryName = dot < 0
-          ? "$gifName.gif"
-          : "${gifName.substring(0, dot).replaceAll(".", "_")}"
-                "${gifName.substring(dot)}";
       final result = await ImageGallerySaver.saveImage(
         bytes,
-        name: galleryName,
+        name: _galleryName(gifName),
       );
       if (result is Map && result["isSuccess"] == true) {
         BotToast.showText(text: "[GifSaved] $gifName");
@@ -173,9 +176,24 @@ abstract class _UgoiraStoreBase with Store {
         final message = result is Map ? result["message"] : result;
         BotToast.showText(text: "encode failed: $message");
       }
+    } catch (e) {
+      LPrinter.d(e);
+      BotToast.showText(
+        text: "encode failed: ${e is PlatformException ? e.message : e}",
+      );
     } finally {
-      BotToast.closeAllLoading();
+      // 相册里已经有一份，缓存文件不再需要
+      try {
+        if (encoded != null && encoded.existsSync()) encoded.deleteSync();
+      } catch (_) {}
     }
+  }
+
+  String _galleryName(String gifName) {
+    final dot = gifName.lastIndexOf(".");
+    if (dot < 0) return "$gifName.gif";
+    final base = gifName.substring(0, dot).replaceAll(".", "_");
+    return "$base${gifName.substring(dot)}";
   }
 
   List<String> _framePaths() {
