@@ -66,7 +66,8 @@ extension TimeExts on String {
         .replaceAll("[", "")
         .replaceAll("]", "")
         .replaceAll("{", "")
-        .replaceAll("}", "");
+        .replaceAll("}", "")
+        .replaceAll(RegExp(r'[\x00-\x1F\x7F]'), "");
   }
 }
 
@@ -101,6 +102,8 @@ extension IllustExts on Illusts {
       totalComments == null ? '' : '($totalComments)';
   bool hIsNotAllow() {
     if (userSetting.hIsNotAllow) {
+      // x_restrict: 1 = R-18, 2 = R-18G
+      if (xRestrict > 0) return true;
       if (tags.any((tag) => tag.name.startsWith('R-18'))) {
         return true;
       }

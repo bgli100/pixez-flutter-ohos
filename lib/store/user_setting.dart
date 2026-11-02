@@ -102,7 +102,10 @@ abstract class _UserSetting with Store {
   static const String ENABLE_HDS_BAR_KEY = "enable_hds_bar";
   static const String USE_BUNDLED_FONT_KEY = "use_bundled_font";
   static const String HAPTIC_FEEDBACK_KEY = "haptic_feedback";
+  static const String MINIMIZE_ON_EXIT_KEY = "minimize_on_exit";
 
+  @observable
+  bool minimizeOnExit = true;
   @observable
   double dragStartX = 0;
   @observable
@@ -643,6 +646,7 @@ abstract class _UserSetting with Store {
     ignoreUpdateVersion = prefs.getString(IGNORE_UPDATE_VERSION_KEY);
     illustDetailSaveSkipLongPress =
         prefs.getBool(ILLUST_DETAIL_SAVE_SKIP_LONG_PRESS_KEY) ?? false;
+    minimizeOnExit = prefs.getBool(MINIMIZE_ON_EXIT_KEY) ?? true;
     if (Platform.isAndroid) {
       try {
         await SecurePlugin.configSecureWindow(nsfwMask);
@@ -855,6 +859,12 @@ abstract class _UserSetting with Store {
   Future<void> setLongPressSaveConfirm(bool value) async {
     await prefs.setBool(LONG_PRESS_SAVE_CONFIRM_KEY, value);
     longPressSaveConfirm = value;
+  }
+
+  @action
+  Future<void> setMinimizeOnExit(bool value) async {
+    minimizeOnExit = value;
+    await prefs.setBool(MINIMIZE_ON_EXIT_KEY, value);
   }
 
   String illustToShareInfoText(Illusts illusts) {
