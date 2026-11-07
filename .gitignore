@@ -121,8 +121,13 @@ msic
 /plugins/rhttp/rhttp/cargokit/build_tool
 ohos/entry/libs/arm64-v8a/libsqlite3.so
 
-# Local merge guide (never commit)
+# Local agent knowledge base (never commit)
+/AGENTS.md
+/.agents/
 /MERGE_GUIDE.md
 
 # Local release staging (notes / hap assets, never commit)
 /release_staging/
+
+# Harness temp probe file (never commit)
+/.dsh-write-test.tmp
