@@ -33,6 +33,7 @@ import 'package:pixez/component/star_icon.dart';
 import 'package:pixez/er/illust_cacher.dart';
 import 'package:pixez/er/leader.dart';
 import 'package:pixez/er/lprinter.dart';
+import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/ban_illust_id.dart';
@@ -62,12 +63,19 @@ class IllustLightingPage extends StatefulWidget {
   final IllustStore? store;
   final GestureDragEndCallback? onHorizontalDragEnd;
 
+  /// 是否由本页自己注册鸿蒙 HDS 迷你胶囊（收藏钮）。
+  /// PictureListPage 内的插画由列表页统一持有胶囊（翻页/状态同步），
+  /// 传 false；独立打开的详情页（深链、历史、相关作品等）传 true，
+  /// 否则 HDS 模式下 Flutter 收藏 FAB 被隐藏、胶囊又无人注册 → 收藏钮缺失。
+  final bool ownsMiniBar;
+
   const IllustLightingPage({
     Key? key,
     required this.id,
     this.heroString,
     this.store,
     this.onHorizontalDragEnd,
+    this.ownsMiniBar = true,
   }) : super(key: key);
 
   @override
@@ -100,6 +108,7 @@ class _IllustLightingPageState extends State<IllustLightingPage> {
       store: widget.store,
       heroString: widget.heroString,
       onHorizontalDragEnd: widget.onHorizontalDragEnd,
+      ownsMiniBar: widget.ownsMiniBar,
     );
   }
 
@@ -109,6 +118,7 @@ class _IllustLightingPageState extends State<IllustLightingPage> {
       store: widget.store,
       heroString: widget.heroString,
       onHorizontalDragEnd: widget.onHorizontalDragEnd,
+      ownsMiniBar: widget.ownsMiniBar,
     );
   }
 }
@@ -119,12 +129,16 @@ class IllustVerticalPage extends StatefulWidget {
   final IllustStore? store;
   final GestureDragEndCallback? onHorizontalDragEnd;
 
+  /// 见 [IllustLightingPage.ownsMiniBar]
+  final bool ownsMiniBar;
+
   const IllustVerticalPage({
     Key? key,
     required this.id,
     this.heroString,
     this.store,
     this.onHorizontalDragEnd,
+    this.ownsMiniBar = true,
   }) : super(key: key);
 
   @override
@@ -254,7 +268,27 @@ class _IllustVerticalPageState extends State<IllustVerticalPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _buildBody(context);
+    final body = _buildBody(context);
+    // 独立详情页：自己注册鸿蒙 HDS 迷你胶囊（收藏钮）。
+    // PictureListPage 内的插画由列表页持有胶囊，这里不重复注册。
+    if (!widget.ownsMiniBar) return body;
+    return Observer(
+      builder: (_) => HdsMiniBarScope(
+        icon: 'favorite',
+        active: _illustStore.state != 0,
+        onTap: _onMiniBarTap,
+        child: body,
+      ),
+    );
+  }
+
+  /// 胶囊点击：与收藏 FAB 同逻辑（插画未加载时先拉取，避免 star() 对 null 抛错）
+  Future<void> _onMiniBarTap() async {
+    if (_illustStore.illusts == null) {
+      await _illustStore.fetch();
+      if (!mounted || _illustStore.illusts == null) return;
+    }
+    await toggleIllustFavorite(context, _illustStore, userStore: userStore);
   }
 
   Widget _buildBody(BuildContext context) {

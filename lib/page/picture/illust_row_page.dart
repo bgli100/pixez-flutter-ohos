@@ -28,6 +28,7 @@ import 'package:pixez/component/star_icon.dart';
 import 'package:pixez/er/leader.dart';
 import 'package:pixez/er/lprinter.dart';
 import 'package:pixez/exts.dart';
+import 'package:pixez/harmony_adapt/hds_mini_bar_scope.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/models/ban_illust_id.dart';
@@ -35,6 +36,7 @@ import 'package:pixez/models/ban_tag.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/page/picture/illust_about_store.dart';
 import 'package:pixez/page/picture/illust_detail_content.dart';
+import 'package:pixez/page/picture/illust_favorite_action.dart';
 import 'package:pixez/page/picture/illust_store.dart';
 import 'package:pixez/page/picture/picture_list_page.dart';
 import 'package:pixez/page/picture/tag_for_illust_page.dart';
@@ -52,12 +54,18 @@ class IllustRowPage extends StatefulWidget {
   final IllustStore? store;
   final GestureDragEndCallback? onHorizontalDragEnd;
 
+  /// 是否由本页自己注册鸿蒙 HDS 迷你胶囊（收藏钮）。
+  /// PictureListPage 内的插画由列表页统一持有胶囊，传 false；
+  /// 独立打开的详情页传 true（见 [IllustLightingPage.ownsMiniBar]）。
+  final bool ownsMiniBar;
+
   const IllustRowPage({
     Key? key,
     required this.id,
     this.heroString,
     this.store,
     this.onHorizontalDragEnd,
+    this.ownsMiniBar = true,
   }) : super(key: key);
 
   @override
@@ -175,7 +183,7 @@ class _IllustRowPageState extends State<IllustRowPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
+    final body = Scaffold(
       extendBody: true,
       // appBar: AppBar(
       //   elevation: 0.0,
@@ -276,6 +284,26 @@ class _IllustRowPageState extends State<IllustRowPage>
         },
       ),
     );
+    // 独立详情页：自己注册鸿蒙 HDS 迷你胶囊（收藏钮）。
+    // PictureListPage 内的插画由列表页持有胶囊，这里不重复注册。
+    if (!widget.ownsMiniBar) return body;
+    return Observer(
+      builder: (_) => HdsMiniBarScope(
+        icon: 'favorite',
+        active: _illustStore.state != 0,
+        onTap: _onMiniBarTap,
+        child: body,
+      ),
+    );
+  }
+
+  /// 胶囊点击：与收藏 FAB 同逻辑（插画未加载时先拉取，避免 star() 对 null 抛错）
+  Future<void> _onMiniBarTap() async {
+    if (_illustStore.illusts == null) {
+      await _illustStore.fetch();
+      if (!mounted || _illustStore.illusts == null) return;
+    }
+    await toggleIllustFavorite(context, _illustStore, userStore: userStore);
   }
 
   Widget colorText(String text, BuildContext context) => SelectionArea(

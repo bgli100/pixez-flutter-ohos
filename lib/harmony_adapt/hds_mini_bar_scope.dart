@@ -22,7 +22,8 @@ import 'package:pixez/main.dart';
 ///
 /// - 页面成为顶层时显示胶囊（[icon]），点击触发 [onTap]（与原 Flutter 悬浮按钮同逻辑）；
 /// - 被上层页面覆盖时隐藏（didPushNext），返回时恢复（didPopNext），销毁时注销；
-/// - useNativeTabs 异步就绪后自动补注册。
+/// - useNativeTabs 异步就绪后自动补注册；
+/// - [active] 变化时同步胶囊激活态（如收藏：实心/空心），仅顶层所有者推送。
 ///
 /// 用于把各类 Flutter 悬浮按钮（FAB）替换为原生沉浸胶囊，避免新旧按钮共存。
 /// 非鸿蒙平台（useNativeTabs 为 false）下不注册，不影响其他平台。
@@ -30,6 +31,9 @@ class HdsMiniBarScope extends StatefulWidget {
   /// 胶囊图标名（对应 ArkTS 侧 miniIcon() 的映射键）：
   /// 'refresh' / 'close' / 'delete' / 'photo' / 'fullscreen' 等
   final String icon;
+
+  /// 胶囊激活态（favorite 图标：true = 实心红心，false = 空心）
+  final bool active;
 
   /// 胶囊点击回调（与原 Flutter 悬浮按钮的 onPressed 相同逻辑）
   final VoidCallback onTap;
@@ -39,6 +43,7 @@ class HdsMiniBarScope extends StatefulWidget {
   const HdsMiniBarScope({
     super.key,
     required this.icon,
+    this.active = false,
     required this.onTap,
     required this.child,
   });
@@ -71,7 +76,24 @@ class _HdsMiniBarScopeState extends State<HdsMiniBarScope> with RouteAware {
   void _register() {
     if (_registered || !hdsController.useNativeTabs) return;
     _registered = true;
-    HarmonyChannel.registerMiniBar(_handleTap, icon: widget.icon);
+    HarmonyChannel.registerMiniBar(
+      _handleTap,
+      icon: widget.icon,
+      active: widget.active,
+    );
+  }
+
+  /// 内容（图标/激活态）变化时同步胶囊；非顶层所有者不推送，
+  /// 避免覆盖嵌套在上层页面的胶囊状态（与 PictureListPage 的约定一致）。
+  @override
+  void didUpdateWidget(covariant HdsMiniBarScope oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_registered) return;
+    if (oldWidget.icon == widget.icon && oldWidget.active == widget.active) {
+      return;
+    }
+    if (!HarmonyChannel.isMiniBarOwner(_handleTap)) return;
+    HarmonyChannel.updateMiniBar(icon: widget.icon, active: widget.active);
   }
 
   void _unregister() {

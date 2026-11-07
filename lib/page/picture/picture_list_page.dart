@@ -216,6 +216,8 @@ class _PictureListPageState extends State<PictureListPage> with RouteAware {
                       id: f.id,
                       heroString: tag,
                       store: f,
+                      // 胶囊由本页统一持有（翻页/收藏状态同步），子页不再注册
+                      ownsMiniBar: false,
                       onHorizontalDragEnd: (details) {
                         _onDrag(details);
                       },
