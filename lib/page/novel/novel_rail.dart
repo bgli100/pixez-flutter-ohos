@@ -25,6 +25,7 @@ import 'package:pixez/page/hello/hello_page.dart';
 import 'package:pixez/page/hello/setting/setting_page.dart';
 import 'package:pixez/page/novel/new/novel_new_page.dart';
 import 'package:pixez/page/novel/rank/novel_rank_page.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:pixez/utils/haptic_util.dart';
 import 'package:pixez/page/novel/recom/novel_recom_page.dart';
 import 'package:pixez/page/novel/search/novel_search_page.dart';
@@ -125,8 +126,11 @@ class _NovelRailState extends State<NovelRail> with RouteAware {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final wide = constraints.maxWidth > constraints.maxHeight;
-        // 鸿蒙 HDS：横屏（侧栏布局）时隐藏原生底栏
+        final wide = isWideNavigationLayout(
+          constraints.maxWidth,
+          constraints.maxHeight,
+        );
+        // 鸿蒙 HDS：侧栏布局时隐藏原生底栏
         if (hdsController.useNativeTabs) {
           shellBarsObserver.onOrientationChanged(!wide);
         }

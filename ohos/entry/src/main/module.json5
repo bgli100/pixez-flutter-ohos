@@ -37,6 +37,15 @@
         "startWindowIcon": "$media:start_icon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
+        // 平板 / 2in1：允许全屏、分屏、自由窗口三种形态；限制最小窗口尺寸，
+        // 避免在 2in1 上被拖到过窄导致布局溢出（单位 vp）。
+        "supportWindowMode": [
+          "fullscreen",
+          "split",
+          "floating"
+        ],
+        "minWindowWidth": 360,
+        "minWindowHeight": 480,
         "skills": [
           {
             "entities": [

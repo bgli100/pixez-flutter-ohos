@@ -24,6 +24,7 @@ import 'package:pixez/lighting/lighting_store.dart';
 import 'package:pixez/models/illust.dart';
 import 'package:pixez/network/api_client.dart';
 import 'package:pixez/page/login/login_page.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class GoToLoginPage extends StatelessWidget {
@@ -146,7 +147,7 @@ class _PreviewPageState extends State<PreviewPage> {
           child: WaterfallFlow.builder(
             shrinkWrap: true,
             gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: adaptCrossCount(context, 2),
             ),
             itemBuilder: (BuildContext context, int index) {
               return InkWell(

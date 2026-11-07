@@ -34,6 +34,7 @@ import 'package:pixez/page/hello/recom/recom_user_store.dart';
 import 'package:pixez/page/hello/recom/spotlight_store.dart';
 import 'package:pixez/page/soup/soup_page.dart';
 import 'package:pixez/page/spotlight/spotlight_page.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class RecomSpolightPage extends StatefulWidget {
@@ -192,7 +193,7 @@ class _RecomSpolightPageState extends State<RecomSpolightPage>
     return _lightingStore.iStores.isNotEmpty
         ? SliverWaterfallFlow(
             gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-              crossAxisCount: count,
+              crossAxisCount: adaptCrossCount(context, count),
             ),
             delegate:
                 SliverChildBuilderDelegate((BuildContext context, int index) {

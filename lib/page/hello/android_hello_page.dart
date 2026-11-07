@@ -43,6 +43,7 @@ import 'package:pixez/page/saucenao/saucenao_page.dart';
 import 'package:pixez/page/search/search_page.dart';
 import 'package:pixez/page/search/suggest/search_suggestion_page.dart';
 import 'package:pixez/page/webview/saucenao_webview_page.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:pixez/utils/haptic_util.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
@@ -84,8 +85,13 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     }
     return LayoutBuilder(
       builder: (context, constraints) {
-        final wide = constraints.maxWidth > constraints.maxHeight;
-        // 鸿蒙 HDS：横屏（侧栏布局）时隐藏原生底栏，导航交给左侧 NavigationRail
+        // 按窗口宽度判断侧栏布局（平板 / 2in1 / 折叠屏展开 / 手机横屏），
+        // 而不是只看横竖屏：平板竖屏宽 700+vp 时底部导航同样浪费横向空间。
+        final wide = isWideNavigationLayout(
+          constraints.maxWidth,
+          constraints.maxHeight,
+        );
+        // 鸿蒙 HDS：侧栏布局时隐藏原生底栏，导航交给左侧 NavigationRail
         if (hdsController.useNativeTabs) {
           shellBarsObserver.onOrientationChanged(!wide);
         }
@@ -371,6 +377,12 @@ class _AndroidHelloPageState extends State<AndroidHelloPage> {
     // 主界面不显示迷你胶囊（安全兜底：清空所有胶囊所有者，确保回到
     // 主界面后胶囊一定隐藏——嵌套详情页可能残留未注销的所有者）
     HarmonyChannel.resetMiniBar();
+    // 主界面挂载后再补发一次底栏显隐：登录成功后从登录页切到主界面时，
+    // 路由事件与登录页 dispose 的先后顺序不固定，最后一次发送可能仍是
+    // "隐藏"，这里以当前状态重算一次，确保登录完成后底栏能回来。
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) shellBarsObserver.resync();
+    });
     _fullscreenReaction = reaction(
       (_) => fullScreenStore.fullscreen,
       _onFullscreenChanged,

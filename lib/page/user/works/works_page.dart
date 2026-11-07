@@ -28,6 +28,7 @@ import 'package:pixez/i18n.dart';
 import 'package:pixez/lighting/lighting_store.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/network/api_client.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class WorksPage extends StatefulWidget {
@@ -196,7 +197,7 @@ class _WorksPageState extends State<WorksPage> {
           : userSetting.hCrossCount;
     }
     return SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-      crossAxisCount: count,
+      crossAxisCount: adaptCrossCount(context, count),
     );
   }
 

@@ -31,6 +31,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pixez/constants.dart';
 import 'package:pixez/er/fetcher.dart';
 import 'package:pixez/er/hoster.dart';
+import 'package:pixez/harmony_adapt/harmony_channel.dart';
 import 'package:pixez/harmony_adapt/hds_controller.dart';
 import 'package:pixez/harmony_adapt/shell_bars_observer.dart';
 import 'package:pixez/network/onezero_client.dart';
@@ -88,6 +89,9 @@ main(List<String> args) async {
   // （注：不能在 main.dart 顶层直接 addListener，会让导入方把 hdsController
   // 误解析为 Function 类型。）
   hdsController.addListener(shellBarsObserver.resync);
+  // 登录页/引导页退出、隐藏锁全部释放后重算一次显隐：锁期间所有"显示"
+  // 请求都被改写成隐藏，解锁本身不产生路由事件，不补发就会一直没底栏。
+  HarmonyChannel.onLockReleased = shellBarsObserver.resync;
   await Rhttp.init();
   await MmapCache.init();
 

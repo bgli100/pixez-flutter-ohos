@@ -47,7 +47,7 @@ function(apply_cargokit target manifest_dir lib_name any_symbol_name)
     if (WIN32)
         set(SCRIPT_EXTENSION ".cmd")
         set(IMPORT_LIB_EXTENSION ".lib")
-    elseif (CARGOKIT_TARGET_PLATFORM STREQUAL "ohos-arm64")
+    elseif (CARGOKIT_TARGET_PLATFORM MATCHES "^ohos-")
         if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
             set(SCRIPT_EXTENSION ".cmd")
         else()
@@ -77,7 +77,9 @@ function(apply_cargokit target manifest_dir lib_name any_symbol_name)
         set(SOURCE_LIB "../../ohos/.cxx/default/default/debug/${OHOS_ARCH}/lib${PROJECT_NAME}.so")
         set(DEST_LIB "${TARGET_LIB_DIR}/lib${PROJECT_NAME}.so")
 
-        if(CARGOKIT_TARGET_PLATFORM STREQUAL "ohos-arm64")
+        # 所有 OhOS 目标（arm64-v8a / x86_64）都要把产物拷贝到 libs/${OHOS_ARCH}/，
+        # 否则 HAP 里只有对应 ABI 的目录缺失 librhttp.so，模拟器（x86_64）启动即白屏。
+        if(CARGOKIT_TARGET_PLATFORM MATCHES "^ohos-")
             add_custom_command(
                 OUTPUT
                 ${OUTPUT_LIB}

@@ -61,6 +61,12 @@ class Target {
       flutter: 'ohos-arm64',
       ohos: 'arm64-v8a',
     ),
+    // 鸿蒙模拟器 / x86_64 设备（flutter build hap --target-platform ohos-x64）
+    Target(
+      rust: 'x86_64-unknown-linux-ohos',
+      flutter: 'ohos-x64',
+      ohos: 'x86_64',
+    ),
     Target(
       rust: 'x86_64-apple-darwin',
       darwinPlatform: 'macosx',

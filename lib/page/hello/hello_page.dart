@@ -33,6 +33,7 @@ import 'package:pixez/page/hello/recom/recom_spotlight_page.dart';
 import 'package:pixez/page/hello/setting/setting_page.dart';
 import 'package:pixez/page/preview/preview_page.dart';
 import 'package:pixez/page/search/search_page.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:pixez/utils/haptic_util.dart';
 
 class HelloPage extends StatefulWidget {
@@ -126,7 +127,10 @@ class _HelloPageState extends State<HelloPage> {
     }
     return LayoutBuilder(
       builder: (context, constraints) {
-        final wide = constraints.maxWidth > constraints.maxHeight;
+        final wide = isWideNavigationLayout(
+          constraints.maxWidth,
+          constraints.maxHeight,
+        );
         return Scaffold(
           body: Row(
             children: <Widget>[

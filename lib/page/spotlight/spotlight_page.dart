@@ -24,6 +24,7 @@ import 'package:pixez/component/spotlight_card.dart';
 import 'package:pixez/i18n.dart';
 import 'package:pixez/main.dart';
 import 'package:pixez/page/hello/recom/spotlight_store.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class SpotLightPage extends StatelessWidget {
@@ -78,7 +79,7 @@ class SpotLightPage extends StatelessWidget {
           : userSetting.hCrossCount;
     }
     return SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-      crossAxisCount: count,
+      crossAxisCount: adaptCrossCount(context, count),
     );
   }
 

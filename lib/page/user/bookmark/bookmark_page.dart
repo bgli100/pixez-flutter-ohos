@@ -31,6 +31,7 @@ import 'package:pixez/main.dart';
 import 'package:pixez/network/api_client.dart';
 import 'package:pixez/page/user/bookmark/tag/user_bookmark_tag_page.dart';
 import 'package:pixez/page/user/works/works_page.dart';
+import 'package:pixez/utils/adaptive_layout.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class BookmarkPage extends StatefulWidget {
@@ -370,7 +371,7 @@ class _BookMarkNestedPageState extends State<BookMarkNestedPage> {
           : userSetting.hCrossCount;
     }
     return SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-      crossAxisCount: count,
+      crossAxisCount: adaptCrossCount(context, count),
     );
   }
 

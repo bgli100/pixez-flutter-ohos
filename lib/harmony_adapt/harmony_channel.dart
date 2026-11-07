@@ -113,8 +113,17 @@ abstract class HarmonyChannel {
       if (_lockHiddenCount > 0) {
         _lockHiddenCount--;
       }
+      // 最后一个锁释放时主动重算一次显隐：锁期间所有"显示"请求都被改写成
+      // 隐藏，而解开锁本身不会触发路由事件 → 若不补发，底栏会一直停在隐藏态
+      // （典型："跳过引导页→登录页登录成功"后没有底栏）。
+      if (_lockHiddenCount == 0) {
+        onLockReleased?.call();
+      }
     }
   }
+
+  /// 隐藏锁全部释放后的回调（由 main.dart 接到 shellBarsObserver.resync）。
+  static void Function()? onLockReleased;
 
   /// 控制原生 HDS 底栏的即时显隐（弹窗、全屏、子页面等场景，无动画）
   static Future<void> setShellBarsHidden(

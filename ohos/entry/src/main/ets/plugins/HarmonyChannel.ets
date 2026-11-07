@@ -14,6 +14,7 @@
 */
 
 import common from '@ohos.app.ability.common';
+import { deviceInfo } from '@kit.BasicServicesKit';
 import ConfigurationConstant from '@ohos.app.ability.ConfigurationConstant';import {
   FlutterPlugin,
   FlutterPluginBinding,
@@ -62,7 +63,18 @@ export default class HarmonyChannel implements FlutterPlugin {
   async onMethodCall(call: MethodCall, result: MethodResult): Promise<void> {
     switch (call.method) {
       case "getDeviceInfo": {
-        result.success({ sdkApiVersion: 26 });
+        // 返回真实 API 版本：HDS 沉浸光感底栏依赖 API >= 23 的
+        // @kit.UIDesignKit HdsTabs。原先这里硬编码 26，导致 API 22 等
+        // 不支持 HDS 的设备上 Dart 侧误判为支持 → Flutter 隐藏自己的底栏、
+        // 原生底栏又渲染不出来，整个应用没有导航栏（模拟器上必现）。
+        let apiVersion = 26;
+        try {
+          apiVersion = deviceInfo.sdkApiVersion;
+        } catch (err) {
+          console.error(`HarmonyChannel: read sdkApiVersion failed: ${err}`);
+          apiVersion = 26;
+        }
+        result.success({ sdkApiVersion: apiVersion });
         break;
       }
       case "setShellBars": {
