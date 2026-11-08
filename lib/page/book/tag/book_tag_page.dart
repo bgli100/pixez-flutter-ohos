@@ -92,6 +92,34 @@ class _BookTagPageState extends State<BookTagPage>
             vsync: this,
           );
         }
+        if (bookTagStore.bookTagList.isEmpty) {
+          // Tags are added from the tag long-press menu on the detail page;
+          // without a hint the empty page looks broken.
+          final Widget emptyScaffold = Scaffold(
+            appBar: AppBar(elevation: 0.0),
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(
+                  I18n.of(context).favorited_tag_empty_hint,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            // 鸿蒙 HDS：启用时隐藏 Flutter 关闭钮（由原生迷你胶囊替代）
+            floatingActionButton: hdsController.useNativeTabs
+                ? null
+                : FloatingActionButton(
+                    onPressed: _close,
+                    child: Icon(Icons.close),
+                  ),
+          );
+          return HdsMiniBarScope(
+            icon: 'close',
+            onTap: _close,
+            child: emptyScaffold,
+          );
+        }
         final Widget scaffold = Scaffold(
           appBar: AppBar(
             elevation: 0.0,
